@@ -1,0 +1,60 @@
+/*///////////////////////////////////////////////////////////////////////
+//
+//  ███╗   ██╗ █████╗ ██╗   ██╗    ██████╗  █████╗ ██████╗ 
+//  ████╗  ██║██╔══██╗██║   ██║    ██╔══██╗██╔══██╗██╔══██╗
+//  ██╔██╗ ██║███████║██║   ██║    ██████╔╝███████║██████╔╝
+//  ██║╚██╗██║██╔══██║╚██╗ ██╔╝    ██╔══██╗██╔══██║██╔══██╗
+//  ██║ ╚████║██║  ██║ ╚████╔╝     ██████╔╝██║  ██║██║  ██║
+//  ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝      ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+//
+///////////////////////////////////////////////////////////////////////*/ 
+.navBarWrapper
+{
+  position: absolute;
+  height: 100%;
+  width:  10%;
+  top:    0px;
+  left:   0px;
+  max-width: 150px;
+
+  background: rgba(255, 255, 255, .05);
+
+  z-index: +1;
+}
+
+.navButton
+{
+  border-bottom : 1px solid grey;
+  background: rgba(255,255,255,.0);
+  top:  0%;
+  left: 0%;
+  width:  100%;
+  text-align: center;
+  color: white;
+  font-size: 15px;
+}
+
+.navButtonActive
+{
+  border-bottom : 1px solid grey;
+  top:  0%;
+  left: 0%;
+  height: 15%;
+  width:  100%;
+  background: rgba(255,255,255,.2);
+  text-align: center;
+  color: white;
+  font-size: 15px;
+}
+
+.navIcon
+{
+  height: 20%;
+  width: 30%;
+  padding-top: 7%;
+}
+
+.navText p
+{
+  margin-top: 0%;
+}

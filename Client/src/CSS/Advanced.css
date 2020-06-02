@@ -1,0 +1,92 @@
+/*///////////////////////////////////////////////////////////////////////
+//
+//    #                                                     
+//   # #   #####  #    #   ##   #    #  ####  ###### #####  
+//  #   #  #    # #    #  #  #  ##   # #    # #      #    # 
+// #     # #    # #    # #    # # #  # #      #####  #    # 
+// ####### #    # #    # ###### #  # # #      #      #    # 
+// #     # #    #  #  #  #    # #   ## #    # #      #    # 
+// #     # #####    ##   #    # #    #  ####  ###### #####  
+//
+//////////////////////////////////////////////////////////////////////*/
+.advancedScreen {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 850px;
+  width: 1200px;
+  top: 50%;
+  left: 50%;
+
+  /* border: 1px solid red; */
+}
+
+/*///////////////////////////////////////////////////////////////////////
+//
+//  ######                                                #######               
+//  #     #   ##   #####  #   ##   #####  ####  #####     #         ##   #    # 
+//  #     #  #  #  #    # #  #  #    #   #    # #    #    #        #  #  ##   # 
+//  ######  #    # #    # # #    #   #   #    # #    #    #####   #    # # #  # 
+//  #   #   ###### #    # # ######   #   #    # #####     #       ###### #  # # 
+//  #    #  #    # #    # # #    #   #   #    # #   #     #       #    # #   ## 
+//  #     # #    # #####  # #    #   #    ####  #    #    #       #    # #    #
+//
+//////////////////////////////////////////////////////////////////////*/
+.radiatorFanModule {
+  position: absolute;
+  transform: translateX(-50%);
+  height: 175px;
+  width: 300px;
+  top: 15%;
+  left: 35%;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(50, 50, 50, 0.1);
+  color: white;
+  font-family: "Arial";
+  font-size: 25px;
+  white-space: nowrap;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.radiatorFanTitle {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top:  25px;
+  left: 50%;
+}
+
+.radiatorFanAutoManualButtonsContainer {
+  /* background-color: blue; */
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  top: 70px;
+  left: 50%;
+}
+
+.radiatorFanManualControlsActive
+{
+  /* background-color: red; */
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  top: 130px;
+  left: 50%;
+}
+
+.radiatorFanManualControlsLocked
+{
+  /* background-color: red; */
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  top: 130px;
+  left: 50%;
+  opacity: .1;
+}

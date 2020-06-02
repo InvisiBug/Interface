@@ -1,0 +1,281 @@
+/*///////////////////////////////////////////////////////////////////////
+//
+// ██╗     ██╗ ██████╗ ██╗  ██╗████████╗███████╗
+// ██║     ██║██╔════╝ ██║  ██║╚══██╔══╝██╔════╝
+// ██║     ██║██║  ███╗███████║   ██║   ███████╗
+// ██║     ██║██║   ██║██╔══██║   ██║   ╚════██║
+// ███████╗██║╚██████╔╝██║  ██║   ██║   ███████║
+// ╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+//
+///////////////////////////////////////////////////////////////////////
+//
+//  ######                       
+//  #     # #      #    #  ####  
+//  #     # #      #    # #    # 
+//  ######  #      #    # #      
+//  #       #      #    # #  ### 
+//  #       #      #    # #    # 
+//  #       ######  ####   ####                                 
+//
+///////////////////////////////////////////////////////////////////////*/
+.plug
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  height:    100px;
+  width:     300px;
+  top:       20%;
+  left:      50%;
+
+  border-radius: 20px;
+
+  border:      1px solid rgba(255, 255, 255, 0.2);
+  background:  rgba(50, 50, 50, 0.1);
+  color:       white;
+  font-family: "Arial";
+  font-size:   25px;
+
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  text-align:      center;
+}
+
+.plugActive
+{
+  height:           50px;
+  width:            100px;
+  border-color:     rgba(255,255,255,1);
+  background-color: rgba(255,255,255,0.5);
+  color:            white;
+  text-align:       center;
+  /*margin-top: 8%;*/
+  /*font-size: 20px;*/
+
+  align-items:     center;
+  justify-content: center;
+  font-size:       21px;
+}
+
+.plugInactive
+{
+  height:           50px;
+  width:            100px;
+  border-color:     rgba(255,255,255,1);
+  background-color: rgba(25,25,25,0.0);
+  color:            white;
+  text-align:       center;
+  /*margin-top: 8%;*/
+  /*font-size: 20px;*/
+
+  align-items:     center;
+  justify-content: center;
+  font-size:       21px;
+}
+
+.plugButtons
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  width:     75%;
+  top:       65%;
+  left:      50%;
+}
+
+.plugTitle
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  top:       20%;
+  left:      50%;
+}
+
+/*///////////////////////////////////////////////////////////////////////
+//
+// ######                          #       ####### ######         
+// #     # ######  ####  #    #    #       #       #     #  ####  
+// #     # #      #      #   #     #       #       #     # #      
+// #     # #####   ####  ####      #       #####   #     #  ####  
+// #     # #           # #  #      #       #       #     #      # 
+// #     # #      #    # #   #     #       #       #     # #    # 
+// ######  ######  ####  #    #    ####### ####### ######   #### 
+//
+///////////////////////////////////////////////////////////////////////*/
+.deskLEDsModule
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  height:    325px;
+  width:     325px;
+  top:       55%;
+  left:      20%;
+
+  border-radius: 20px;
+
+  border:      1px solid rgba(255, 255, 255, 0.2);
+  background:  rgba(50, 50, 50, 0.1);
+  color:       white;
+  font-family: "Arial";
+  font-size:   25px;
+
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  text-align:      center;
+}
+
+.deskLEDsTitle
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  width:     100%;
+  top:       35px;
+  left:      50%;
+}
+
+.deskLEDsColourWheel
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  top:       190px;
+  left:      50%;
+}
+
+/*///////////////////////////////////////////////////////////////////////
+//
+//  #######                                #                            
+//     #      ##   #####  #      ######    #         ##   #    # #####  
+//     #     #  #  #    # #      #         #        #  #  ##  ## #    # 
+//     #    #    # #####  #      #####     #       #    # # ## # #    # 
+//     #    ###### #    # #      #         #       ###### #    # #####  
+//     #    #    # #    # #      #         #       #    # #    # #      
+//     #    #    # #####  ###### ######    ####### #    # #    # #     
+//
+///////////////////////////////////////////////////////////////////////*/
+.tableLampModule
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  height:    325px;
+  width:     325px;
+  top:       55%;
+  left:      80%;
+
+  border-radius: 20px;
+
+  border:      1px solid rgba(255, 255, 255, 0.2);
+  background:  rgba(50, 50, 50, 0.1);
+  color:       white;
+  font-family: "Arial";
+  font-size:   25px;
+
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  text-align:      center;
+}
+
+.tableLampTitle
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  width:     100%;
+  top:       35px;
+  left:      50%;
+}
+
+.tableLampColourWheel
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  top:       190px;
+  left:      50%;
+}
+
+/*///////////////////////////////////////////////////////////////////////
+//
+//   #####                                        #       ####### ######         
+//  #     #  ####  #####  ###### ###### #    #    #       #       #     #  ####  
+//  #       #    # #    # #      #      ##   #    #       #       #     # #      
+//   #####  #      #    # #####  #####  # #  #    #       #####   #     #  ####  
+//        # #      #####  #      #      #  # #    #       #       #     #      # 
+//  #     # #    # #   #  #      #      #   ##    #       #       #     # #    # 
+//   #####   ####  #    # ###### ###### #    #    ####### ####### ######   ####   
+//
+///////////////////////////////////////////////////////////////////////*/
+.screenLEDsModule
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  height:    450px;
+  width:     325px;
+  top:       62%;
+  left:      50%;
+
+  border-radius: 20px;
+
+  border:      1px solid rgba(255, 255, 255, 0.2);
+  background:  rgba(50, 50, 50, 0.1);
+  color:       white;
+  font-family: "Arial";
+  font-size:   25px;
+
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  text-align:      center;
+}
+
+.screenLEDsTitle
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  width:     100%;
+  top:       35px;
+  left:      50%;
+}
+
+.screenLEDsColourWheel
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  top:       190px;
+  left:      50%;
+}
+
+.ambientButton /* This is a horrible hack, fix at some point *NB* */
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  top:       350px;
+  left:      50%;
+}
+
+.rainbowButton
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  top:       412.5px;
+  left:      25%;
+}
+
+.fadeButton
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  top:       412.5px;
+  left:      75%;
+}
+
+
+.lightScreen
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  height:    850px;
+  width:     1200px;
+  top:       50%;
+  left:      50%;
+
+  /*border: 1px solid red;*/
+}

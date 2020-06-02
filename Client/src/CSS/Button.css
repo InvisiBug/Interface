@@ -1,0 +1,151 @@
+/*///////////////////////////////////////////////////////////////////////
+//
+//  ██████╗ ██╗   ██╗████████╗████████╗ ██████╗ ███╗   ██╗
+//  ██╔══██╗██║   ██║╚══██╔══╝╚══██╔══╝██╔═══██╗████╗  ██║
+//  ██████╔╝██║   ██║   ██║      ██║   ██║   ██║██╔██╗ ██║
+//  ██╔══██╗██║   ██║   ██║      ██║   ██║   ██║██║╚██╗██║
+//  ██████╔╝╚██████╔╝   ██║      ██║   ╚██████╔╝██║ ╚████║
+//  ╚═════╝  ╚═════╝    ╚═╝      ╚═╝    ╚═════╝ ╚═╝  ╚═══╝ 
+//
+//////////////////////////////////////////////////////////////////////*/
+.buttonActive
+{
+  border-color:     rgba(255,255,255,1);
+  background-color: rgba(255,255,255,0.3);
+  color:            white;
+  height:           50px;
+  width:            100px;
+
+  text-align:      center;
+  align-items:     center;
+  justify-content: center;
+  font-size:       21px;
+}
+
+.buttonInactive
+{
+  border-color:     rgba(255,255,255,1);
+  background-color: rgba(25,25,25,0.0);
+  color:            white;
+  height:           50px;
+  width:            100px;
+  
+  text-align:      center;
+  align-items:     center;
+  justify-content: center;
+  font-size:       21px;
+}
+
+/*//////////////////////////////////////////////////////////////////////
+//
+//   #####                                               ######                                   
+//  #     # ###### #    # ###### #####    ##   #         #     # #    # ##### #####  ####  #    # 
+//  #       #      ##   # #      #    #  #  #  #         #     # #    #   #     #   #    # ##   # 
+//  #  #### #####  # #  # #####  #    # #    # #         ######  #    #   #     #   #    # # #  # 
+//  #     # #      #  # # #      #####  ###### #         #     # #    #   #     #   #    # #  # # 
+//  #     # #      #   ## #      #   #  #    # #         #     # #    #   #     #   #    # #   ## 
+//   #####  ###### #    # ###### #    # #    # ######    ######   ####    #     #    ####  #    #
+//
+//////////////////////////////////////////////////////////////////////*/
+.buttonInactive
+{
+  background-color: rgba(10,10,10,0.2);
+  border-color:     rgba(255,255,255,1);
+  color: white;
+  height: 50px;
+  width:  100px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+  margin-left: 0px;
+}
+
+.buttonActive
+{
+  background-color: rgba(255,255,255,0.3);
+  border-color:     rgba(255,255,255,1);
+  color: white;
+  height: 50px;
+  width:  100px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+}
+
+/*///////////////////////////////////////////////////////////////////////
+//
+//  #######           ######                                   
+//  #     # #    #    #     # #    # ##### #####  ####  #    # 
+//  #     # ##   #    #     # #    #   #     #   #    # ##   # 
+//  #     # # #  #    ######  #    #   #     #   #    # # #  # 
+//  #     # #  # #    #     # #    #   #     #   #    # #  # # 
+//  #     # #   ##    #     # #    #   #     #   #    # #   ## 
+//  ####### #    #    ######   ####    #     #    ####  #    #
+//
+///////////////////////////////////////////////////////////////////////*/
+.onButtonInactive
+{
+  background-color: rgba(255,255,255,0.2);
+  border-color:     rgba(255,255,255,1);
+  color: white;
+  height: 50px;
+  width:  100px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+  margin-left: 0px;
+}
+
+.onButtonActive
+{
+  background-color: rgba(0,255,0,0.5);
+  border-color:     rgba(255,255,255,1);
+  color: white;
+  height: 50px;
+  width:  100px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+}
+
+/*///////////////////////////////////////////////////////////////////////
+//
+//  #######                  ######                                   
+//  #     # ###### ######    #     # #    # ##### #####  ####  #    # 
+//  #     # #      #         #     # #    #   #     #   #    # ##   # 
+//  #     # #####  #####     ######  #    #   #     #   #    # # #  # 
+//  #     # #      #         #     # #    #   #     #   #    # #  # # 
+//  #     # #      #         #     # #    #   #     #   #    # #   ## 
+//  ####### #      #         ######   ####    #     #    ####  #    # 
+//
+///////////////////////////////////////////////////////////////////////*/
+.offButtonInactive
+{
+  background-color: rgba(255,255,255,0.2);
+  border-color:     rgba(255,255,255,1);
+  color: white;
+  height: 50px;
+  width:  100px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+  margin-left: 0px;
+}
+
+.offButtonActive
+{
+  background-color: rgba(255,0,0,0.5);
+  border-color:     rgba(255,255,255,1);
+  color: white;
+  height: 50px;
+  width:  100px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+}

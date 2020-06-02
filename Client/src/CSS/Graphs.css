@@ -1,0 +1,133 @@
+/*///////////////////////////////////////////////////////////////////////
+//
+//   ██████╗ ██████╗  █████╗ ██████╗ ██╗  ██╗███████╗
+//  ██╔════╝ ██╔══██╗██╔══██╗██╔══██╗██║  ██║██╔════╝
+//  ██║  ███╗██████╔╝███████║██████╔╝███████║███████╗
+//  ██║   ██║██╔══██╗██╔══██║██╔═══╝ ██╔══██║╚════██║
+//  ╚██████╔╝██║  ██║██║  ██║██║     ██║  ██║███████║
+//   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚══════╝ 
+//
+//////////////////////////////////////////////////////////////////////*/
+.graphModule
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  height:    70%;
+  width:     75%;
+  top:       50%;
+  left:      60%;
+
+  border:      1px solid rgba(255, 255, 255, 0.2);
+  background:  rgba(50, 50, 50, 0.1);
+  color:       white;
+  font-family: "Arial";
+  font-size:   15px;
+
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  text-align:      center;
+}
+
+.temperatureTitle
+{
+  position:  absolute;
+  transform: translate(-50%,-50%) rotate(-90deg);
+  top:  50%;
+  left: 2.5%;
+  color: #fff;
+  /*font-size: 25px;*/
+  /*text-shadow: -1.5px -1.5px 0 #8884d8, 1.5px -1.5px 0 #8884d8, -1.5px 1.5px 0 #8884d8, 1.5px 1.5px 0 #8884d8;*/
+}
+
+.humidityTitle
+{
+  position:  absolute;
+  transform: translate(-50%,-50%) rotate(90deg);
+  top:  50%;
+  left: 97.5%;
+  width: 200px;
+  color: #fff;
+  /*font-size: 25px;*/
+  /*text-shadow: -1.5px -1.5px 0 #82ca9d, 1.5px -1.5px 0 #82ca9d, -1.5px 1.5px 0 #82ca9d, 1.5px 1.5px 0 #82ca9d;*/
+}
+
+.xAxisTitle
+{
+  position:  absolute;
+  transform: translate(-50%,-50%);
+  top:  95%;
+  left: 50%;
+}
+
+.timescaleButtonsContainer
+{
+  position:  absolute;
+  transform: translate(-50%,-50%);
+  top:   92.5%;
+  left:  60%;
+  width: 50%;
+}
+
+.graph
+{
+  width:  500;
+  height: 500;
+}
+
+.closeIcon
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  height:    30px;
+  width:     30px;
+  top:       4%;
+
+  left:      97.6%;
+  opacity:   0.95;
+  z-index:  +1;
+}
+
+/* Sesor info*/
+.sensorInfo
+{
+  position:  absolute;
+  transform: translate(-50%, -50%);
+  height:    150px;
+  width:     250px;
+  top:       50%;
+  left:      11%;
+  /*border:    1px solid red;*/
+
+  color: white;
+}
+
+.sensorInfoTitle
+{
+  position:  absolute;
+  transform: translate(-50%, -0%);
+  width:     100%;
+  top:       0%;
+  left:      50%;
+
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  text-align:      center;
+  /*border: 1px solid green;*/
+}
+
+.sensorInfoData
+{
+  position:  absolute;
+  transform: translate(-0%, -50%);
+  height:    700px;
+  width:     250px;
+  top:       65%;
+  left:      10%;
+
+  display:         flex;
+  align-items:     center;
+  /*justify-content: center;*/
+  /*text-align:      center;*/
+}

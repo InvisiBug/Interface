@@ -1,0 +1,197 @@
+/*///////////////////////////////////////////////////////////////////////
+//
+//   ██████╗ ██████╗ ███╗   ███╗██████╗ ██╗   ██╗████████╗███████╗██████╗ 
+//  ██╔════╝██╔═══██╗████╗ ████║██╔══██╗██║   ██║╚══██╔══╝██╔════╝██╔══██╗
+//  ██║     ██║   ██║██╔████╔██║██████╔╝██║   ██║   ██║   █████╗  ██████╔╝
+//  ██║     ██║   ██║██║╚██╔╝██║██╔═══╝ ██║   ██║   ██║   ██╔══╝  ██╔══██╗
+//  ╚██████╗╚██████╔╝██║ ╚═╝ ██║██║     ╚██████╔╝   ██║   ███████╗██║  ██║
+//   ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝      ╚═════╝    ╚═╝   ╚══════╝╚═╝  ╚═╝  
+//
+//////////////////////////////////////////////////////////////////////*/
+.computerScreen {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 850px;
+  width: 1200px;
+  top: 50%;
+  left: 50%;
+
+  /*border: 1px solid red;*/
+}
+
+/*//////////////////////////////////////////////////////////////////////
+//
+//  ######                              
+//  #     #  ####  #    # ###### #####  
+//  #     # #    # #    # #      #    # 
+//  ######  #    # #    # #####  #    # 
+//  #       #    # # ## # #      #####  
+//  #       #    # ##  ## #      #   #  
+//  #        ####  #    # ###### #    #  
+//
+///////////////////////////////////////////////////////////////////////*/
+.computerPowerModule {
+  position: absolute;
+  transform: translateX(-50%);
+  height: 165px;
+  width: 300px;
+  top: 15%;
+  left: 35%;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(50, 50, 50, 0.1);
+  color: white;
+  font-family: "Arial";
+  font-size: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.computerPowerTitle {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 25%;
+  left: 50%;
+}
+
+.computerPowerButtonsContainer {
+  /*background-color: red;*/
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  top: 65%;
+  left: 50%;
+}
+
+/*//////////////////////////////////////////////////////////////////////
+//
+//     #                           
+//    # #   #    # #####  #  ####  
+//   #   #  #    # #    # # #    # 
+//  #     # #    # #    # # #    # 
+//  ####### #    # #    # # #    # 
+//  #     # #    # #    # # #    # 
+//  #     #  ####  #####  #  #### 
+//
+///////////////////////////////////////////////////////////////////////*/
+.computerAudioModule {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 500px;
+  width: 350px;
+  top: 44.5%;
+  left: 65%;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(50, 50, 50, 0.1);
+  color: white;
+  font-family: "Arial";
+  font-size: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.computerAudioTitle {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 8%;
+  left: 50%;
+}
+
+.computerAudioMasterContainer {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 300px;
+  width: 75%;
+  top: 50%;
+  left: 50%;
+}
+
+.computerAudioLeftSpeakerContainer {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  top: 35.5%;
+  left: 50%;
+}
+
+.computerAudioRightSpeakerContainer {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  top: 48.5%;
+  left: 50%;
+}
+
+.computerAudioSubContainer {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  top: 90%;
+  left: 50%;
+}
+
+.computerAudioMixerContainer {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  top: 100%;
+  left: 50%;
+}
+
+/*//////////////////////////////////////////////////////////////////////
+//
+//     #                              #                                              
+//    # #   #    # #####  ####       # #    ####  ##### # #    #   ##   ##### ###### 
+//   #   #  #    #   #   #    #     #   #  #    #   #   # #    #  #  #    #   #      
+//  #     # #    #   #   #    #    #     # #        #   # #    # #    #   #   #####  
+//  ####### #    #   #   #    #    ####### #        #   # #    # ######   #   #      
+//  #     # #    #   #   #    #    #     # #    #   #   #  #  #  #    #   #   #      
+//  #     #  ####    #    ####     #     #  ####    #   #   ##   #    #   #   ###### 
+//
+///////////////////////////////////////////////////////////////////////*/
+.autoActivateModule {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 165px;
+  width: 300px;
+  top: 50%;
+  left: 35%;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  background: rgba(50, 50, 50, 0.1);
+  color: white;
+  font-family: "Arial";
+  font-size: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.autoActivateTitle {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 25%;
+  left: 50%;
+}
+
+.autoActivateContainer {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  top: 65%;
+  left: 50%;
+}
