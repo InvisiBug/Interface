@@ -28,10 +28,7 @@ const functions = require("../../Functions.js");
 // Database
 const path = require("path");
 const Engine = require("tingodb")();
-const db = new Engine.Db(
-  path.join(__dirname, "../../../Databases/Heating"),
-  {}
-);
+const db = new Engine.Db(path.join(__dirname, "../../../Databases/Heating"), {});
 
 // Schedule
 const schedule = require("node-schedule");
@@ -94,21 +91,16 @@ app.post("/api/heating/sensor/ourRoom/setpoint/set", (req, res) => {
 ////////////////////////////////////////////////////////////////////////
 client.on("message", (topic, payload) => {
   if (topic == "Our Room Heating Sensor") {
-
     clearTimeout(timer);
     timer = setTimeout(() => {
-      console.log("Clearing Data")
       sensorData = null;
     }, 10 * 1000);
-
 
     if (payload != "Our Room Heating Sensor Disconnected") {
       sensorData = JSON.parse(payload);
     } else {
       sensorData = null;
-      console.log(
-        "Our Room Heating Sensor Disconnected  at " + functions.printTime()
-      );
+      console.log("Our Room Heating Sensor Disconnected  at " + functions.printTime());
     }
   }
 });

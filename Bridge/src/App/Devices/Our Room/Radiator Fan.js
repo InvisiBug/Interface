@@ -37,8 +37,12 @@ const device = "radiatorFan";
 // var deviceData = null;
 var deviceData = {
   automatic: false,
-  state: false,
+  state: null,
 };
+
+// var deviceData;
+
+var timer;
 
 console.log(deviceData);
 ////////////////////////////////////////////////////////////////////////
@@ -108,10 +112,15 @@ app.get("/api/RadiatorFan/Off", (req, res) => {
 ////////////////////////////////////////////////////////////////////////
 client.on("message", (topic, payload) => {
   if (topic == "Radiator Fan") {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      deviceData = null;
+    }, 10 * 1000);
+
     if (payload != "Radiator Fan Disconnected") {
       deviceData.state = JSON.parse(payload).state;
     } else {
-      deviceData = null;
+      deviceData.state = null;
       console.log("Radiator Fan Disconnected");
     }
   }

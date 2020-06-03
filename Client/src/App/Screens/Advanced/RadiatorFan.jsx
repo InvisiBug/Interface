@@ -31,6 +31,8 @@ class RadiatorFan extends React.Component {
       cache.state ? this.setState({ fanActive: 1 }) : this.setState({ fanActive: 0 });
       cache.automatic ? this.setState({ automatic: 1 }) : this.setState({ automatic: 0 });
 
+      console.log(cache.state);
+
       this.setState({ titleColour: "white" });
     } catch (error) {
       this.setState({ titleColour: "orangered" });
