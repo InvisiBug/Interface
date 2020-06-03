@@ -58,12 +58,14 @@ app.get("/api/RadiatorFan/Status", (req, res) => {
 
 // Automatic / Manual
 app.get("/api/RadiatorFanAutomatic/On", (req, res) => {
+  console.log("Auto Mode On");
   deviceData.automatic = true;
   sendSocketData();
   res.json(null);
 });
 
 app.get("/api/RadiatorFanAutomatic/off", (req, res) => {
+  console.log("Auto Mode Off");
   deviceData.automatic = false;
   sendSocketData();
   res.json(null);
@@ -107,15 +109,13 @@ app.get("/api/RadiatorFan/Off", (req, res) => {
 client.on("message", (topic, payload) => {
   if (topic == "Radiator Fan") {
     if (payload != "Radiator Fan Disconnected") {
-      deviceData = JSON.parse(payload);
+      deviceData.state = JSON.parse(payload).state;
     } else {
       deviceData = null;
       console.log("Radiator Fan Disconnected");
     }
   }
 });
-
-
 
 ////////////////////////////////////////////////////////////////////////
 //
