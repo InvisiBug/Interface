@@ -65,10 +65,7 @@ class App extends React.Component {
           <div className="background" />
 
           <div className="navBarWrapper">
-            <NavButtonSelection
-              changeScreen={this.changeScreen}
-              screen={this.state.screen}
-            />
+            <NavButtonSelection changeScreen={this.changeScreen} screen={this.state.screen} />
           </div>
           {/* <BatteryMeter/> */}
 

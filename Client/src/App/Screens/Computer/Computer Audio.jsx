@@ -60,18 +60,10 @@ class ComputerPower extends React.Component {
 
       this.setState({ computerAudio: cache.state });
 
-      cache.Left
-        ? this.setState({ leftActiveIndex: 1 })
-        : this.setState({ leftActiveIndex: 0 });
-      cache.Right
-        ? this.setState({ rightActiveIndex: 1 })
-        : this.setState({ rightActiveIndex: 0 });
-      cache.Sub
-        ? this.setState({ subActiveIndex: 1 })
-        : this.setState({ subActiveIndex: 0 });
-      cache.Mixer
-        ? this.setState({ mixerActiveIndex: 1 })
-        : this.setState({ mixerActiveIndex: 0 });
+      cache.Left ? this.setState({ leftActiveIndex: 1 }) : this.setState({ leftActiveIndex: 0 });
+      cache.Right ? this.setState({ rightActiveIndex: 1 }) : this.setState({ rightActiveIndex: 0 });
+      cache.Sub ? this.setState({ subActiveIndex: 1 }) : this.setState({ subActiveIndex: 0 });
+      cache.Mixer ? this.setState({ mixerActiveIndex: 1 }) : this.setState({ mixerActiveIndex: 0 });
     } catch {
       // No data present, fill with zeros
       this.setState({ leftActiveIndex: 0 });
@@ -128,10 +120,7 @@ class ComputerPower extends React.Component {
   render() {
     return (
       <Container className="computerAudioModule">
-        <h3
-          className="computerAudioTitle"
-          style={{ color: this.state.titleColour }}
-        >
+        <h3 className="computerAudioTitle" style={{ color: this.state.titleColour }}>
           Computer Audio
         </h3>
 
@@ -149,21 +138,11 @@ class ComputerPower extends React.Component {
             </Col>
 
             <Col md={4} style={{ display: "flex", alignItems: "center" }}>
-              <OffButton
-                name="Off"
-                index={0}
-                isActive={this.state.masterActiveIndex === 0}
-                onClick={() => this.powerOff("Master")}
-              />
+              <OffButton name="Off" index={0} isActive={this.state.masterActiveIndex === 0} onClick={() => this.powerOff("Master")} />
             </Col>
 
             <Col md={4} style={{ display: "flex", alignItems: "center" }}>
-              <OnButton
-                name="On"
-                index={1}
-                isActive={this.state.masterActiveIndex === 1}
-                onClick={() => this.powerOn("Master")}
-              />
+              <OnButton name="On" index={1} isActive={this.state.masterActiveIndex === 1} onClick={() => this.powerOn("Master")} />
             </Col>
           </Row>
 
@@ -180,21 +159,11 @@ class ComputerPower extends React.Component {
             </Col>
 
             <Col md={4} style={{ display: "flex", alignItems: "center" }}>
-              <OffButton
-                name="Off"
-                index={0}
-                isActive={this.state.leftActiveIndex === 0}
-                onClick={() => this.powerOff("Left")}
-              />
+              <OffButton name="Off" index={0} isActive={this.state.leftActiveIndex === 0} onClick={() => this.powerOff("Left")} />
             </Col>
 
             <Col md={4} style={{ display: "flex", alignItems: "center" }}>
-              <OnButton
-                name="On"
-                index={1}
-                isActive={this.state.leftActiveIndex === 1}
-                onClick={() => this.powerOn("Left")}
-              />
+              <OnButton name="On" index={1} isActive={this.state.leftActiveIndex === 1} onClick={() => this.powerOn("Left")} />
             </Col>
           </Row>
 
@@ -211,21 +180,11 @@ class ComputerPower extends React.Component {
             </Col>
 
             <Col md={4} style={{ display: "flex", alignItems: "center" }}>
-              <OffButton
-                name="Off"
-                index={0}
-                isActive={this.state.rightActiveIndex === 0}
-                onClick={() => this.powerOff("Right")}
-              />
+              <OffButton name="Off" index={0} isActive={this.state.rightActiveIndex === 0} onClick={() => this.powerOff("Right")} />
             </Col>
 
             <Col md={4} style={{ display: "flex", alignItems: "center" }}>
-              <OnButton
-                name="On"
-                index={1}
-                isActive={this.state.rightActiveIndex === 1}
-                onClick={() => this.powerOn("Right")}
-              />
+              <OnButton name="On" index={1} isActive={this.state.rightActiveIndex === 1} onClick={() => this.powerOn("Right")} />
             </Col>
           </Row>
 
@@ -242,21 +201,11 @@ class ComputerPower extends React.Component {
             </Col>
 
             <Col md={4} style={{ display: "flex", alignItems: "center" }}>
-              <OffButton
-                name="Off"
-                index={0}
-                isActive={this.state.subActiveIndex === 0}
-                onClick={() => this.powerOff("Sub")}
-              />
+              <OffButton name="Off" index={0} isActive={this.state.subActiveIndex === 0} onClick={() => this.powerOff("Sub")} />
             </Col>
 
             <Col md={4} style={{ display: "flex", alignItems: "center" }}>
-              <OnButton
-                name="On"
-                index={1}
-                isActive={this.state.subActiveIndex === 1}
-                onClick={() => this.powerOn("Sub")}
-              />
+              <OnButton name="On" index={1} isActive={this.state.subActiveIndex === 1} onClick={() => this.powerOn("Sub")} />
             </Col>
           </Row>
 
@@ -273,21 +222,11 @@ class ComputerPower extends React.Component {
             </Col>
 
             <Col md={4} style={{ display: "flex", alignItems: "center" }}>
-              <OffButton
-                name="Off"
-                index={0}
-                isActive={this.state.mixerActiveIndex === 0}
-                onClick={() => this.powerOff("Mixer")}
-              />
+              <OffButton name="Off" index={0} isActive={this.state.mixerActiveIndex === 0} onClick={() => this.powerOff("Mixer")} />
             </Col>
 
             <Col md={4} style={{ display: "flex", alignItems: "center" }}>
-              <OnButton
-                name="On"
-                index={1}
-                isActive={this.state.mixerActiveIndex === 1}
-                onClick={() => this.powerOn("Mixer")}
-              />
+              <OnButton name="On" index={1} isActive={this.state.mixerActiveIndex === 1} onClick={() => this.powerOn("Mixer")} />
             </Col>
           </Row>
         </div>

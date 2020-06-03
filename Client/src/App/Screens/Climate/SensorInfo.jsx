@@ -17,9 +17,7 @@ class SensorInfo extends React.Component {
 
   getData = () => {
     // console.log(this.props.room + " Heating Sensor")
-    var cache = JSON.parse(
-      localStorage.getItem(this.props.room + " Heating Sensor")
-    );
+    var cache = JSON.parse(localStorage.getItem(this.props.room + " Heating Sensor"));
     // console.log(cache)
     try {
       this.setState({ temperature: cache.temperature });

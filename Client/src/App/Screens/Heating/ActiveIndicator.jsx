@@ -29,13 +29,7 @@ class ActiveIndicator extends React.Component {
   };
 
   render() {
-    return (
-      <div>
-        {this.state.active && (
-          <img src={Active} alt="" className="activeIndicator" />
-        )}
-      </div>
-    );
+    return <div>{this.state.active && <img src={Active} alt="" className="activeIndicator" />}</div>;
   }
 }
 

@@ -14,12 +14,7 @@ class Individual extends React.Component {
           </Col>
 
           <Col>
-            <Slider
-              enabled={this.props.enable}
-              vals={this.props.data[0]}
-              day={"monday"}
-              change={this.props.set}
-            />
+            <Slider enabled={this.props.enable} vals={this.props.data[0]} day={"monday"} change={this.props.set} />
           </Col>
         </Row>
 
@@ -29,12 +24,7 @@ class Individual extends React.Component {
           </Col>
 
           <Col>
-            <Slider
-              enabled={this.props.enable}
-              vals={this.props.data[1]}
-              day={"tuesday"}
-              change={this.props.set}
-            />
+            <Slider enabled={this.props.enable} vals={this.props.data[1]} day={"tuesday"} change={this.props.set} />
           </Col>
         </Row>
 
@@ -44,12 +34,7 @@ class Individual extends React.Component {
           </Col>
 
           <Col>
-            <Slider
-              enabled={this.props.enable}
-              vals={this.props.data[2]}
-              day={"wednesday"}
-              change={this.props.set}
-            />
+            <Slider enabled={this.props.enable} vals={this.props.data[2]} day={"wednesday"} change={this.props.set} />
           </Col>
         </Row>
 
@@ -59,12 +44,7 @@ class Individual extends React.Component {
           </Col>
 
           <Col>
-            <Slider
-              enabled={this.props.enable}
-              vals={this.props.data[3]}
-              day={"thursday"}
-              change={this.props.set}
-            />
+            <Slider enabled={this.props.enable} vals={this.props.data[3]} day={"thursday"} change={this.props.set} />
           </Col>
         </Row>
 
@@ -74,12 +54,7 @@ class Individual extends React.Component {
           </Col>
 
           <Col>
-            <Slider
-              enabled={this.props.enable}
-              vals={this.props.data[4]}
-              day={"friday"}
-              change={this.props.set}
-            />
+            <Slider enabled={this.props.enable} vals={this.props.data[4]} day={"friday"} change={this.props.set} />
           </Col>
         </Row>
 
@@ -89,12 +64,7 @@ class Individual extends React.Component {
           </Col>
 
           <Col>
-            <Slider
-              enabled={this.props.enable}
-              vals={this.props.data[5]}
-              day={"saturday"}
-              change={this.props.set}
-            />
+            <Slider enabled={this.props.enable} vals={this.props.data[5]} day={"saturday"} change={this.props.set} />
           </Col>
         </Row>
 
@@ -104,12 +74,7 @@ class Individual extends React.Component {
           </Col>
 
           <Col>
-            <Slider
-              enabled={this.props.enable}
-              vals={this.props.data[6]}
-              day={"sunday"}
-              change={this.props.set}
-            />
+            <Slider enabled={this.props.enable} vals={this.props.data[6]} day={"sunday"} change={this.props.set} />
           </Col>
         </Row>
       </div>

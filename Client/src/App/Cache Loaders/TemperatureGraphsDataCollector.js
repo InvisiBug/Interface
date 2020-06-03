@@ -91,10 +91,7 @@ class SystemDataCollector extends React.Component {
           for (var i = 0; i < data.length; i++) {
             let day;
 
-            if (
-              data[i].Timestamp.Days === "Monday" &&
-              data[i].Timestamp.Hour === 0
-            ) {
+            if (data[i].Timestamp.Days === "Monday" && data[i].Timestamp.Hour === 0) {
               day = "Monday";
             } else {
               day = null;

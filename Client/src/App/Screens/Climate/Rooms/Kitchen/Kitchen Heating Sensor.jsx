@@ -36,10 +36,7 @@ class KitchenHeatingSensor extends React.Component {
 
   render() {
     return (
-      <div
-        className="kitchenValuesContainer"
-        onClick={() => this.props.showGraph("Kitchen")}
-      >
+      <div className="kitchenValuesContainer" onClick={() => this.props.showGraph("Kitchen")}>
         <p style={{ color: this.state.textColour }} className="tempText">
           {this.state.temperature}°C
         </p>

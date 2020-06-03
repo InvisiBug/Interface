@@ -25,9 +25,7 @@ class LivingRoom extends React.Component {
   getData = () => {
     try {
       this.setState({ textColour: "white" });
-      var cache = JSON.parse(
-        localStorage.getItem("Living Room Heating Sensor")
-      );
+      var cache = JSON.parse(localStorage.getItem("Living Room Heating Sensor"));
 
       this.setState({ temperature: cache.temperature });
       this.setState({ humidity: cache.humidity });
@@ -38,10 +36,7 @@ class LivingRoom extends React.Component {
 
   render() {
     return (
-      <div
-        className="livingRoomValuesContainer"
-        onClick={() => this.props.showGraph("Living Room")}
-      >
+      <div className="livingRoomValuesContainer" onClick={() => this.props.showGraph("Living Room")}>
         <p style={{ color: this.state.textColour }} className="tempText">
           {this.state.temperature}°C
         </p>

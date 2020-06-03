@@ -5,10 +5,7 @@ class NavButton extends React.Component {
 
   render() {
     return (
-      <div
-        className={this.props.isActive ? "navButtonActive" : "navButton"}
-        onClick={this.handleClick}
-      >
+      <div className={this.props.isActive ? "navButtonActive" : "navButton"} onClick={this.handleClick}>
         <img src={this.props.icon} alt="" className="navIcon" />
         <div className="navText">
           <p>{this.props.name}</p>

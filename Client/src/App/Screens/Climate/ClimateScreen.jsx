@@ -58,16 +58,9 @@ class Climate extends React.Component {
           ) : null
         ) : null}
 
-        {this.state.ourRoomGraphs ? (
-          <TimescaleSelection
-            changeTimeScale={this.changeTimeScale}
-            currentTimeScale={this.state.timescale}
-          />
-        ) : null}
+        {this.state.ourRoomGraphs ? <TimescaleSelection changeTimeScale={this.changeTimeScale} currentTimeScale={this.state.timescale} /> : null}
 
-        {this.state.ourRoomGraphs ? (
-          <SensorInfo room={this.state.room} />
-        ) : null}
+        {this.state.ourRoomGraphs ? <SensorInfo room={this.state.room} /> : null}
       </div>
     );
   }

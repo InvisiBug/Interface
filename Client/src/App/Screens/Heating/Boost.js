@@ -29,9 +29,7 @@ class Boost extends React.Component {
   getState = () => {
     var cache = JSON.parse(localStorage.getItem("Heating Schedule"));
     try {
-      cache.boost
-        ? this.setState({ activeIndex: 1 })
-        : this.setState({ activeIndex: 0 });
+      cache.boost ? this.setState({ activeIndex: 1 }) : this.setState({ activeIndex: 0 });
 
       this.setState({ titleColour: "white" });
     } catch (error) {
@@ -88,31 +86,18 @@ class Boost extends React.Component {
   render() {
     return (
       <div className="heatingBoostModule">
-        <h3
-          className="heatingBoostTitle"
-          style={{ color: this.state.titleColour }}
-        >
+        <h3 className="heatingBoostTitle" style={{ color: this.state.titleColour }}>
           Boost
         </h3>
 
         <div className="heatingBoostButtonsContainer">
           <Row>
             <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
-              <OffButton
-                name="Off"
-                index={0}
-                isActive={this.state.activeIndex === 0}
-                onClick={() => this.off()}
-              />
+              <OffButton name="Off" index={0} isActive={this.state.activeIndex === 0} onClick={() => this.off()} />
             </Col>
 
             <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
-              <OnButton
-                name="On"
-                index={1}
-                isActive={this.state.activeIndex === 1}
-                onClick={() => this.on()}
-              />
+              <OnButton name="On" index={1} isActive={this.state.activeIndex === 1} onClick={() => this.on()} />
             </Col>
           </Row>
         </div>

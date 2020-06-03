@@ -36,10 +36,7 @@ class LiamsRoomValues extends React.Component {
 
   render() {
     return (
-      <div
-        className="liamsRoomValuesContainer"
-        onClick={() => this.props.showGraph("Liams Room")}
-      >
+      <div className="liamsRoomValuesContainer" onClick={() => this.props.showGraph("Liams Room")}>
         <p style={{ color: this.state.textColour }} className="tempText">
           {this.state.temperature}°C
         </p>

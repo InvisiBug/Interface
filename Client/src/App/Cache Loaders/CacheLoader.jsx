@@ -25,10 +25,7 @@ class LocalStorageUpdater extends React.Component {
       .then(response => {
         try {
           var resJSON = JSON.parse(response);
-          localStorage.setItem(
-            "bitcoin",
-            parseFloat(resJSON.bpi.GBP.rate.replace(/,/g, "") * 0.97).toFixed()
-          );
+          localStorage.setItem("bitcoin", parseFloat(resJSON.bpi.GBP.rate.replace(/,/g, "") * 0.97).toFixed());
         } catch {
           localStorage.setItem("bitcoin", null);
         }
@@ -62,20 +59,7 @@ class LocalStorageUpdater extends React.Component {
   }
 
   getDate = () => {
-    var months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
-    ];
+    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     var date = new Date();
     var day = date.getDate();
@@ -94,10 +78,7 @@ class LocalStorageUpdater extends React.Component {
 
       return i + "th";
     }
-    localStorage.setItem(
-      "longDate",
-      ordinal + " " + months[monthIndex] + " " + year
-    );
+    localStorage.setItem("longDate", ordinal + " " + months[monthIndex] + " " + year);
   };
 
   render() {

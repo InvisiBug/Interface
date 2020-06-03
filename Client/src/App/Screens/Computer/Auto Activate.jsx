@@ -39,15 +39,11 @@ class AutoActivate extends React.Component {
           var resJSON = JSON.parse(response);
 
           this.setState({ autoActivate: resJSON });
-          this.state.autoActivate
-            ? this.setState({ activeIndex: 1 })
-            : this.setState({ activeIndex: 0 });
+          this.state.autoActivate ? this.setState({ activeIndex: 1 }) : this.setState({ activeIndex: 0 });
         } catch {
           // No data present, fill with zeros
           this.setState({ autoActivate: false });
-          this.state.autoActivate
-            ? this.setState({ activeIndex: 1 })
-            : this.setState({ activeIndex: 0 });
+          this.state.autoActivate ? this.setState({ activeIndex: 1 }) : this.setState({ activeIndex: 0 });
         }
       });
   };
@@ -82,21 +78,11 @@ class AutoActivate extends React.Component {
         <div className="autoActivateContainer">
           <Row>
             <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
-              <OnOffButtons
-                name="Off"
-                index={0}
-                isActive={this.state.activeIndex === 0}
-                onClick={() => this.powerOff()}
-              />
+              <OnOffButtons name="Off" index={0} isActive={this.state.activeIndex === 0} onClick={() => this.powerOff()} />
             </Col>
 
             <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
-              <OnOffButtons
-                name="On"
-                index={1}
-                isActive={this.state.activeIndex === 1}
-                onClick={() => this.powerOn()}
-              />
+              <OnOffButtons name="On" index={1} isActive={this.state.activeIndex === 1} onClick={() => this.powerOn()} />
             </Col>
           </Row>
         </div>

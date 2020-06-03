@@ -50,12 +50,7 @@ class FadeButton extends React.Component {
   render() {
     return (
       <div className="fadeButton">
-        <Button
-          name="Fade"
-          index={0}
-          isActive={this.state.mode === 3}
-          onClick={() => this.fade()}
-        />
+        <Button name="Fade" index={0} isActive={this.state.mode === 3} onClick={() => this.fade()} />
       </div>
     );
   }

@@ -7,10 +7,7 @@ class OnButton extends React.Component {
 
   render() {
     return (
-      <Card
-        className={this.props.isActive ? "onButtonActive" : "onButtonInactive"}
-        onClick={this.handleClick}
-      >
+      <Card className={this.props.isActive ? "onButtonActive" : "onButtonInactive"} onClick={this.handleClick}>
         {this.props.name}
       </Card>
     );

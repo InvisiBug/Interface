@@ -116,10 +116,7 @@ class SystemDataCollector extends React.Component {
       .then(response => {
         try {
           var resJSON = JSON.parse(response);
-          localStorage.setItem(
-            "bitcoin",
-            parseFloat(resJSON.bpi.GBP.rate.replace(/,/g, "") * 0.97).toFixed()
-          );
+          localStorage.setItem("bitcoin", parseFloat(resJSON.bpi.GBP.rate.replace(/,/g, "") * 0.97).toFixed());
         } catch {
           localStorage.setItem("bitcoin", null);
         }

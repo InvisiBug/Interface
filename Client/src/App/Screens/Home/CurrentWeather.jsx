@@ -50,8 +50,7 @@ class CurrentWeather extends React.Component {
     // Data loaded from cache
     {
       try {
-        var cache = JSON.parse(localStorage.getItem("currentWeatherData"))
-          .currently;
+        var cache = JSON.parse(localStorage.getItem("currentWeatherData")).currently;
 
         this.setState({
           apparentTemperature: cache.apparentTemperature,
@@ -96,14 +95,7 @@ class CurrentWeather extends React.Component {
           </Row>
 
           <div className="currentWeatherThermo">
-            <Thermometer
-              theme="light"
-              value={this.state.apparentTemperature}
-              max="20"
-              format="°C"
-              size="medium"
-              height="230"
-            />
+            <Thermometer theme="light" value={this.state.apparentTemperature} max="20" format="°C" size="medium" height="230" />
           </div>
         </div>
       </Container>

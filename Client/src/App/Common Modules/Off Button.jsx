@@ -7,12 +7,7 @@ class OffButton extends React.Component {
 
   render() {
     return (
-      <Card
-        className={
-          this.props.isActive ? "offButtonActive" : "offButtonInactive"
-        }
-        onClick={this.handleClick}
-      >
+      <Card className={this.props.isActive ? "offButtonActive" : "offButtonInactive"} onClick={this.handleClick}>
         {this.props.name}
       </Card>
     );

@@ -71,12 +71,7 @@ class All extends React.Component {
           </Col>
 
           <Col>
-            <Slider
-              disabled={this.props.active}
-              vals={this.state.all}
-              day={"all"}
-              change={this.updateAll}
-            />
+            <Slider disabled={this.props.active} vals={this.state.all} day={"all"} change={this.updateAll} />
           </Col>
         </Row>
       </div>

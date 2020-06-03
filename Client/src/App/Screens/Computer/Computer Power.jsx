@@ -28,9 +28,7 @@ class ComputerPower extends React.Component {
   getComputerPower = () => {
     var cache = JSON.parse(localStorage.getItem("Computer Power"));
     try {
-      cache.state
-        ? this.setState({ activeIndex: 1 })
-        : this.setState({ activeIndex: 0 });
+      cache.state ? this.setState({ activeIndex: 1 }) : this.setState({ activeIndex: 0 });
 
       this.setState({ titleColour: "white" });
       this.setState({ plug: cache.state });
@@ -64,31 +62,18 @@ class ComputerPower extends React.Component {
   render() {
     return (
       <div className="computerPowerModule">
-        <h3
-          className="computerPowerTitle"
-          style={{ color: this.state.titleColour }}
-        >
+        <h3 className="computerPowerTitle" style={{ color: this.state.titleColour }}>
           Computer Power
         </h3>
 
         <div className="computerPowerButtonsContainer">
           <Row>
             <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
-              <OffButton
-                name="Off"
-                index={0}
-                isActive={this.state.activeIndex === 0}
-                onClick={() => this.powerOff()}
-              />
+              <OffButton name="Off" index={0} isActive={this.state.activeIndex === 0} onClick={() => this.powerOff()} />
             </Col>
 
             <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
-              <OnButton
-                name="On"
-                index={1}
-                isActive={this.state.activeIndex === 1}
-                onClick={() => this.powerOn()}
-              />
+              <OnButton name="On" index={1} isActive={this.state.activeIndex === 1} onClick={() => this.powerOn()} />
             </Col>
           </Row>
         </div>

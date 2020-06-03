@@ -19,43 +19,13 @@ class NavButtonSelection extends React.Component {
   render() {
     return (
       <div>
-        <NavButtons
-          name="Home"
-          isActive={this.props.screen === "Home"}
-          icon={House}
-          onClick={() => this.props.changeScreen("Home")}
-        />
-        <NavButtons
-          name="Computer"
-          isActive={this.props.screen === "Computer"}
-          icon={Computer}
-          onClick={() => this.props.changeScreen("Computer")}
-        />
-        <NavButtons
-          name="Lights"
-          isActive={this.props.screen === "Lights"}
-          icon={Bulb}
-          onClick={() => this.props.changeScreen("Lights")}
-        />
-        <NavButtons
-          name="Climate"
-          isActive={this.props.screen === "Climate"}
-          icon={Sun}
-          onClick={() => this.props.changeScreen("Climate")}
-        />
-        <NavButtons
-          name="Heating"
-          isActive={this.props.screen === "Heating"}
-          icon={Heating}
-          onClick={() => this.props.changeScreen("Heating")}
-        />
+        <NavButtons name="Home" isActive={this.props.screen === "Home"} icon={House} onClick={() => this.props.changeScreen("Home")} />
+        <NavButtons name="Computer" isActive={this.props.screen === "Computer"} icon={Computer} onClick={() => this.props.changeScreen("Computer")} />
+        <NavButtons name="Lights" isActive={this.props.screen === "Lights"} icon={Bulb} onClick={() => this.props.changeScreen("Lights")} />
+        <NavButtons name="Climate" isActive={this.props.screen === "Climate"} icon={Sun} onClick={() => this.props.changeScreen("Climate")} />
+        <NavButtons name="Heating" isActive={this.props.screen === "Heating"} icon={Heating} onClick={() => this.props.changeScreen("Heating")} />
 
-        <NavButtons
-          name="Advanced"
-          isActive={this.props.screen === "Advanced"}
-          icon={Gear}
-          onClick={() => this.props.changeScreen("Advanced")}
-        />
+        <NavButtons name="Advanced" isActive={this.props.screen === "Advanced"} icon={Gear} onClick={() => this.props.changeScreen("Advanced")} />
         {/* <NavButtons name="Schedules" isActive={this.props.screen === "Schedule"} icon={Schedule} onClick={() => this.props.changeScreen("Schedule")}/> */}
         {/* <NavButtons name="Printer"   isActive={this.props.screen === "Printer"}  icon={Printer}  onClick={() => this.props.changeScreen("Printer")}/> */}
         {/* <NavButtons name="Blanket"   isActive={this.props.screen === "Blanket"}  icon={Blanket}      onClick={() => this.props.changeScreen("Blanket")}/> */}

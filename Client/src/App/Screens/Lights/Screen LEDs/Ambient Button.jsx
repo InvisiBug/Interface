@@ -51,12 +51,7 @@ class AmbientButton extends React.Component {
   render() {
     return (
       <div className="ambientButton">
-        <Button
-          name="Ambient"
-          index={0}
-          isActive={this.state.mode === 1}
-          onClick={() => this.ambient()}
-        />
+        <Button name="Ambient" index={0} isActive={this.state.mode === 1} onClick={() => this.ambient()} />
       </div>
     );
   }

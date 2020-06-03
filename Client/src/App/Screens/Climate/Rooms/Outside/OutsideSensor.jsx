@@ -75,16 +75,10 @@ class OutsideSetpoint extends React.Component {
   render() {
     return (
       <div className={css(styles.screenPosition)}>
-        <p
-          style={{ color: this.state.textColour }}
-          className={css(styles.temperatureValue)}
-        >
+        <p style={{ color: this.state.textColour }} className={css(styles.temperatureValue)}>
           {this.state.temperature}°C
         </p>
-        <p
-          style={{ color: this.state.textColour }}
-          className={css(styles.humidityValue)}
-        >
+        <p style={{ color: this.state.textColour }} className={css(styles.humidityValue)}>
           {this.state.humidity}%
         </p>
       </div>

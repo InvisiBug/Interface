@@ -88,10 +88,8 @@ class Dots extends React.Component {
         stars[i].x += stars[i].vx / 100;
         stars[i].y += stars[i].vy / 100;
 
-        if (stars[i].x < 0 || stars[i].x > canvas.width)
-          stars[i].vx = -stars[i].vx;
-        if (stars[i].y < 0 || stars[i].y > canvas.height)
-          stars[i].vy = -stars[i].vy;
+        if (stars[i].x < 0 || stars[i].x > canvas.width) stars[i].vx = -stars[i].vx;
+        if (stars[i].y < 0 || stars[i].y > canvas.height) stars[i].vy = -stars[i].vy;
       }
     }
 

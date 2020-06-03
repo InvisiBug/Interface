@@ -28,12 +28,8 @@ class RadiatorFan extends React.Component {
   getRadiatorFan = () => {
     var cache = JSON.parse(localStorage.getItem("Radiator Fan"));
     try {
-      cache.state
-        ? this.setState({ fanActive: 1 })
-        : this.setState({ fanActive: 0 });
-      cache.automatic
-        ? this.setState({ automatic: 1 })
-        : this.setState({ automatic: 0 });
+      cache.state ? this.setState({ fanActive: 1 }) : this.setState({ fanActive: 0 });
+      cache.automatic ? this.setState({ automatic: 1 }) : this.setState({ automatic: 0 });
 
       this.setState({ titleColour: "white" });
     } catch (error) {
@@ -53,7 +49,6 @@ class RadiatorFan extends React.Component {
     this.setState({ automatic: 0 });
     fetch("/api/RadiatorFanAutomatic/Off");
   };
-  
 
   // Manual On / Off Controls
   on = () => {
@@ -75,55 +70,30 @@ class RadiatorFan extends React.Component {
   render() {
     return (
       <div className="radiatorFanModule">
-        <h3
-          className="radiatorFanTitle"
-          style={{ color: this.state.titleColour }}
-        >
+        <h3 className="radiatorFanTitle" style={{ color: this.state.titleColour }}>
           Radiator Fan
         </h3>
 
         <div className="radiatorFanAutoManualButtonsContainer">
           <Row>
             <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
-              <Manual
-                name="Manual"
-                isActive={!this.state.automatic}
-                onClick={() => this.manual()}
-              />
+              <Manual name="Manual" isActive={!this.state.automatic} onClick={() => this.manual()} />
             </Col>
 
             <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
-              <Auto
-                name="Auto"
-                isActive={this.state.automatic}
-                onClick={() => this.auto()}
-              />
+              <Auto name="Auto" isActive={this.state.automatic} onClick={() => this.auto()} />
             </Col>
           </Row>
         </div>
 
-        <div
-          className={
-            !this.state.automatic
-              ? "radiatorFanManualControlsActive"
-              : "radiatorFanManualControlsLocked"
-          }
-        >
+        <div className={!this.state.automatic ? "radiatorFanManualControlsActive" : "radiatorFanManualControlsLocked"}>
           <Row>
             <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
-              <Manual
-                name="Off"
-                isActive={!this.state.fanActive}
-                onClick={() => this.off()}
-              />
+              <Manual name="Off" isActive={!this.state.fanActive} onClick={() => this.off()} />
             </Col>
 
             <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
-              <Auto
-                name="On"
-                isActive={this.state.fanActive}
-                onClick={() => this.on()}
-              />
+              <Auto name="On" isActive={this.state.fanActive} onClick={() => this.on()} />
             </Col>
           </Row>
         </div>

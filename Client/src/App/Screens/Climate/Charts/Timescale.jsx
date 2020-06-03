@@ -17,35 +17,19 @@ class Timescale extends React.Component {
       <div className="timescaleButtonsContainer">
         <Row>
           <Col md={3} style={{ display: "flex", justifyContent: "center" }}>
-            <TimeScaleButtons
-              name="Day"
-              isActive={this.props.currentTimeScale === "Day"}
-              onClick={() => this.props.changeTimeScale("Day")}
-            />
+            <TimeScaleButtons name="Day" isActive={this.props.currentTimeScale === "Day"} onClick={() => this.props.changeTimeScale("Day")} />
           </Col>
 
           <Col md={3} style={{ display: "flex", justifyContent: "center" }}>
-            <TimeScaleButtons
-              name="Week"
-              isActive={this.props.currentTimeScale === "Week"}
-              onClick={() => this.props.changeTimeScale("Week")}
-            />
+            <TimeScaleButtons name="Week" isActive={this.props.currentTimeScale === "Week"} onClick={() => this.props.changeTimeScale("Week")} />
           </Col>
 
           <Col md={3} style={{ display: "flex", justifyContent: "center" }}>
-            <TimeScaleButtons
-              name="Month"
-              isActive={this.props.currentTimeScale === "Month"}
-              onClick={() => this.props.changeTimeScale("Month")}
-            />
+            <TimeScaleButtons name="Month" isActive={this.props.currentTimeScale === "Month"} onClick={() => this.props.changeTimeScale("Month")} />
           </Col>
 
           <Col md={3} style={{ display: "flex", justifyContent: "center" }}>
-            <TimeScaleButtons
-              name="Year"
-              isActive={this.props.currentTimeScale === "Year"}
-              onClick={() => this.props.changeTimeScale("Year")}
-            />
+            <TimeScaleButtons name="Year" isActive={this.props.currentTimeScale === "Year"} onClick={() => this.props.changeTimeScale("Year")} />
           </Col>
         </Row>
       </div>

@@ -38,10 +38,7 @@ class Bitcoin extends React.Component {
     return (
       <div className="bitcoinContainer">
         <Container>
-          <div
-            className="bitcoinTitle"
-            style={{ color: this.state.titleColour }}
-          >
+          <div className="bitcoinTitle" style={{ color: this.state.titleColour }}>
             <h3>Bitcoin Price</h3>
           </div>
           <div className={"priceText"}>£{this.state.price}</div>

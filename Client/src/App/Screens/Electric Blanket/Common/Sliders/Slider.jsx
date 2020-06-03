@@ -2,14 +2,7 @@
 import React, { Component } from "react";
 import { Slider, Rail, Handles, Tracks, Ticks } from "react-compound-slider";
 import Container from "react-bootstrap/Container";
-import {
-  HandleStart,
-  Track,
-  Tick,
-  HandleEnd,
-  railStyle,
-  sliderStyle
-} from "./Slider Components";
+import { HandleStart, Track, Tick, HandleEnd, railStyle, sliderStyle } from "./Slider Components";
 
 class MySlider extends Component {
   constructor(props) {
@@ -40,11 +33,7 @@ class MySlider extends Component {
             onChange={this.update}
             values={this.state.values}
           >
-            <Rail>
-              {({ getRailProps }) => (
-                <div style={railStyle} {...getRailProps()} />
-              )}
-            </Rail>
+            <Rail>{({ getRailProps }) => <div style={railStyle} {...getRailProps()} />}</Rail>
 
             <Handles>
               {({ handles, getHandleProps }) => (
@@ -52,13 +41,7 @@ class MySlider extends Component {
                   {handles
                     .filter((d, i) => i % 2 !== 0)
                     .map(handle => (
-                      <HandleStart
-                        key={handle.id}
-                        handle={handle}
-                        domain={[0, 24]}
-                        getHandleProps={getHandleProps}
-                        disabled={!this.props.enabled}
-                      />
+                      <HandleStart key={handle.id} handle={handle} domain={[0, 24]} getHandleProps={getHandleProps} disabled={!this.props.enabled} />
                     ))}
                 </div>
               )}
@@ -70,13 +53,7 @@ class MySlider extends Component {
                   {handles
                     .filter((d, i) => i % 2 === 0)
                     .map(handle => (
-                      <HandleEnd
-                        key={handle.id}
-                        handle={handle}
-                        domain={[0, 24]}
-                        getHandleProps={getHandleProps}
-                        disabled={!this.props.enabled}
-                      />
+                      <HandleEnd key={handle.id} handle={handle} domain={[0, 24]} getHandleProps={getHandleProps} disabled={!this.props.enabled} />
                     ))}
                 </div>
               )}
@@ -88,13 +65,7 @@ class MySlider extends Component {
                   {tracks
                     .filter((d, i) => i % 2 !== 0)
                     .map(({ id, source, target }) => (
-                      <Track
-                        key={id}
-                        source={source}
-                        target={target}
-                        getTrackProps={getTrackProps}
-                        disabled={!this.props.enabled}
-                      />
+                      <Track key={id} source={source} target={target} getTrackProps={getTrackProps} disabled={!this.props.enabled} />
                     ))}
                 </div>
               )}

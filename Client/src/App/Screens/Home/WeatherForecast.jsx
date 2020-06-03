@@ -50,8 +50,7 @@ class WeatherForecast extends React.Component {
     // Data is loaded from cache
     {
       try {
-        var cachedData = JSON.parse(localStorage.getItem("futureWeatherData"))
-          .daily;
+        var cachedData = JSON.parse(localStorage.getItem("futureWeatherData")).daily;
 
         this.setState({ a: cachedData.data[0] });
         this.setState({ b: cachedData.data[1] });
@@ -85,34 +84,19 @@ class WeatherForecast extends React.Component {
                 <tr>
                   <td>Condition</td>
                   <td>
-                    <Image
-                      src={weatherToImage[this.state.a.icon]}
-                      className="wetherScreenforecastIcon"
-                    />
+                    <Image src={weatherToImage[this.state.a.icon]} className="wetherScreenforecastIcon" />
                   </td>
                   <td>
-                    <Image
-                      src={weatherToImage[this.state.b.icon]}
-                      className="wetherScreenforecastIcon"
-                    />
+                    <Image src={weatherToImage[this.state.b.icon]} className="wetherScreenforecastIcon" />
                   </td>
                   <td>
-                    <Image
-                      src={weatherToImage[this.state.c.icon]}
-                      className="wetherScreenforecastIcon"
-                    />
+                    <Image src={weatherToImage[this.state.c.icon]} className="wetherScreenforecastIcon" />
                   </td>
                   <td>
-                    <Image
-                      src={weatherToImage[this.state.d.icon]}
-                      className="wetherScreenforecastIcon"
-                    />
+                    <Image src={weatherToImage[this.state.d.icon]} className="wetherScreenforecastIcon" />
                   </td>
                   <td>
-                    <Image
-                      src={weatherToImage[this.state.e.icon]}
-                      className="wetherScreenforecastIcon"
-                    />
+                    <Image src={weatherToImage[this.state.e.icon]} className="wetherScreenforecastIcon" />
                   </td>
                 </tr>
                 <tr>

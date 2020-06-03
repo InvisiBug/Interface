@@ -36,10 +36,7 @@ class OurRoom extends React.Component {
 
   render() {
     return (
-      <div
-        className="ourRoomValuesContainer"
-        onClick={() => this.props.showGraph("Our Room")}
-      >
+      <div className="ourRoomValuesContainer" onClick={() => this.props.showGraph("Our Room")}>
         <p style={{ color: this.state.textColour }} className="tempText">
           {this.state.temperature}°C
         </p>

@@ -5,13 +5,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 // Utils:
-import {
-  colourToRgbObj,
-  getEffectiveRadius,
-  calculateBounds,
-  produceRgbShades,
-  convertObjToString
-} from "./Utils";
+import { colourToRgbObj, getEffectiveRadius, calculateBounds, produceRgbShades, convertObjToString } from "./Utils";
 import hexStrings from "./HexStrings";
 
 // Global-vars:
@@ -64,10 +58,7 @@ class ColourWheel extends Component {
     };
 
     // e is our mouse-position relative to the center of the canvasEl; using pythag
-    const fromCenter = Math.sqrt(
-      (onCanvas.x - w / 2) * (onCanvas.x - w / 2) +
-        (onCanvas.y - h / 2) * (onCanvas.y - h / 2)
-    );
+    const fromCenter = Math.sqrt((onCanvas.x - w / 2) * (onCanvas.x - w / 2) + (onCanvas.y - h / 2) * (onCanvas.y - h / 2));
 
     // This returns an object in which we have both mouse-pos relative to the canvas, as well as the true-middle.
     return {
@@ -101,19 +92,10 @@ class ColourWheel extends Component {
 
     // Defining our bounds-objects, exposes a .inside(e) -> boolean method:
     this.outerWheelBounds = calculateBounds(radius - lineWidth, radius);
-    this.innerWheelBounds = calculateBounds(
-      this.innerWheelRadius - lineWidth,
-      this.innerWheelRadius
-    );
+    this.innerWheelBounds = calculateBounds(this.innerWheelRadius - lineWidth, this.innerWheelRadius);
     this.centerCircleBounds = calculateBounds(0, this.centerCircleRadius);
-    this.firstSpacerBounds = calculateBounds(
-      this.firstSpacerRadius - padding,
-      this.firstSpacerRadius
-    );
-    this.secondSpacerBounds = calculateBounds(
-      this.secondSpacerRadius - padding,
-      this.secondSpacerRadius
-    );
+    this.firstSpacerBounds = calculateBounds(this.firstSpacerRadius - padding, this.firstSpacerRadius);
+    this.secondSpacerBounds = calculateBounds(this.secondSpacerRadius - padding, this.secondSpacerRadius);
   }
 
   componentDidMount() {
@@ -150,15 +132,9 @@ class ColourWheel extends Component {
     // Cases for mouse-location:
     if (this.outerWheelBounds.inside(evt.fromCenter)) {
       this.canvasEl.style.cursor = "crosshair";
-    } else if (
-      this.innerWheelBounds.inside(evt.fromCenter) &&
-      this.state.innerWheelOpen
-    ) {
+    } else if (this.innerWheelBounds.inside(evt.fromCenter) && this.state.innerWheelOpen) {
       this.canvasEl.style.cursor = "crosshair";
-    } else if (
-      this.centerCircleBounds.inside(evt.fromCenter) &&
-      this.state.centerCircleOpen
-    ) {
+    } else if (this.centerCircleBounds.inside(evt.fromCenter) && this.state.centerCircleOpen) {
       // TODO: Have it clear on click?
       this.canvasEl.style.cursor = "pointer";
     } else {
@@ -172,10 +148,7 @@ class ColourWheel extends Component {
     // Cases for click-events:
     if (this.outerWheelBounds.inside(evt.fromCenter)) {
       this.outerWheelClicked(evt.onCanvas);
-    } else if (
-      this.innerWheelBounds.inside(evt.fromCenter) &&
-      this.state.innerWheelOpen
-    ) {
+    } else if (this.innerWheelBounds.inside(evt.fromCenter) && this.state.innerWheelOpen) {
       this.innerWheelClicked(evt.onCanvas);
     }
   }
@@ -262,13 +235,7 @@ class ColourWheel extends Component {
       const startAngle = (fullCircle / rgbArr.length) * i;
       const endAngle = (fullCircle / rgbArr.length) * (i + 1);
 
-      this.ctx.arc(
-        width / 2,
-        height / 2,
-        effectiveRadius,
-        startAngle,
-        endAngle
-      );
+      this.ctx.arc(width / 2, height / 2, effectiveRadius, startAngle, endAngle);
       this.ctx.lineWidth = lineWidth; // This is the width of the innerWheel.
 
       // Stroke-style changes based on the shade:
@@ -315,10 +282,7 @@ class ColourWheel extends Component {
   drawInnerWheel(animationPercentage = 0) {
     // raf setup.
     let requestAnimationFrame =
-      window.requestAnimationFrame ||
-      window.mozRequestAnimationFrame ||
-      window.webkitRequestAnimationFrame ||
-      window.msRequestAnimationFrame;
+      window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
     window.requestAnimationFrame = requestAnimationFrame;
 
     const {
@@ -329,10 +293,7 @@ class ColourWheel extends Component {
     const height = radius * 2;
     const width = radius * 2;
 
-    const effectiveRadius = getEffectiveRadius(
-      this.innerWheelRadius,
-      lineWidth
-    );
+    const effectiveRadius = getEffectiveRadius(this.innerWheelRadius, lineWidth);
 
     // Re-initialising canvas.
     this.ctx.clearRect(0, 0, width, height);
@@ -348,16 +309,9 @@ class ColourWheel extends Component {
         this.ctx.beginPath();
 
         const startAngle = (fullCircle / rgbShades.length) * i + quarterCircle;
-        const endAngle =
-          (fullCircle / rgbShades.length) * (i + 1) + (1 / 2) * Math.PI;
+        const endAngle = (fullCircle / rgbShades.length) * (i + 1) + (1 / 2) * Math.PI;
 
-        this.ctx.arc(
-          width / 2,
-          height / 2,
-          effectiveRadius,
-          startAngle,
-          endAngle
-        );
+        this.ctx.arc(width / 2, height / 2, effectiveRadius, startAngle, endAngle);
         this.ctx.lineWidth = lineWidth; // This is the width of the innerWheel.
 
         // Stroke style changes based on the shade:
@@ -372,16 +326,9 @@ class ColourWheel extends Component {
         this.ctx.beginPath();
 
         const startAngle = (fullCircle / rgbShades.length) * i + quarterCircle;
-        const endAngle =
-          (fullCircle / rgbShades.length) * (i + 1) + (1 / 2) * Math.PI;
+        const endAngle = (fullCircle / rgbShades.length) * (i + 1) + (1 / 2) * Math.PI;
 
-        this.ctx.arc(
-          width / 2,
-          height / 2,
-          effectiveRadius,
-          startAngle,
-          endAngle
-        );
+        this.ctx.arc(width / 2, height / 2, effectiveRadius, startAngle, endAngle);
         this.ctx.lineWidth = lineWidth * animationPercentage; // This is the width of the innerWheel.
 
         // Stroke style changes based on the shade:
@@ -417,13 +364,7 @@ class ColourWheel extends Component {
     this.ctx.lineWidth = 0;
 
     this.ctx.beginPath();
-    this.ctx.arc(
-      width / 2,
-      height / 2,
-      this.centerCircleRadius,
-      0,
-      2 * Math.PI
-    );
+    this.ctx.arc(width / 2, height / 2, this.centerCircleRadius, 0, 2 * Math.PI);
     this.ctx.fillStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
     this.ctx.fill();
     this.ctx.lineWidth = 0.1;
@@ -445,12 +386,7 @@ class ColourWheel extends Component {
         height={`${radius * 2}px`}
       />
     ) : (
-      <canvas
-        id={this.props.name}
-        onClick={this.onCanvasClick}
-        width={`${radius * 2}px`}
-        height={`${radius * 2}px`}
-      />
+      <canvas id={this.props.name} onClick={this.onCanvasClick} width={`${radius * 2}px`} height={`${radius * 2}px`} />
     );
   }
 }

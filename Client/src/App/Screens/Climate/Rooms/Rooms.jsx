@@ -25,10 +25,7 @@ class FirstFloor extends React.Component {
 
   render() {
     return (
-      <div
-        style={{ filter: this.props.blurFactor }}
-        className="floorPlanPictureContainer"
-      >
+      <div style={{ filter: this.props.blurFactor }} className="floorPlanPictureContainer">
         <img src={FloorPlanPicture} className="floorPlanPicture" />
 
         {/* <OurRoomHeatingController/> */}

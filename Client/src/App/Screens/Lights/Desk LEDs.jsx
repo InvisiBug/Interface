@@ -25,8 +25,7 @@ class DeskLEDs extends React.Component {
     try {
       this.setState({ titleColour: "white" });
       this.setState({
-        colour:
-          "rgb(" + cache.red + ", " + cache.green + ", " + cache.blue + ")"
+        colour: "rgb(" + cache.red + ", " + cache.green + ", " + cache.blue + ")"
       });
     } catch (error) {
       this.setState({ titleColour: "orangered" });

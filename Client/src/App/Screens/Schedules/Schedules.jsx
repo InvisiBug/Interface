@@ -74,11 +74,7 @@ class Schedule extends React.Component {
       <div className="scheduleModule" onClick={() => this.wait()}>
         {/* Add on off here */}
         <h1 className="scheduleTitle">Heating</h1>
-        <Individual
-          data={this.state.data}
-          enable={this.state.enable}
-          set={this.set}
-        />
+        <Individual data={this.state.data} enable={this.state.enable} set={this.set} />
       </div>
     );
   }

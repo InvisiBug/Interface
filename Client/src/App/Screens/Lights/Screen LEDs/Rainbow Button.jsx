@@ -50,12 +50,7 @@ class RainbowButton extends React.Component {
   render() {
     return (
       <div className="rainbowButton">
-        <Button
-          name="Rainbow"
-          index={0}
-          isActive={this.state.mode === 2}
-          onClick={() => this.rainbow()}
-        />
+        <Button name="Rainbow" index={0} isActive={this.state.mode === 2} onClick={() => this.rainbow()} />
       </div>
     );
   }
