@@ -92,19 +92,19 @@ client.on("connect", () => null);
 app.use(require("./App/Weather.js"));
 
 // Living Room
-app.use(require("./App/Devices/Living Room/Heating Sensor.js"));
+app.use(require("./App/Devices/Living Room/HeatingSensor.js"));
 
 // Kitchen
 app.use(require("./App/Devices/Kitchen/HeatingSensor.js"));
 app.use(require("./App/Devices/Kitchen/Heating Controller.js"));
 
 // Liam's Room
-app.use(require("./App/Devices/Liams Room/Heating Sensor.js"));
+app.use(require("./App/Devices/Liams Room/HeatingSensor.js"));
 
 // Study
-app.use(require("./App/Devices/Study/Heating Sensor.js"));
+app.use(require("./App/Devices/Study/HeatingSensor.js"));
 
-// Our Room
+// Our Roomrs
 app.use(require("./App/Devices/Our Room/Desk LEDs"));
 app.use(require("./App/Devices/Our Room/Screen LEDs"));
 app.use(require("./App/Devices/Our Room/Flood Light"));
@@ -113,7 +113,7 @@ app.use(require("./App/Devices/Our Room/Flood Light.js"));
 app.use(require("./App/Devices/Our Room/Computer Audio.js"));
 app.use(require("./App/Devices/Our Room/Computer Power.js"));
 // app.use(require('./App/Devices/Our Room/Blanket.js'));
-app.use(require("./App/Devices/Our Room/Heating Sensor.js"));
+app.use(require("./App/Devices/Our Room/HeatingSensor.js"));
 app.use(require("./App/Devices/Our Room/Radiator Fan.js"));
 
 // Historical

@@ -1,11 +1,11 @@
 ////////////////////////////////////////////////////////////////////////
 //
-//  ███████╗████████╗██╗   ██╗██████╗ ██╗   ██╗
-//  ██╔════╝╚══██╔══╝██║   ██║██╔══██╗╚██╗ ██╔╝
-//  ███████╗   ██║   ██║   ██║██║  ██║ ╚████╔╝
-//  ╚════██║   ██║   ██║   ██║██║  ██║  ╚██╔╝
-//  ███████║   ██║   ╚██████╔╝██████╔╝   ██║
-//  ╚══════╝   ╚═╝    ╚═════╝ ╚═════╝    ╚═╝
+//  ██████╗ ███████╗██████╗ ██████╗  ██████╗  ██████╗ ███╗   ███╗     ██████╗██╗     ██╗███╗   ███╗ █████╗ ████████╗███████╗
+//  ██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔═══██╗██╔═══██╗████╗ ████║    ██╔════╝██║     ██║████╗ ████║██╔══██╗╚══██╔══╝██╔════╝
+//  ██████╔╝█████╗  ██║  ██║██████╔╝██║   ██║██║   ██║██╔████╔██║    ██║     ██║     ██║██╔████╔██║███████║   ██║   █████╗
+//  ██╔══██╗██╔══╝  ██║  ██║██╔══██╗██║   ██║██║   ██║██║╚██╔╝██║    ██║     ██║     ██║██║╚██╔╝██║██╔══██║   ██║   ██╔══╝
+//  ██████╔╝███████╗██████╔╝██║  ██║╚██████╔╝╚██████╔╝██║ ╚═╝ ██║    ╚██████╗███████╗██║██║ ╚═╝ ██║██║  ██║   ██║   ███████╗
+//  ╚═════╝ ╚══════╝╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝     ╚═╝     ╚═════╝╚══════╝╚═╝╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝
 //
 ////////////////////////////////////////////////////////////////////////
 //
@@ -28,10 +28,7 @@ const functions = require("../../Functions.js");
 // Database
 const path = require("path");
 const Engine = require("tingodb")();
-const db = new Engine.Db(
-  path.join(__dirname, "../../../Databases/Heating"),
-  {}
-);
+const db = new Engine.Db(path.join(__dirname, "../../../Databases/Heating"), {});
 
 // Schedule
 const schedule = require("node-schedule");
@@ -47,7 +44,7 @@ const schedule = require("node-schedule");
 //     #    #    # #    # # #    # #####  ###### ######  ####
 //
 ////////////////////////////////////////////////////////////////////////
-var study = null;
+var livingRoom = null;
 
 var setpoint = 22;
 var hysteresis = 0.5;
@@ -67,15 +64,15 @@ var timer;
 // #     # #       ###
 //
 ////////////////////////////////////////////////////////////////////////
-app.get("/api/heating/sensor/study/status", (req, res) => {
-  res.json(study);
+app.get("/api/heating/sensor/livingRoom/status", (req, res) => {
+  res.json(livingRoom);
 });
 
-app.get("/api/heating/sensor/study/setpoint/status", (req, res) => {
+app.get("/api/heating/sensor/livingRoom/setpoint/status", (req, res) => {
   res.json(setpoint);
 });
 
-app.post("/api/heating/sensor/study/setpoint/set", (req, res) => {
+app.post("/api/heating/sensor/livingRoom/setpoint/set", (req, res) => {
   setpoint = req.body.value;
   console.log(setpoint);
   res.end(null);
@@ -93,23 +90,22 @@ app.post("/api/heating/sensor/study/setpoint/set", (req, res) => {
 //
 ////////////////////////////////////////////////////////////////////////
 client.on("message", (topic, payload) => {
-  if (topic == "Study Heating Sensor") {
-  
+  if (topic == "Living Room Heating Sensor") {
     clearTimeout(timer);
+
     timer = setTimeout(() => {
-      console.log("Clearing Data")
-      study = null;
+      console.log("Clearing Data");
+      livingRoom = null;
     }, 10 * 1000);
 
-    
-
-    if (payload != "Study Heating Sensor Disconnected") {
-      study = JSON.parse(payload);
+    if (payload != "Living Room Heating Sensor Disconnected") {
+      livingRoom = JSON.parse(payload);
+      // console.log(livingRoom);
+      io.emit("Living Room Heating Sensor", livingRoom);
     } else {
-      study = null;
-      console.log(
-        "Study Heating Sensor Disconnected  at " + functions.printTime()
-      );
+      livingRoom = null;
+      io.emit("Living Room Heating Sensor", livingRoom);
+      console.log("Living Room Heating Sensor Disconnected");
     }
   }
 });
@@ -126,11 +122,8 @@ client.on("message", (topic, payload) => {
 //
 ////////////////////////////////////////////////////////////////////////
 const sensorUpdate = setInterval(() => {
-  io.emit("Study Heating Sensor", study);
-  // console.log(study)
+  io.emit("Living Room Heating Sensor", livingRoom);
 }, 1 * 1000);
-
-
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -147,14 +140,13 @@ var Hourly = new schedule.RecurrenceRule();
 Hourly.minute = 0;
 
 schedule.scheduleJob(Hourly, () => {
-  var data;
-  if (study) {
-    data = {
-      temperature: study.temperature,
-      humidity: study.humidity,
+  if (livingRoom) {
+    var data = {
+      temperature: livingRoom.temperature,
+      humidity: livingRoom.humidity,
       timestamp: functions.currentTime(),
     };
-    db.collection("Study").insert(data, (err, res) => {
+    db.collection("Living Room").insert(data, (err, res) => {
       if (err) console.log(err);
     });
   } else {
@@ -163,7 +155,7 @@ schedule.scheduleJob(Hourly, () => {
       humidity: null,
       timestamp: functions.currentTime(),
     };
-    db.collection("Study").insert(data, (err, res) => {
+    db.collection("Living Room").insert(data, (err, res) => {
       if (err) console.log(err);
     });
   }
@@ -173,16 +165,16 @@ schedule.scheduleJob(Hourly, () => {
 // {
 //   try
 //   {
-//     if((study.Temperature < setpoint - hysteresis))
+//     if((livingRoom.Temperature < setpoint - hysteresis))
 //     {
-//       client.publish("Study Radiator Control", JSON.stringify({"Node": "Study Temperature Controller", "state": true}));
-//       client.publish("Heating Request Control",   JSON.stringify({"Node": "Study Temperature Controller", "state": true}));
+//       client.publish("Living Room Radiator Control", JSON.stringify({"Node": "Living Room Temperature Controller", "state": true}));
+//       client.publish("Heating Request Control",   JSON.stringify({"Node": "Living Room Temperature Controller", "state": true}));
 //     }
 //
-//     if((study.Temperature > setpoint + hysteresis))
+//     if((livingRoom.Temperature > setpoint + hysteresis))
 //     {
-//       client.publish("Study Radiator Control", JSON.stringify({"Node": "Study Temperature Controller", "state": false}));
-//       client.publish("Heating Request Control",   JSON.stringify({"Node": "Study Temperature Controller", "state": false}));
+//       client.publish("Living Room Radiator Control", JSON.stringify({"Node": "Living Room Temperature Controller", "state": false}));
+//       client.publish("Heating Request Control",   JSON.stringify({"Node": "Living Room Temperature Controller", "state": false}));
 //     }
 //   }
 //

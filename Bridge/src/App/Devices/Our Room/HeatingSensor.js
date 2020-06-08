@@ -28,11 +28,7 @@ const functions = require("../../Functions.js");
 // Database
 const path = require("path");
 const Engine = require("tingodb")();
-const db = new Engine.Db(
-  path.join(__dirname, "../../../Databases/Heating"),
-  {}
-);
-// const db     = new Engine.Db(__dirname, {});
+const db = new Engine.Db(path.join(__dirname, "../../../Databases/Heating"), {});
 
 // Schedule
 const schedule = require("node-schedule");
@@ -48,7 +44,7 @@ const schedule = require("node-schedule");
 //     #    #    # #    # # #    # #####  ###### ######  ####
 //
 ////////////////////////////////////////////////////////////////////////
-var liamsRoom = null;
+var sensorData = null;
 
 var setpoint = 22;
 var hysteresis = 0.5;
@@ -68,15 +64,15 @@ var timer;
 // #     # #       ###
 //
 ////////////////////////////////////////////////////////////////////////
-app.get("/api/heating/sensor/liamsRoom/status", (req, res) => {
-  res.json(liamsRoom);
+app.get("/api/heating/sensor/ourRoom/status", (req, res) => {
+  res.json(sensorData);
 });
 
-app.get("/api/heating/sensor/liamsRoom/setpoint/status", (req, res) => {
+app.get("/api/heating/sensor/ourRoom/setpoint/status", (req, res) => {
   res.json(setpoint);
 });
 
-app.post("/api/heating/sensor/liamsRoom/setpoint/set", (req, res) => {
+app.post("/api/heating/sensor/ourRoom/setpoint/set", (req, res) => {
   setpoint = req.body.value;
   console.log(setpoint);
   res.end(null);
@@ -94,17 +90,18 @@ app.post("/api/heating/sensor/liamsRoom/setpoint/set", (req, res) => {
 //
 ////////////////////////////////////////////////////////////////////////
 client.on("message", (topic, payload) => {
-  if (topic == "Liams Room Heating Sensor") {
+  if (topic == "Our Room Heating Sensor") {
     clearTimeout(timer);
+
     timer = setTimeout(() => {
-      liamsRoom = null;
+      sensorData = null;
     }, 10 * 1000);
 
-    if (payload != "Liams Room Heating Sensor Disconnected") {
-      liamsRoom = JSON.parse(payload);
+    if (payload != "Our Room Heating Sensor Disconnected") {
+      sensorData = JSON.parse(payload);
     } else {
-      liamsRoom = null;
-      console.log("Liams Room Heating Sensor Disconnected");
+      sensorData = null;
+      console.log("Our Room Heating Sensor Disconnected  at " + functions.printTime());
     }
   }
 });
@@ -121,59 +118,59 @@ client.on("message", (topic, payload) => {
 //
 ////////////////////////////////////////////////////////////////////////
 const sensorUpdate = setInterval(() => {
-  io.emit("Liams Room Heating Sensor", liamsRoom);
+  io.emit("Our Room Heating Sensor", sensorData);
 }, 1 * 1000);
 
 ////////////////////////////////////////////////////////////////////////
 //
-//   #####
-//  #     #  ####  #    # ###### #####  #    # #      ######
-//  #       #    # #    # #      #    # #    # #      #
-//   #####  #      ###### #####  #    # #    # #      #####
-//        # #      #    # #      #    # #    # #      #
-//  #     # #    # #    # #      #    # #    # #      #
-//   #####   ####  #    # ###### #####   ####  ###### ######
+//  ######
+//  #     #   ##   #####   ##   #####    ##    ####  ######
+//  #     #  #  #    #    #  #  #    #  #  #  #      #
+//  #     # #    #   #   #    # #####  #    #  ####  #####
+//  #     # ######   #   ###### #    # ######      # #
+//  #     # #    #   #   #    # #    # #    # #    # #
+//  ######  #    #   #   #    # #####  #    #  ####  ######
 //
 ////////////////////////////////////////////////////////////////////////
 var Hourly = new schedule.RecurrenceRule();
 Hourly.minute = 0;
 
 schedule.scheduleJob(Hourly, () => {
-  if (liamsRoom) {
+  if (sensorData) {
     var data = {
-      temperature: liamsRoom.temperature,
-      humidity: liamsRoom.humidity,
+      temperature: sensorData.temperature,
+      humidity: sensorData.humidity,
       timestamp: functions.currentTime(),
     };
-    db.collection("Liams Room").insert(data, (err, res) => {
+    db.collection("Our Room").insert(data, (err, res) => {
       if (err) console.log(err);
     });
   } else {
-    var data = {
+    data = {
       temperature: null,
       humidity: null,
       timestamp: functions.currentTime(),
     };
-    db.collection("Liams Room").insert(data, (err, res) => {
+    db.collection("Our Room").insert(data, (err, res) => {
       if (err) console.log(err);
     });
   }
 });
 
-// const bedroomTemperatureController = setInterval(()  =>
+// const bedroomtemperatureController = setInterval(()  =>
 // {
 //   try
 //   {
-//     if((liamsRoom.Temperature < setpoint - hysteresis))
+//     if((sensorData.temperature < setpoint - hysteresis))
 //     {
-//       client.publish("Liams Room Radiator Control", JSON.stringify({"Node": "Liams Room Temperature Controller", "state": true}));
-//       client.publish("Heating Request Control",   JSON.stringify({"Node": "Liams Room Temperature Controller", "state": true}));
+//       client.publish("Our Room Radiator Control", JSON.stringify({"Node": "Our Room temperature Controller", "state": true}));
+//       client.publish("Heating Request Control",   JSON.stringify({"Node": "Our Room temperature Controller", "state": true}));
 //     }
 //
-//     if((liamsRoom.Temperature > setpoint + hysteresis))
+//     if((sensorData.temperature > setpoint + hysteresis))
 //     {
-//       client.publish("Liams Room Radiator Control", JSON.stringify({"Node": "Liams Room Temperature Controller", "state": false}));
-//       client.publish("Heating Request Control",   JSON.stringify({"Node": "Liams Room Temperature Controller", "state": false}));
+//       client.publish("Our Room Radiator Control", JSON.stringify({"Node": "Our Room temperature Controller", "state": false}));
+//       client.publish("Heating Request Control",   JSON.stringify({"Node": "Our Room temperature Controller", "state": false}));
 //     }
 //   }
 //

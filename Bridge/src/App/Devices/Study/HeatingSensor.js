@@ -1,11 +1,11 @@
 ////////////////////////////////////////////////////////////////////////
 //
-//  ██████╗ ███████╗██████╗ ██████╗  ██████╗  ██████╗ ███╗   ███╗     ██████╗██╗     ██╗███╗   ███╗ █████╗ ████████╗███████╗
-//  ██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔═══██╗██╔═══██╗████╗ ████║    ██╔════╝██║     ██║████╗ ████║██╔══██╗╚══██╔══╝██╔════╝
-//  ██████╔╝█████╗  ██║  ██║██████╔╝██║   ██║██║   ██║██╔████╔██║    ██║     ██║     ██║██╔████╔██║███████║   ██║   █████╗
-//  ██╔══██╗██╔══╝  ██║  ██║██╔══██╗██║   ██║██║   ██║██║╚██╔╝██║    ██║     ██║     ██║██║╚██╔╝██║██╔══██║   ██║   ██╔══╝
-//  ██████╔╝███████╗██████╔╝██║  ██║╚██████╔╝╚██████╔╝██║ ╚═╝ ██║    ╚██████╗███████╗██║██║ ╚═╝ ██║██║  ██║   ██║   ███████╗
-//  ╚═════╝ ╚══════╝╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝     ╚═╝     ╚═════╝╚══════╝╚═╝╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝
+//  ███████╗████████╗██╗   ██╗██████╗ ██╗   ██╗
+//  ██╔════╝╚══██╔══╝██║   ██║██╔══██╗╚██╗ ██╔╝
+//  ███████╗   ██║   ██║   ██║██║  ██║ ╚████╔╝
+//  ╚════██║   ██║   ██║   ██║██║  ██║  ╚██╔╝
+//  ███████║   ██║   ╚██████╔╝██████╔╝   ██║
+//  ╚══════╝   ╚═╝    ╚═════╝ ╚═════╝    ╚═╝
 //
 ////////////////////////////////////////////////////////////////////////
 //
@@ -44,7 +44,7 @@ const schedule = require("node-schedule");
 //     #    #    # #    # # #    # #####  ###### ######  ####
 //
 ////////////////////////////////////////////////////////////////////////
-var sensorData = null;
+var study = null;
 
 var setpoint = 22;
 var hysteresis = 0.5;
@@ -64,15 +64,15 @@ var timer;
 // #     # #       ###
 //
 ////////////////////////////////////////////////////////////////////////
-app.get("/api/heating/sensor/ourRoom/status", (req, res) => {
-  res.json(sensorData);
+app.get("/api/heating/sensor/study/status", (req, res) => {
+  res.json(study);
 });
 
-app.get("/api/heating/sensor/ourRoom/setpoint/status", (req, res) => {
+app.get("/api/heating/sensor/study/setpoint/status", (req, res) => {
   res.json(setpoint);
 });
 
-app.post("/api/heating/sensor/ourRoom/setpoint/set", (req, res) => {
+app.post("/api/heating/sensor/study/setpoint/set", (req, res) => {
   setpoint = req.body.value;
   console.log(setpoint);
   res.end(null);
@@ -90,17 +90,19 @@ app.post("/api/heating/sensor/ourRoom/setpoint/set", (req, res) => {
 //
 ////////////////////////////////////////////////////////////////////////
 client.on("message", (topic, payload) => {
-  if (topic == "Our Room Heating Sensor") {
+  if (topic == "Study Heating Sensor") {
     clearTimeout(timer);
+
     timer = setTimeout(() => {
-      sensorData = null;
+      console.log("Clearing Data");
+      study = null;
     }, 10 * 1000);
 
-    if (payload != "Our Room Heating Sensor Disconnected") {
-      sensorData = JSON.parse(payload);
+    if (payload != "Study Heating Sensor Disconnected") {
+      study = JSON.parse(payload);
     } else {
-      sensorData = null;
-      console.log("Our Room Heating Sensor Disconnected  at " + functions.printTime());
+      study = null;
+      console.log("Study Heating Sensor Disconnected  at " + functions.printTime());
     }
   }
 });
@@ -117,7 +119,8 @@ client.on("message", (topic, payload) => {
 //
 ////////////////////////////////////////////////////////////////////////
 const sensorUpdate = setInterval(() => {
-  io.emit("Our Room Heating Sensor", sensorData);
+  io.emit("Study Heating Sensor", study);
+  // console.log(study)
 }, 1 * 1000);
 
 ////////////////////////////////////////////////////////////////////////
@@ -135,13 +138,14 @@ var Hourly = new schedule.RecurrenceRule();
 Hourly.minute = 0;
 
 schedule.scheduleJob(Hourly, () => {
-  if (sensorData) {
-    var data = {
-      temperature: sensorData.temperature,
-      humidity: sensorData.humidity,
+  var data;
+  if (study) {
+    data = {
+      temperature: study.temperature,
+      humidity: study.humidity,
       timestamp: functions.currentTime(),
     };
-    db.collection("Our Room").insert(data, (err, res) => {
+    db.collection("Study").insert(data, (err, res) => {
       if (err) console.log(err);
     });
   } else {
@@ -150,26 +154,26 @@ schedule.scheduleJob(Hourly, () => {
       humidity: null,
       timestamp: functions.currentTime(),
     };
-    db.collection("Our Room").insert(data, (err, res) => {
+    db.collection("Study").insert(data, (err, res) => {
       if (err) console.log(err);
     });
   }
 });
 
-// const bedroomtemperatureController = setInterval(()  =>
+// const bedroomTemperatureController = setInterval(()  =>
 // {
 //   try
 //   {
-//     if((sensorData.temperature < setpoint - hysteresis))
+//     if((study.Temperature < setpoint - hysteresis))
 //     {
-//       client.publish("Our Room Radiator Control", JSON.stringify({"Node": "Our Room temperature Controller", "state": true}));
-//       client.publish("Heating Request Control",   JSON.stringify({"Node": "Our Room temperature Controller", "state": true}));
+//       client.publish("Study Radiator Control", JSON.stringify({"Node": "Study Temperature Controller", "state": true}));
+//       client.publish("Heating Request Control",   JSON.stringify({"Node": "Study Temperature Controller", "state": true}));
 //     }
 //
-//     if((sensorData.temperature > setpoint + hysteresis))
+//     if((study.Temperature > setpoint + hysteresis))
 //     {
-//       client.publish("Our Room Radiator Control", JSON.stringify({"Node": "Our Room temperature Controller", "state": false}));
-//       client.publish("Heating Request Control",   JSON.stringify({"Node": "Our Room temperature Controller", "state": false}));
+//       client.publish("Study Radiator Control", JSON.stringify({"Node": "Study Temperature Controller", "state": false}));
+//       client.publish("Heating Request Control",   JSON.stringify({"Node": "Study Temperature Controller", "state": false}));
 //     }
 //   }
 //
