@@ -120,7 +120,7 @@ app.use(require("./App/Devices/Our Room/Radiator Fan.js"));
 app.use(require("./App/Historical.js"));
 
 // Calor Imperium
-// app.use(require("./App/Calor Imperium.js"));
+app.use(require("./App/Calor Imperium.js"));
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -174,26 +174,6 @@ var ourRoomSchedule = {
   boost: false,
   heatingOn: true,
 };
-
-// client.on("message", (topic, payload) => {
-//   if (topic == "Heating") {
-//     if (payload != "Heating Disconnected") {
-//       data = convertMQTTData(JSON.parse(payload));
-//       io.emit("Heating", data);
-//     } else {
-//       data = null;
-//       io.emit("Heating", data);
-//       console.log("Here");
-//       console.log("Heating Controller Disconnected");
-//     }
-//   }
-// });
-
-// client.on("message", (topic, payload) => {
-//   if (topic == "Heating") {
-//     console.log(JSON.parse(payload));
-//   }
-// });
 
 ////////////////////////////////////////////////////////////////////////
 //

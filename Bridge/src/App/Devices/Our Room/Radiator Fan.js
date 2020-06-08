@@ -113,6 +113,7 @@ app.get("/api/RadiatorFan/Off", (req, res) => {
 client.on("message", (topic, payload) => {
   if (topic == "Radiator Fan") {
     clearTimeout(timer);
+
     timer = setTimeout(() => {
       deviceData = null;
     }, 10 * 1000);

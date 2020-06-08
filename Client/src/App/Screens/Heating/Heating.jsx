@@ -63,7 +63,7 @@ class Schedule extends React.Component {
     localStorage.setItem("Heating Schedule", JSON.stringify(cache));
 
     // fetch("/api/heating/schedule/update",
-    fetch("/api/heating/schedule/update", {
+    fetch("/api/ci/schedule/update", {
       headers: { "Content-Type": "application/json" },
       method: "POST",
       body: JSON.stringify({

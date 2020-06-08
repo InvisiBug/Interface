@@ -83,6 +83,11 @@ class Socket extends React.Component {
       if (data == null) localStorage.setItem("Heating Schedule", null);
       else localStorage.setItem("Heating Schedule", JSON.stringify(data));
     });
+
+    // Heating
+    socket.on("heatingSchedule", data => {
+      console.log(data);
+    });
   };
 
   ////////////////////////

@@ -4,7 +4,7 @@ import React from "react";
 class SystemDataCollector extends React.Component {
   componentWillMount = () => {
     // this.getHeatingSchedule();
-    this.getBedroomClimateSetpoint();
+    // this.getBedroomClimateSetpoint();
   };
 
   componentDidMount = () => {
@@ -12,7 +12,7 @@ class SystemDataCollector extends React.Component {
       // 1 second timer
       {
         this.getHeatingSchedule();
-        this.getBedroomClimateSetpoint();
+        // this.getBedroomClimateSetpoint();
       }, 1 * 1000);
 
     // this.timer2 = setInterval(() => // 5 min timer
