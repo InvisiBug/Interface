@@ -1,0 +1,1 @@
+{"key":"heatingSchedule","value":{"vals":{"monday":[8,8.5,20,21],"tuesday":[8,8.5,20,21],"wednesday":[8,8.5,20,21],"thursday":[8,8.5,20,21],"friday":[8,8.5,20,21],"saturday":[9,9.5,20,21],"sunday":[9,9.5,20,21],"enable":true,"boost":false,"heatingOn":false}}}

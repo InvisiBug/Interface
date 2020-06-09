@@ -11,7 +11,7 @@ class SystemDataCollector extends React.Component {
     this.timer1 = setInterval(() =>
       // 1 second timer
       {
-        this.getHeatingSchedule();
+        // this.getHeatingSchedule();
         // this.getBedroomClimateSetpoint();
       }, 1 * 1000);
 
