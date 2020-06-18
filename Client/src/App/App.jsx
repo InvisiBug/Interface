@@ -70,7 +70,7 @@ class App extends React.Component {
           {/* <BatteryMeter/> */}
 
           {navigator.platform === "Win32" && <Dots />}
-          {navigator.platform === "MacIntel" && <Dots />}
+          {/* {navigator.platform === "MacIntel" && <Dots />} */}
 
           <div className="contentWrapper">
             {this.state.screen !== "Printer" && <DateBox />}

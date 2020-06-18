@@ -28,8 +28,7 @@ class PlugButtonSelection extends React.Component {
   getPlug = () => {
     var cache = JSON.parse(localStorage.getItem("Plug"));
     try {
-      cache.state ? this.setState({ activeIndex: 1 }) : this.setState({ activeIndex: 0 });
-      this.setState({ titleColour: "white" });
+      cache.state ? this.setState({ activeIndex: 1, titleColour: "white" }) : this.setState({ activeIndex: 0, titleColour: "white" });
     } catch (error) {
       this.setState({ titleColour: "orangered" });
     }
