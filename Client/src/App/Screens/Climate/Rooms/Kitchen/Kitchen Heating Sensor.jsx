@@ -1,51 +1,50 @@
-// Components
-import React from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, css } from "aphrodite";
 
-class KitchenHeatingSensor extends React.Component {
-  constructor(props) {
-    super(props);
+const styles = StyleSheet.create({
+  kitchenValuesContainer: {
+    position: "absolute",
+    transform: "translate(-50%, -50%)",
+    height: "7.5%",
+    width: "150px",
+    top: "100%",
+    left: "19%",
 
-    this.state = {
-      activeIndex: 0,
-      computerPower: null,
-      textColour: "white"
-    };
+    borderRadius: "20px",
+
+    border: "1px solid rgba(255, 255, 255, 0.2)",
+    background: "rgba(50, 50, 50, 0.2)",
+    color: "white",
+    fontFamily: "Arial",
+    fontSize: "20px",
+
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center"
   }
+});
 
-  componentWillMount = () => this.getData();
-  componentDidMount = () =>
-    (this.interval = setInterval(() => {
-      this.getData();
-    }, 100));
-  componentWillUnmount = () => clearInterval(this.interval);
+const KitchenHeatingSensor = props => {
+  const [deviceData, setDeviceData] = useState(JSON.parse(localStorage.getItem("Kitchen Heating Sensor")));
 
-  getData = () => {
-    try {
-      this.setState({ textColour: "white" });
-      var cache = JSON.parse(localStorage.getItem("Kitchen Heating Sensor"));
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDeviceData(JSON.parse(localStorage.getItem("Kitchen Heating Sensor")));
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [deviceData]);
 
-      this.setState({ temperature: cache.temperature });
-      this.setState({ humidity: cache.humidity });
-    } catch (error) {
-      this.setState({ textColour: "orangered" });
-    }
-  };
-
-  render() {
-    return (
-      <div className="kitchenValuesContainer" onClick={() => this.props.showGraph("Kitchen")}>
-        <p style={{ color: this.state.textColour }} className="tempText">
-          {this.state.temperature}°C
-        </p>
-        <p style={{ color: this.state.textColour }} className="humidityText">
-          {this.state.humidity}%
-        </p>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={css(styles.kitchenValuesContainer)} onClick={() => props.showGraph("Kitchen")}>
+      <p style={{ color: deviceData.textColour }} className="tempText">
+        {deviceData.temperature}°C
+      </p>
+      <p style={{ color: deviceData.textColour }} className="humidityText">
+        {deviceData.humidity}%
+      </p>
+    </div>
+  );
+};
 
 export default KitchenHeatingSensor;

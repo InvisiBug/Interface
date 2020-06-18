@@ -45,14 +45,13 @@ const schedule = require("node-schedule");
 //     #    #    # #    # # #    # #####  ###### ######  ####
 //
 ////////////////////////////////////////////////////////////////////////
-var kitchen = null;
+var deviceData;
+var timer;
 
 var setpoint = 22;
 var hysteresis = 0.5;
 
 var addHeat = false;
-
-var timer;
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -66,11 +65,11 @@ var timer;
 //
 ////////////////////////////////////////////////////////////////////////
 app.get("/api/heating/sensor/kitchen/status", (req, res) => {
-  res.json(kitchen);
+  res.json(deviceData);
 });
 
 app.get("/api/heating/sensor/kitchen/setpoint/status", (req, res) => {
-  res.json(setpoint);
+  res.json(deviceData);
 });
 
 app.post("/api/heating/sensor/kitchen/setpoint/set", (req, res) => {
@@ -95,14 +94,21 @@ client.on("message", (topic, payload) => {
     clearTimeout(timer);
 
     timer = setTimeout(() => {
-      console.log("Clearing Data");
-      kitchen = null;
+      deviceData.isConnected = false;
     }, 10 * 1000);
 
     if (payload != "Kitchen Heating Sensor Disconnected") {
-      kitchen = JSON.parse(payload);
+      var payload = JSON.parse(payload);
+      deviceData = {
+        ...deviceData,
+        isConnected: true,
+        temperature: payload.temperature,
+        humidity: payload.humidity,
+        pressure: payload.pressure,
+        battery: payload.battery,
+      };
     } else {
-      kitchen = null;
+      deviceData = null;
       console.log("Kitchen Heating Sensor Disconnected");
     }
   }
@@ -120,7 +126,7 @@ client.on("message", (topic, payload) => {
 //
 ////////////////////////////////////////////////////////////////////////
 const sensorUpdate = setInterval(() => {
-  io.emit("Kitchen Heating Sensor", kitchen);
+  io.emit("Kitchen Heating Sensor", deviceData);
 }, 1 * 1000);
 
 ////////////////////////////////////////////////////////////////////////
@@ -138,10 +144,10 @@ var Hourly = new schedule.RecurrenceRule();
 Hourly.minute = 0;
 
 schedule.scheduleJob(Hourly, () => {
-  if (kitchen) {
+  if (deviceData) {
     var data = {
-      temperature: kitchen.temperature,
-      humidity: kitchen.humidity,
+      temperature: deviceData.temperature,
+      humidity: deviceData.humidity,
       timestamp: functions.currentTime(),
     };
     db.collection("Kitchen").insert(data, (err, res) => {
