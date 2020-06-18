@@ -67,7 +67,8 @@ global.io = require("socket.io")(server);
 //
 ////////////////////////////////////////////////////////////////////////
 const mqtt = require("mqtt");
-global.client = mqtt.connect("mqtt://192.168.1.46");
+// global.client = mqtt.connect("mqtt://192.168.1.46");
+global.client = mqtt.connect("mqtt://kavanet.io");
 
 client.subscribe("#", (err) => {
   err ? console.log(err) : console.log("Subscribed to " + "All");

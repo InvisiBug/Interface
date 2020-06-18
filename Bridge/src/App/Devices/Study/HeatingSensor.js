@@ -101,7 +101,7 @@ client.on("message", (topic, payload) => {
     if (payload != "Study Heating Sensor Disconnected") {
       study = JSON.parse(payload);
     } else {
-      study = null;
+      // study = null;
       console.log("Study Heating Sensor Disconnected  at " + functions.printTime());
     }
   }

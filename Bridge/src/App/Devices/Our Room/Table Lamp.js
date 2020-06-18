@@ -78,7 +78,7 @@ client.on("message", (topic, payload) => {
       tableLamp = JSON.parse(payload);
     } else {
       tableLamp = null;
-      console.log("Table Lamp Disconnected");
+      // console.log("Table Lamp Disconnected");
     }
   }
 });

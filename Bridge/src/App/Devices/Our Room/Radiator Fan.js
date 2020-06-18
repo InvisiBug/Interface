@@ -114,14 +114,16 @@ client.on("message", (topic, payload) => {
   if (topic == "Radiator Fan") {
     clearTimeout(timer);
 
-    timer = setTimeout(() => {
-      deviceData = null;
-    }, 10 * 1000);
+    // timer = setTimeout(() => {
+    //   deviceData = null;
+    // }, 10 * 1000);
 
     if (payload != "Radiator Fan Disconnected") {
+      console.log(JSON.parse(payload));
       deviceData.state = JSON.parse(payload).state;
     } else {
-      deviceData.state = null;
+      console.log(deviceData);
+      // deviceData.state = null;
       console.log("Radiator Fan Disconnected");
     }
   }
