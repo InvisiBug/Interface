@@ -108,9 +108,9 @@ app.use(require("./App/Devices/Study/HeatingSensor.js"));
 // Our Roomrs
 app.use(require("./App/Devices/OurRoom/Desk LEDs"));
 app.use(require("./App/Devices/OurRoom/Screen LEDs"));
-app.use(require("./App/Devices/OurRoom/Flood Light"));
+app.use(require("./App/Devices/OurRoom/FloodLight"));
 app.use(require("./App/Devices/OurRoom/Table Lamp"));
-app.use(require("./App/Devices/OurRoom/Flood Light.js"));
+app.use(require("./App/Devices/OurRoom/FloodLight.js"));
 app.use(require("./App/Devices/OurRoom/Computer Audio.js"));
 app.use(require("./App/Devices/OurRoom/Computer Power.js"));
 // app.use(require('./App/Devices/Our Room/Blanket.js'));

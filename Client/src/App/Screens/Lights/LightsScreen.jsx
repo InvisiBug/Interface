@@ -2,7 +2,7 @@
 import React from "react";
 
 // Modules
-import PlugSwitch from "./Plug";
+import Floodlight from "./Floodlight";
 import DeskLEDs from "./Desk LEDs";
 import TableLamp from "./TableLamp";
 import ScreenLEDs from "./ScreenLEDs";
@@ -11,7 +11,7 @@ class Lights extends React.Component {
   render() {
     return (
       <div className="lightScreen">
-        <PlugSwitch />
+        <Floodlight />
         <DeskLEDs />
         <TableLamp />
         <ScreenLEDs />

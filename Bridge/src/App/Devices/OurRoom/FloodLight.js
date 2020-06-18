@@ -35,6 +35,8 @@ const app = (module.exports = express());
 ////////////////////////////////////////////////////////////////////////
 var deviceData = null;
 
+var timer;
+
 ////////////////////////////////////////////////////////////////////////
 //
 //    #    ######  ###
@@ -46,23 +48,16 @@ var deviceData = null;
 // #     # #       ###
 //
 ////////////////////////////////////////////////////////////////////////
-app.get("/api/Plug/Toggle", (req, res) => {
-  client.publish("Plug Control", "T");
-  deviceData.state = !deviceData.state;
-  sendSocketData();
-  res.json(null);
-});
-
 app.get("/api/Plug/On", (req, res) => {
   client.publish("Plug Control", "1");
-  deviceData.state = true;
+  deviceData.isOn = true;
   sendSocketData();
   res.json(null);
 });
 
 app.get("/api/Plug/Off", (req, res) => {
   client.publish("Plug Control", "0");
-  deviceData.state = false;
+  deviceData.isOn = false;
   sendSocketData();
   res.json(null);
 });
@@ -80,10 +75,19 @@ app.get("/api/Plug/Off", (req, res) => {
 ////////////////////////////////////////////////////////////////////////
 client.on("message", (topic, payload) => {
   if (topic == "Plug") {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      deviceData.isConnected = false;
+    }, 10 * 1000);
+
     if (payload != "Plug Disconnected") {
-      deviceData = JSON.parse(payload);
+      deviceData = {
+        ...deviceData,
+        isConnected: true,
+        isOn: JSON.parse(payload).state,
+      };
     } else {
-      deviceData = null;
       console.log("Plug Disconnected");
     }
   }
@@ -105,5 +109,5 @@ const sensorUpdate = setInterval(() => {
 }, 1 * 1000);
 
 var sendSocketData = () => {
-  io.emit("Plug", deviceData);
+  io.emit("Floodlight", deviceData);
 };

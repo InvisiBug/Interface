@@ -53,9 +53,9 @@ class Socket extends React.Component {
       else localStorage.setItem("Table Lamp", JSON.stringify(deviceData));
     });
 
-    socket.on("Plug", deviceData => {
-      if (deviceData == null) localStorage.setItem("Plug", null);
-      else localStorage.setItem("Plug", JSON.stringify(deviceData));
+    socket.on("Floodlight", deviceData => {
+      if (deviceData == null) localStorage.setItem("Floodlight", null);
+      else localStorage.setItem("Floodlight", JSON.stringify(deviceData));
     });
 
     socket.on("Computer Audio", deviceData => {
@@ -75,10 +75,7 @@ class Socket extends React.Component {
 
     socket.on("Radiator Fan", deviceData => {
       if (deviceData == null) localStorage.setItem("Radiator Fan", null);
-      else {
-        localStorage.setItem("Radiator Fan", JSON.stringify(deviceData));
-        console.log("Socket -> componentDidMount -> JSON.stringify(deviceData)", deviceData);
-      }
+      else localStorage.setItem("Radiator Fan", JSON.stringify(deviceData));
     });
 
     // Heating
