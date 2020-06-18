@@ -44,8 +44,6 @@ var deviceData = {
 // var deviceData;
 
 var timer;
-
-console.log(deviceData);
 ////////////////////////////////////////////////////////////////////////
 //
 //    #    ######  ###
@@ -64,22 +62,22 @@ app.get("/api/RadiatorFan/Status", (req, res) => {
 // Automatic / Manual
 app.get("/api/RadiatorFanAutomatic/On", (req, res) => {
   console.log("Auto Mode On");
-  deviceData.automatic = true;
+  deviceData.isAutomatic = true;
   sendSocketData();
   res.json(null);
 });
 
 app.get("/api/RadiatorFanAutomatic/off", (req, res) => {
   console.log("Auto Mode Off");
-  deviceData.automatic = false;
+  deviceData.isAutomatic = false;
   sendSocketData();
   res.json(null);
 });
 
 // On / Off
 app.get("/api/RadiatorFan/On", (req, res) => {
-  if (!deviceData.automatic) {
-    deviceData.state = true;
+  if (!deviceData.isAutomatic) {
+    deviceData.isOn = true;
     client.publish("Radiator Fan Control", "1"); // Toggle power button
   } else {
     console.log("Fan Not In Manual");
@@ -89,8 +87,8 @@ app.get("/api/RadiatorFan/On", (req, res) => {
 });
 
 app.get("/api/RadiatorFan/Off", (req, res) => {
-  if (!deviceData.automatic) {
-    deviceData.state = false;
+  if (!deviceData.isAutomatic) {
+    deviceData.isOn = false;
     client.publish("Radiator Fan Control", "0"); // Toggle power button
   } else {
     console.log("Fan Not In Manual");
@@ -120,20 +118,11 @@ client.on("message", (topic, payload) => {
     }, 10 * 1000);
 
     if (payload != "Radiator Fan Disconnected") {
-      // console.log(JSON.parse(payload));
-      // deviceData.connected = true;
-      // deviceData.state = JSON.parse(payload).state;
-
-      // console.log(JSON.parse(payload));
-
       deviceData = {
         ...deviceData,
         isConnected: true,
         isOn: JSON.parse(payload).state,
       };
-
-      console.log("\n");
-      console.log(deviceData);
     } else {
       console.log("Radiator Fan Disconnected");
     }
@@ -153,6 +142,10 @@ client.on("message", (topic, payload) => {
 //  #####   ####   ####  #    # ######   #
 //
 ////////////////////////////////////////////////////////////////////////
+const sensorUpdate = setInterval(() => {
+  sendSocketData();
+}, 1 * 1000);
+
 var sendSocketData = () => {
   io.emit("Radiator Fan", deviceData);
 };

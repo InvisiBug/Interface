@@ -9,73 +9,76 @@ class Socket extends React.Component {
     const socket = openSocket("http://localhost:5001"); // Production,  Couldn't come figure out how to
 
     // Living Room
-    socket.on("Living Room Heating Sensor", data => {
-      if (data == null) localStorage.setItem("Living Room Heating Sensor", null);
-      else localStorage.setItem("Living Room Heating Sensor", JSON.stringify(data));
+    socket.on("Living Room Heating Sensor", deviceData => {
+      if (deviceData == null) localStorage.setItem("Living Room Heating Sensor", null);
+      else localStorage.setItem("Living Room Heating Sensor", JSON.stringify(deviceData));
     });
 
     // Kitchen
-    socket.on("Kitchen Heating Sensor", data => {
-      if (data == null) localStorage.setItem("Kitchen Heating Sensor", null);
-      else localStorage.setItem("Kitchen Heating Sensor", JSON.stringify(data));
+    socket.on("Kitchen Heating Sensor", deviceData => {
+      if (deviceData == null) localStorage.setItem("Kitchen Heating Sensor", null);
+      else localStorage.setItem("Kitchen Heating Sensor", JSON.stringify(deviceData));
     });
 
     // Liams Room
-    socket.on("Liams Room Heating Sensor", data => {
-      if (data == null) localStorage.setItem("Liams Room Heating Sensor", null);
-      else localStorage.setItem("Liams Room Heating Sensor", JSON.stringify(data));
+    socket.on("Liams Room Heating Sensor", deviceData => {
+      if (deviceData == null) localStorage.setItem("Liams Room Heating Sensor", null);
+      else localStorage.setItem("Liams Room Heating Sensor", JSON.stringify(deviceData));
     });
 
     // Study
-    socket.on("Study Heating Sensor", data => {
-      if (data == null) localStorage.setItem("Study Heating Sensor", null);
-      else localStorage.setItem("Study Heating Sensor", JSON.stringify(data));
+    socket.on("Study Heating Sensor", deviceData => {
+      if (deviceData == null) localStorage.setItem("Study Heating Sensor", null);
+      else localStorage.setItem("Study Heating Sensor", JSON.stringify(deviceData));
     });
 
     // Our Room
-    socket.on("Our Room Heating Sensor", data => {
-      if (data == null) localStorage.setItem("Our Room Heating Sensor", null);
-      else localStorage.setItem("Our Room Heating Sensor", JSON.stringify(data));
+    socket.on("Our Room Heating Sensor", deviceData => {
+      if (deviceData == null) localStorage.setItem("Our Room Heating Sensor", null);
+      else localStorage.setItem("Our Room Heating Sensor", JSON.stringify(deviceData));
     });
 
-    socket.on("Desk LEDs", data => {
-      if (data == null) localStorage.setItem("Desk LEDs", null);
-      else localStorage.setItem("Desk LEDs", JSON.stringify(data));
+    socket.on("Desk LEDs", deviceData => {
+      if (deviceData == null) localStorage.setItem("Desk LEDs", null);
+      else localStorage.setItem("Desk LEDs", JSON.stringify(deviceData));
     });
 
-    socket.on("Screen LEDs", data => {
-      if (data == null) localStorage.setItem("Screen LEDs", null);
-      else localStorage.setItem("Screen LEDs", JSON.stringify(data));
+    socket.on("Screen LEDs", deviceData => {
+      if (deviceData == null) localStorage.setItem("Screen LEDs", null);
+      else localStorage.setItem("Screen LEDs", JSON.stringify(deviceData));
     });
 
-    socket.on("Table Lamp", data => {
-      if (data == null) localStorage.setItem("Table Lamp", null);
-      else localStorage.setItem("Table Lamp", JSON.stringify(data));
+    socket.on("Table Lamp", deviceData => {
+      if (deviceData == null) localStorage.setItem("Table Lamp", null);
+      else localStorage.setItem("Table Lamp", JSON.stringify(deviceData));
     });
 
-    socket.on("Plug", data => {
-      if (data == null) localStorage.setItem("Plug", null);
-      else localStorage.setItem("Plug", JSON.stringify(data));
+    socket.on("Plug", deviceData => {
+      if (deviceData == null) localStorage.setItem("Plug", null);
+      else localStorage.setItem("Plug", JSON.stringify(deviceData));
     });
 
-    socket.on("Computer Audio", data => {
-      if (data == null) localStorage.setItem("Computer Audio", null);
-      else localStorage.setItem("Computer Audio", JSON.stringify(data));
+    socket.on("Computer Audio", deviceData => {
+      if (deviceData == null) localStorage.setItem("Computer Audio", null);
+      else localStorage.setItem("Computer Audio", JSON.stringify(deviceData));
     });
 
-    socket.on("Computer Power", data => {
-      if (data == null) localStorage.setItem("Computer Power", null);
-      else localStorage.setItem("Computer Power", JSON.stringify(data));
+    socket.on("Computer Power", deviceData => {
+      if (deviceData == null) localStorage.setItem("Computer Power", null);
+      else localStorage.setItem("Computer Power", JSON.stringify(deviceData));
     });
 
-    socket.on("outsideSetpoint", data => {
-      if (data == null) localStorage.setItem("Outside Setpoint", null);
-      else localStorage.setItem("Outside Setpoint", JSON.stringify(data));
+    socket.on("outsideSetpoint", deviceData => {
+      if (deviceData == null) localStorage.setItem("Outside Setpoint", null);
+      else localStorage.setItem("Outside Setpoint", JSON.stringify(deviceData));
     });
 
-    socket.on("Radiator Fan", data => {
-      if (data == null) localStorage.setItem("Radiator Fan", null);
-      else localStorage.setItem("Radiator Fan", JSON.stringify(data));
+    socket.on("Radiator Fan", deviceData => {
+      if (deviceData == null) localStorage.setItem("Radiator Fan", null);
+      else {
+        localStorage.setItem("Radiator Fan", JSON.stringify(deviceData));
+        console.log("Socket -> componentDidMount -> JSON.stringify(deviceData)", deviceData);
+      }
     });
 
     // Heating
@@ -85,9 +88,9 @@ class Socket extends React.Component {
     // });
 
     // Heating
-    socket.on("heatingSchedule", data => {
-      if (data == null) localStorage.setItem("Heating Schedule", null);
-      else localStorage.setItem("Heating Schedule", JSON.stringify(data));
+    socket.on("heatingSchedule", deviceData => {
+      if (deviceData == null) localStorage.setItem("Heating Schedule", null);
+      else localStorage.setItem("Heating Schedule", JSON.stringify(deviceData));
     });
   };
 
