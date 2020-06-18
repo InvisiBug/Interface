@@ -115,7 +115,7 @@ app.use(require("./App/Devices/Our Room/Computer Audio.js"));
 app.use(require("./App/Devices/Our Room/Computer Power.js"));
 // app.use(require('./App/Devices/Our Room/Blanket.js'));
 app.use(require("./App/Devices/Our Room/HeatingSensor.js"));
-app.use(require("./App/Devices/Our Room/Radiator Fan.js"));
+app.use(require("./App/Devices/Our Room/RadiatorFan.js"));
 
 // Historical
 app.use(require("./App/Historical.js"));

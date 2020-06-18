@@ -36,8 +36,9 @@ const device = "radiatorFan";
 ////////////////////////////////////////////////////////////////////////
 // var deviceData = null;
 var deviceData = {
-  automatic: false,
-  state: null,
+  isAutomatic: false,
+  isOn: false,
+  isConnected: false,
 };
 
 // var deviceData;
@@ -114,18 +115,30 @@ client.on("message", (topic, payload) => {
   if (topic == "Radiator Fan") {
     clearTimeout(timer);
 
-    // timer = setTimeout(() => {
-    //   deviceData = null;
-    // }, 10 * 1000);
+    timer = setTimeout(() => {
+      deviceData.isConnected = false;
+    }, 10 * 1000);
 
     if (payload != "Radiator Fan Disconnected") {
-      console.log(JSON.parse(payload));
-      deviceData.state = JSON.parse(payload).state;
-    } else {
+      // console.log(JSON.parse(payload));
+      // deviceData.connected = true;
+      // deviceData.state = JSON.parse(payload).state;
+
+      // console.log(JSON.parse(payload));
+
+      deviceData = {
+        ...deviceData,
+        isConnected: true,
+        isOn: JSON.parse(payload).state,
+      };
+
+      console.log("\n");
       console.log(deviceData);
-      // deviceData.state = null;
+    } else {
       console.log("Radiator Fan Disconnected");
     }
+  } else if (topic == "Radiator Fan Button") {
+    console.log(JSON.parse(payload));
   }
 });
 
@@ -140,10 +153,6 @@ client.on("message", (topic, payload) => {
 //  #####   ####   ####  #    # ######   #
 //
 ////////////////////////////////////////////////////////////////////////
-const sensorUpdate = setInterval(() => {
-  sendSocketData();
-}, 1 * 1000);
-
 var sendSocketData = () => {
   io.emit("Radiator Fan", deviceData);
 };
