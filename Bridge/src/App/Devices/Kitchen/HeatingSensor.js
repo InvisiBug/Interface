@@ -33,6 +33,7 @@ const db = new Engine.Db(path.join(__dirname, "../../../Databases/Heating"), {})
 
 // Schedule
 const schedule = require("node-schedule");
+const RadiatorFan = require("../OurRoom/RadiatorFan.js");
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -98,25 +99,38 @@ client.on("message", (topic, payload) => {
     }, 10 * 1000);
 
     if (payload != "Kitchen Heating Sensor Disconnected") {
-      var payload = JSON.parse(payload);
+      var mqttData = JSON.parse(payload);
+
       deviceData = {
         ...deviceData,
         isConnected: true,
-        temperature: payload.temperature,
-        humidity: payload.humidity,
-        pressure: payload.pressure,
-        battery: payload.battery,
+        temperature: mqttData.temperature,
+        humidity: mqttData.humidity,
+        pressure: mqttData.pressure,
+        battery: mqttData.battery,
       };
     } else {
-      deviceData = null;
-      console.log("Kitchen Heating Sensor Disconnected");
+      console.log("Kitchen heating sensor disconnected at " + functions.printTime());
     }
   }
 });
 
+// client .message
+// {
+//   switch(topi)
+//   {
+//     case: kithcen sensor
+//       do kitchen sensor stuff
+//     break;
+
+//     case: bedroom sensor
+//       do bedroom sensor studd
+//       break
+//   }
+
 ////////////////////////////////////////////////////////////////////////
 //
-//  #####s
+//  #####
 // #     #  ####   ####  #    # ###### #####
 // #       #    # #    # #   #  #        #
 //  #####  #    # #      ####   #####    #

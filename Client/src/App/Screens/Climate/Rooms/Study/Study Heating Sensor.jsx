@@ -1,51 +1,57 @@
-// Components
-import React from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, css } from "aphrodite";
 
-class StudyValues extends React.Component {
-  constructor(props) {
-    super(props);
+const styles = StyleSheet.create({
+  valuesContainer: {
+    position: "absolute",
+    transform: "translate(-50%, -50%)",
+    height: "45px",
+    width: "110px",
+    top: "36%",
+    left: "49.5%",
 
-    this.state = {
-      activeIndex: 0,
-      computerPower: null,
-      textColour: "white"
-    };
+    borderRadius: "20px",
+
+    border: "1px solid rgba(255, 255, 255, 0.2)",
+    background: "rgba(50, 50, 50, 0.2)",
+    fontFamily: "Arial",
+    fontSize: "15px",
+
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center"
+  },
+  tempText: {
+    position: "absolute",
+    transform: "translate(-50%, -50%)",
+    top: "50%",
+    left: "25%"
+  },
+  humidityText: {
+    position: "absolute",
+    transform: "translate(-50%, -50%)",
+    top: "50%",
+    left: "78%"
   }
+});
 
-  componentWillMount = () => this.getData();
-  componentDidMount = () =>
-    (this.interval = setInterval(() => {
-      this.getData();
-    }, 100));
-  componentWillUnmount = () => clearInterval(this.interval);
+const StudyHeatingSensor = ({ showGraph }) => {
+  const [deviceData, setDeviceData] = useState(JSON.parse(localStorage.getItem("Study Heating Sensor")));
 
-  getData = () => {
-    try {
-      this.setState({ textColour: "white" });
-      var cache = JSON.parse(localStorage.getItem("Study Heating Sensor"));
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDeviceData(JSON.parse(localStorage.getItem("Study Heating Sensor")));
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [deviceData]);
 
-      this.setState({ temperature: cache.temperature });
-      this.setState({ humidity: cache.humidity });
-    } catch (error) {
-      this.setState({ textColour: "orangered" });
-    }
-  };
+  return (
+    <div style={{ color: deviceData.isConnected ? "white" : "orangeRed" }} className={css(styles.valuesContainer)} onClick={() => showGraph("Study")}>
+      <p className={css(styles.tempText)}>{deviceData.temperature}°C</p>
+      <p className={css(styles.humidityText)}>{deviceData.humidity}%</p>
+    </div>
+  );
+};
 
-  render() {
-    return (
-      <div className="studyValuesContainer" onClick={() => this.props.showGraph("Study")}>
-        <p style={{ color: this.state.textColour }} className="tempText">
-          {this.state.temperature}°C
-        </p>
-        <p style={{ color: this.state.textColour }} className="humidityText">
-          {this.state.humidity}%
-        </p>
-      </div>
-    );
-  }
-}
-
-export default StudyValues;
+export default StudyHeatingSensor;

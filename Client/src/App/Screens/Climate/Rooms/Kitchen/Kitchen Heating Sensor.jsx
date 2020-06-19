@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     transform: "translate(-50%, -50%)",
     height: "7.5%",
     width: "150px",
-    top: "100%",
+    top: "40%",
     left: "19%",
 
     borderRadius: "20px",
@@ -22,10 +22,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     textAlign: "center"
+  },
+  tempText: {
+    position: "absolute",
+    transform: "translate(-50%, -50%)",
+    top: "50%",
+    left: "25%"
+  },
+  humidityText: {
+    position: "absolute",
+    transform: "translate(-50%, -50%)",
+    top: "50%",
+    left: "78%"
   }
 });
 
-const KitchenHeatingSensor = props => {
+const KitchenHeatingSensor = ({ showGraph }) => {
   const [deviceData, setDeviceData] = useState(JSON.parse(localStorage.getItem("Kitchen Heating Sensor")));
 
   useEffect(() => {
@@ -36,13 +48,9 @@ const KitchenHeatingSensor = props => {
   }, [deviceData]);
 
   return (
-    <div className={css(styles.kitchenValuesContainer)} onClick={() => props.showGraph("Kitchen")}>
-      <p style={{ color: deviceData.textColour }} className="tempText">
-        {deviceData.temperature}°C
-      </p>
-      <p style={{ color: deviceData.textColour }} className="humidityText">
-        {deviceData.humidity}%
-      </p>
+    <div className={css(styles.kitchenValuesContainer)} onClick={() => showGraph("Kitchen")}>
+      <p className={css(styles.tempText)}>{deviceData.temperature}°C</p>
+      <p className={css(styles.humidityText)}>{deviceData.humidity}%</p>
     </div>
   );
 };

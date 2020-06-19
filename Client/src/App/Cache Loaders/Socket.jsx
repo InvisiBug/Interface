@@ -1,12 +1,18 @@
-// Couldnt figure out how to check the local socket and open an ip socket ipon failure
+// Couldnt figure out how to check the local socket and open an ip socket ip on failure
 // Components
 import React from "react";
 import openSocket from "socket.io-client";
+// import { DEVICES } from "../../Constants";
 
 class Socket extends React.Component {
   componentDidMount = () => {
     // const socket = openSocket('http://192.168.1.46:5001'); // Deployment
     const socket = openSocket("http://localhost:5001"); // Production,  Couldn't come figure out how to
+
+    // socket.on(DEVICES.kitchen.Lights, deviceData => {
+    //   if (deviceData == null) localStorage.setItem(DEVICES.kitchenHeatingSensor, null);
+    //   else localStorage.setItem(DEVICES.kitchenHeatingSensor, JSON.stringify(deviceData));
+    // });
 
     // Living Room
     socket.on("Living Room Heating Sensor", deviceData => {
@@ -28,8 +34,7 @@ class Socket extends React.Component {
 
     // Study
     socket.on("Study Heating Sensor", deviceData => {
-      if (deviceData == null) localStorage.setItem("Study Heating Sensor", null);
-      else localStorage.setItem("Study Heating Sensor", JSON.stringify(deviceData));
+      localStorage.setItem("Study Heating Sensor", JSON.stringify(deviceData));
     });
 
     // Our Room
