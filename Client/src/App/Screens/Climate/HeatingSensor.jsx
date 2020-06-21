@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, css } from "aphrodite";
+import { localStorageParser } from "../../../Helpers/localStorageDriver";
 
 const styles = StyleSheet.create({
-  valuesContainer: {
+  container: {
     position: "absolute",
     transform: "translate(-50%, -50%)",
     height: "45px",
     width: "110px",
-    top: "36%",
-    left: "49.5%",
 
     borderRadius: "20px",
 
@@ -36,22 +35,26 @@ const styles = StyleSheet.create({
   }
 });
 
-const StudyHeatingSensor = ({ showGraph }) => {
-  const [deviceData, setDeviceData] = useState(JSON.parse(localStorage.getItem("Study Heating Sensor")));
+const HeatingSensor = ({ showGraph, top, left, datapoint }) => {
+  const [deviceData, setDeviceData] = useState(localStorageParser(`${datapoint} Heating Sensor`));
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDeviceData(JSON.parse(localStorage.getItem("Study Heating Sensor")));
+      setDeviceData(localStorageParser(`${datapoint} Heating Sensor`));
     }, 100);
     return () => clearTimeout(timer);
-  }, [deviceData]);
+  }, [deviceData, datapoint]);
 
   return (
-    <div style={{ color: deviceData.isConnected ? "white" : "orangeRed" }} className={css(styles.valuesContainer)} onClick={() => showGraph("Study")}>
+    <div
+      style={{ color: deviceData.isConnected ? "white" : "orangeRed", top: `${top}%`, left: `${left}%` }}
+      className={css(styles.container)}
+      onClick={() => showGraph(datapoint)}
+    >
       <p className={css(styles.tempText)}>{deviceData.temperature}°C</p>
       <p className={css(styles.humidityText)}>{deviceData.humidity}%</p>
     </div>
   );
 };
 
-export default StudyHeatingSensor;
+export default HeatingSensor;

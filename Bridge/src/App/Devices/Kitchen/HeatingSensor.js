@@ -1,11 +1,13 @@
 ////////////////////////////////////////////////////////////////////////
 //
-// ██╗  ██╗██╗████████╗ ██████╗██╗  ██╗███████╗███╗   ██╗    ██╗  ██╗███████╗ █████╗ ████████╗██╗███╗   ██╗ ██████╗     ███████╗███████╗███╗   ██╗███████╗ ██████╗ ██████╗
-// ██║ ██╔╝██║╚══██╔══╝██╔════╝██║  ██║██╔════╝████╗  ██║    ██║  ██║██╔════╝██╔══██╗╚══██╔══╝██║████╗  ██║██╔════╝     ██╔════╝██╔════╝████╗  ██║██╔════╝██╔═══██╗██╔══██╗
-// █████╔╝ ██║   ██║   ██║     ███████║█████╗  ██╔██╗ ██║    ███████║█████╗  ███████║   ██║   ██║██╔██╗ ██║██║  ███╗    ███████╗█████╗  ██╔██╗ ██║███████╗██║   ██║██████╔╝
-// ██╔═██╗ ██║   ██║   ██║     ██╔══██║██╔══╝  ██║╚██╗██║    ██╔══██║██╔══╝  ██╔══██║   ██║   ██║██║╚██╗██║██║   ██║    ╚════██║██╔══╝  ██║╚██╗██║╚════██║██║   ██║██╔══██╗
-// ██║  ██╗██║   ██║   ╚██████╗██║  ██║███████╗██║ ╚████║    ██║  ██║███████╗██║  ██║   ██║   ██║██║ ╚████║╚██████╔╝    ███████║███████╗██║ ╚████║███████║╚██████╔╝██║  ██║
-// ╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝    ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝     ╚══════╝╚══════╝╚═╝  ╚═══╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝
+//  888    d8P  d8b 888             888
+//  888   d8P   Y8P 888             888
+//  888  d8P        888             888
+//  888d88K     888 888888  .d8888b 88888b.   .d88b.  88888b.
+//  8888888b    888 888    d88P"    888 "88b d8P  Y8b 888 "88b
+//  888  Y88b   888 888    888      888  888 88888888 888  888
+//  888   Y88b  888 Y88b.  Y88b.    888  888 Y8b.     888  888
+//  888    Y88b 888  "Y888  "Y8888P 888  888  "Y8888  888  888
 //
 ////////////////////////////////////////////////////////////////////////
 //
@@ -29,7 +31,6 @@ const functions = require("../../Functions.js");
 const path = require("path");
 const Engine = require("tingodb")();
 const db = new Engine.Db(path.join(__dirname, "../../../Databases/Heating"), {});
-// const db     = new Engine.Db(__dirname, {});
 
 // Schedule
 const schedule = require("node-schedule");
@@ -75,7 +76,6 @@ app.get("/api/heating/sensor/kitchen/setpoint/status", (req, res) => {
 
 app.post("/api/heating/sensor/kitchen/setpoint/set", (req, res) => {
   setpoint = req.body.value;
-  console.log(setpoint);
   res.end(null);
 });
 
@@ -115,19 +115,6 @@ client.on("message", (topic, payload) => {
   }
 });
 
-// client .message
-// {
-//   switch(topi)
-//   {
-//     case: kithcen sensor
-//       do kitchen sensor stuff
-//     break;
-
-//     case: bedroom sensor
-//       do bedroom sensor studd
-//       break
-//   }
-
 ////////////////////////////////////////////////////////////////////////
 //
 //  #####
@@ -140,8 +127,12 @@ client.on("message", (topic, payload) => {
 //
 ////////////////////////////////////////////////////////////////////////
 const sensorUpdate = setInterval(() => {
-  io.emit("Kitchen Heating Sensor", deviceData);
+  sendSocketData();
 }, 1 * 1000);
+
+const sendSocketData = () => {
+  io.emit("Kitchen Heating Sensor", deviceData);
+};
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -154,30 +145,30 @@ const sensorUpdate = setInterval(() => {
 //  ######  #    #   #   #    # #####  #    #  ####  ######
 //
 ////////////////////////////////////////////////////////////////////////
-var Hourly = new schedule.RecurrenceRule();
-Hourly.minute = 0;
+// var Hourly = new schedule.RecurrenceRule();
+// Hourly.minute = 0;
 
-schedule.scheduleJob(Hourly, () => {
-  if (deviceData) {
-    var data = {
-      temperature: deviceData.temperature,
-      humidity: deviceData.humidity,
-      timestamp: functions.currentTime(),
-    };
-    db.collection("Kitchen").insert(data, (err, res) => {
-      if (err) console.log(err);
-    });
-  } else {
-    data = {
-      temperature: null,
-      humidity: null,
-      timestamp: functions.currentTime(),
-    };
-    db.collection("Kitchen").insert(data, (err, res) => {
-      if (err) console.log(err);
-    });
-  }
-});
+// schedule.scheduleJob(Hourly, () => {
+//   if (deviceData) {
+//     var data = {
+//       temperature: deviceData.temperature,
+//       humidity: deviceData.humidity,
+//       timestamp: functions.currentTime(),
+//     };
+//     db.collection("Kitchen").insert(data, (err, res) => {
+//       if (err) console.log(err);
+//     });
+//   } else {
+//     data = {
+//       temperature: null,
+//       humidity: null,
+//       timestamp: functions.currentTime(),
+//     };
+//     db.collection("Kitchen").insert(data, (err, res) => {
+//       if (err) console.log(err);
+//     });
+//   }
+// });
 
 // const bedroomTemperatureController = setInterval(()  =>
 // {

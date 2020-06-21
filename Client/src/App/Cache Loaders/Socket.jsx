@@ -3,6 +3,7 @@
 import React from "react";
 import openSocket from "socket.io-client";
 // import { DEVICES } from "../../Constants";
+import { localStorageSaver } from "../../Helpers/localStorageDriver";
 
 class Socket extends React.Component {
   componentDidMount = () => {
@@ -16,31 +17,27 @@ class Socket extends React.Component {
 
     // Living Room
     socket.on("Living Room Heating Sensor", deviceData => {
-      if (deviceData == null) localStorage.setItem("Living Room Heating Sensor", null);
-      else localStorage.setItem("Living Room Heating Sensor", JSON.stringify(deviceData));
+      localStorageSaver("Living Room Heating Sensor", deviceData);
     });
 
     // Kitchen
     socket.on("Kitchen Heating Sensor", deviceData => {
-      if (deviceData == null) localStorage.setItem("Kitchen Heating Sensor", null);
-      else localStorage.setItem("Kitchen Heating Sensor", JSON.stringify(deviceData));
+      localStorageSaver("Kitchen Heating Sensor", deviceData);
     });
 
     // Liams Room
     socket.on("Liams Room Heating Sensor", deviceData => {
-      if (deviceData == null) localStorage.setItem("Liams Room Heating Sensor", null);
-      else localStorage.setItem("Liams Room Heating Sensor", JSON.stringify(deviceData));
+      localStorageSaver("Liams Room Heating Sensor", deviceData);
     });
 
     // Study
     socket.on("Study Heating Sensor", deviceData => {
-      localStorage.setItem("Study Heating Sensor", JSON.stringify(deviceData));
+      localStorageSaver("Study Heating Sensor", deviceData);
     });
 
     // Our Room
     socket.on("Our Room Heating Sensor", deviceData => {
-      if (deviceData == null) localStorage.setItem("Our Room Heating Sensor", null);
-      else localStorage.setItem("Our Room Heating Sensor", JSON.stringify(deviceData));
+      localStorageSaver("Our Room Heating Sensor", deviceData);
     });
 
     socket.on("Desk LEDs", deviceData => {

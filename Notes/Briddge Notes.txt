@@ -1,0 +1,12 @@
+// client .message
+// {
+//   switch(topi)
+//   {
+//     case: kithcen sensor
+//       do kitchen sensor stuff
+    // break;
+
+    // case: bedroom sensor
+      // do bedroom sensor studd
+      // break
+  // }

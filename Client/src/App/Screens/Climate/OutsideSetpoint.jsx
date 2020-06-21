@@ -6,8 +6,8 @@ import Col from "react-bootstrap/Col";
 
 import { StyleSheet, css } from "aphrodite";
 
-import DownArrow from "../../Common/Down.png";
-import UpArrow from "../../Common/Up.png";
+import DownArrow from "./Common/Down.png";
+import UpArrow from "./Common/Up.png";
 
 const styles = StyleSheet.create({
   screenPosition: {

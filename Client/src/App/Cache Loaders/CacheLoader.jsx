@@ -50,8 +50,15 @@ class LocalStorageUpdater extends React.Component {
       .then(response => response.text())
       .then(response => {
         try {
-          JSON.parse(response);
-          localStorage.setItem("currentWeatherData", response);
+          var weatherData = JSON.parse(response);
+
+          var deviceData = {
+            isConnected: true,
+            temperature: weatherData.currently.apparentTemperature,
+            humidity: Math.ceil(weatherData.currently.humidity * 100)
+          };
+
+          localStorage.setItem("Outside Heating Sensor", JSON.stringify(deviceData));
         } catch (err) {
           console.log(err);
         }
