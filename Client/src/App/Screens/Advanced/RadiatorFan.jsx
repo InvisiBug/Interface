@@ -1,107 +1,53 @@
 // Components
-import React from "react";
-// import Container from "react-bootstrap/Container";
+import React, { useEffect, useState } from "react";
+
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import Auto from "../../Common Modules/On Button";
 import Manual from "../../Common Modules/Off Button";
 
-class RadiatorFan extends React.Component {
-  constructor(props) {
-    super(props);
+const RadiatorFan = () => {
+  const [deviceData, setDeviceData] = useState(JSON.parse(localStorage.getItem("Radiator Fan")));
 
-    this.state = {
-      automatic: false,
-      fanActive: false,
-      titleColour: "white"
-    };
-  }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDeviceData(JSON.parse(localStorage.getItem("Radiator Fan")));
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [deviceData]);
 
-  componentWillMount = () => this.getRadiatorFan();
-  componentDidMount = () =>
-    (this.timer1 = setInterval(() => {
-      this.getRadiatorFan();
-    }, 1000));
-  componentWillUnmount = () => clearInterval(this.timer1);
+  return (
+    <div className="radiatorFanModule">
+      <h3 className="radiatorFanTitle" style={{ color: deviceData.isConnected ? "white" : "orangeRed" }}>
+        Radiator Fan
+      </h3>
 
-  getRadiatorFan = () => {
-    var cache = JSON.parse(localStorage.getItem("Radiator Fan"));
-    try {
-      cache.state ? this.setState({ fanActive: 1 }) : this.setState({ fanActive: 0 });
-      cache.automatic ? this.setState({ automatic: 1 }) : this.setState({ automatic: 0 });
+      <div className="radiatorFanAutoManualButtonsContainer">
+        <Row>
+          <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
+            <Manual name="Manual" isActive={!deviceData.isAutomatic} onClick={() => fetch("/api/RadiatorFanAutomatic/Off")} />
+          </Col>
 
-      console.log(cache.state);
-
-      this.setState({ titleColour: "white" });
-    } catch (error) {
-      this.setState({ titleColour: "orangered" });
-    }
-  };
-
-  // Auto Manual Switching Controls
-  auto = () => {
-    console.log("Auto Mode");
-    this.setState({ automatic: 1 });
-    fetch("/api/RadiatorFanAutomatic/On");
-  };
-
-  manual = () => {
-    console.log("Manual Mode");
-    this.setState({ automatic: 0 });
-    fetch("/api/RadiatorFanAutomatic/Off");
-  };
-
-  // Manual On / Off Controls
-  on = () => {
-    if (!this.state.automatic) {
-      console.log("Enable Fan");
-      this.setState({ fanActive: 1 });
-      fetch("/api/RadiatorFan/On");
-    }
-  };
-
-  off = () => {
-    if (!this.state.automatic) {
-      console.log("Disable Fan");
-      this.setState({ fanActive: 0 });
-      fetch("/api/RadiatorFan/Off");
-    }
-  };
-
-  render() {
-    return (
-      <div className="radiatorFanModule">
-        <h3 className="radiatorFanTitle" style={{ color: this.state.titleColour }}>
-          Radiator Fan
-        </h3>
-
-        <div className="radiatorFanAutoManualButtonsContainer">
-          <Row>
-            <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
-              <Manual name="Manual" isActive={!this.state.automatic} onClick={() => this.manual()} />
-            </Col>
-
-            <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
-              <Auto name="Auto" isActive={this.state.automatic} onClick={() => this.auto()} />
-            </Col>
-          </Row>
-        </div>
-
-        <div className={!this.state.automatic ? "radiatorFanManualControlsActive" : "radiatorFanManualControlsLocked"}>
-          <Row>
-            <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
-              <Manual name="Off" isActive={!this.state.fanActive} onClick={() => this.off()} />
-            </Col>
-
-            <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
-              <Auto name="On" isActive={this.state.fanActive} onClick={() => this.on()} />
-            </Col>
-          </Row>
-        </div>
+          <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
+            <Auto name="Auto" isActive={deviceData.isAutomatic} onClick={() => fetch("/api/RadiatorFanAutomatic/On")} />
+          </Col>
+        </Row>
       </div>
-    );
-  }
-}
+
+      <div className={!deviceData.isAutomatic ? "radiatorFanManualControlsActive" : "radiatorFanManualControlsLocked"}>
+        <Row>
+          <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
+            <Manual name="Off" isActive={!deviceData.isOn} onClick={() => fetch("/api/RadiatorFan/Off")} />
+          </Col>
+
+          <Col md={6} style={{ display: "flex", justifyContent: "center" }}>
+            <Auto name="On" isActive={deviceData.isOn} onClick={() => fetch("/api/RadiatorFan/On")} />
+          </Col>
+        </Row>
+      </div>
+    </div>
+  );
+};
 
 export default RadiatorFan;

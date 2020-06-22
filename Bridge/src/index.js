@@ -106,16 +106,16 @@ app.use(require("./App/Devices/Liams Room/HeatingSensor.js"));
 app.use(require("./App/Devices/Study/HeatingSensor.js"));
 
 // Our Roomrs
-app.use(require("./App/Devices/Our Room/Desk LEDs"));
-app.use(require("./App/Devices/Our Room/Screen LEDs"));
-app.use(require("./App/Devices/Our Room/Flood Light"));
-app.use(require("./App/Devices/Our Room/Table Lamp"));
-app.use(require("./App/Devices/Our Room/Flood Light.js"));
-app.use(require("./App/Devices/Our Room/Computer Audio.js"));
-app.use(require("./App/Devices/Our Room/Computer Power.js"));
+app.use(require("./App/Devices/OurRoom/Desk LEDs"));
+app.use(require("./App/Devices/OurRoom/Screen LEDs"));
+app.use(require("./App/Devices/OurRoom/FloodLight"));
+app.use(require("./App/Devices/OurRoom/Table Lamp"));
+app.use(require("./App/Devices/OurRoom/FloodLight.js"));
+app.use(require("./App/Devices/OurRoom/Computer Audio.js"));
+app.use(require("./App/Devices/OurRoom/Computer Power.js"));
 // app.use(require('./App/Devices/Our Room/Blanket.js'));
-app.use(require("./App/Devices/Our Room/HeatingSensor.js"));
-app.use(require("./App/Devices/Our Room/Radiator Fan.js"));
+app.use(require("./App/Devices/OurRoom/HeatingSensor.js"));
+app.use(require("./App/Devices/OurRoom/RadiatorFan.js"));
 
 // Historical
 app.use(require("./App/Historical.js"));

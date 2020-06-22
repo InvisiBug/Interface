@@ -1,11 +1,13 @@
 ////////////////////////////////////////////////////////////////////////
 //
-//  ██████╗ ███████╗██████╗ ██████╗  ██████╗  ██████╗ ███╗   ███╗     ██████╗██╗     ██╗███╗   ███╗ █████╗ ████████╗███████╗
-//  ██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔═══██╗██╔═══██╗████╗ ████║    ██╔════╝██║     ██║████╗ ████║██╔══██╗╚══██╔══╝██╔════╝
-//  ██████╔╝█████╗  ██║  ██║██████╔╝██║   ██║██║   ██║██╔████╔██║    ██║     ██║     ██║██╔████╔██║███████║   ██║   █████╗
-//  ██╔══██╗██╔══╝  ██║  ██║██╔══██╗██║   ██║██║   ██║██║╚██╔╝██║    ██║     ██║     ██║██║╚██╔╝██║██╔══██║   ██║   ██╔══╝
-//  ██████╔╝███████╗██████╔╝██║  ██║╚██████╔╝╚██████╔╝██║ ╚═╝ ██║    ╚██████╗███████╗██║██║ ╚═╝ ██║██║  ██║   ██║   ███████╗
-//  ╚═════╝ ╚══════╝╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝     ╚═╝     ╚═════╝╚══════╝╚═╝╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝
+//  .d88888b.                         8888888b.
+//  d88P" "Y88b                        888   Y88b
+//  888     888                        888    888
+//  888     888 888  888 888d888       888   d88P  .d88b.   .d88b.  88888b.d88b.
+//  888     888 888  888 888P"         8888888P"  d88""88b d88""88b 888 "888 "88b
+//  888     888 888  888 888           888 T88b   888  888 888  888 888  888  888
+//  Y88b. .d88P Y88b 888 888           888  T88b  Y88..88P Y88..88P 888  888  888
+//   "Y88888P"   "Y88888 888           888   T88b  "Y88P"   "Y88P"  888  888  888
 //
 ////////////////////////////////////////////////////////////////////////
 //
@@ -44,14 +46,13 @@ const schedule = require("node-schedule");
 //     #    #    # #    # # #    # #####  ###### ######  ####
 //
 ////////////////////////////////////////////////////////////////////////
-var sensorData = null;
+var deviceData;
+var timer;
 
 var setpoint = 22;
 var hysteresis = 0.5;
 
 var addHeat = false;
-
-var timer;
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -65,7 +66,7 @@ var timer;
 //
 ////////////////////////////////////////////////////////////////////////
 app.get("/api/heating/sensor/ourRoom/status", (req, res) => {
-  res.json(sensorData);
+  res.json(deviceData);
 });
 
 app.get("/api/heating/sensor/ourRoom/setpoint/status", (req, res) => {
@@ -94,13 +95,21 @@ client.on("message", (topic, payload) => {
     clearTimeout(timer);
 
     timer = setTimeout(() => {
-      sensorData = null;
+      deviceData.isConnected = false;
     }, 10 * 1000);
 
     if (payload != "Our Room Heating Sensor Disconnected") {
-      sensorData = JSON.parse(payload);
+      var mqttData = JSON.parse(payload);
+
+      deviceData = {
+        ...deviceData,
+        isConnected: true,
+        temperature: mqttData.temperature,
+        humidity: mqttData.humidity,
+        pressure: mqttData.pressure,
+        battery: mqttData.battery,
+      };
     } else {
-      sensorData = null;
       console.log("Our Room Heating Sensor Disconnected  at " + functions.printTime());
     }
   }
@@ -118,8 +127,12 @@ client.on("message", (topic, payload) => {
 //
 ////////////////////////////////////////////////////////////////////////
 const sensorUpdate = setInterval(() => {
-  io.emit("Our Room Heating Sensor", sensorData);
+  sendSocketData();
 }, 1 * 1000);
+
+const sendSocketData = () => {
+  io.emit("Our Room Heating Sensor", deviceData);
+};
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -132,30 +145,30 @@ const sensorUpdate = setInterval(() => {
 //  ######  #    #   #   #    # #####  #    #  ####  ######
 //
 ////////////////////////////////////////////////////////////////////////
-var Hourly = new schedule.RecurrenceRule();
-Hourly.minute = 0;
+// var Hourly = new schedule.RecurrenceRule();
+// Hourly.minute = 0;
 
-schedule.scheduleJob(Hourly, () => {
-  if (sensorData) {
-    var data = {
-      temperature: sensorData.temperature,
-      humidity: sensorData.humidity,
-      timestamp: functions.currentTime(),
-    };
-    db.collection("Our Room").insert(data, (err, res) => {
-      if (err) console.log(err);
-    });
-  } else {
-    data = {
-      temperature: null,
-      humidity: null,
-      timestamp: functions.currentTime(),
-    };
-    db.collection("Our Room").insert(data, (err, res) => {
-      if (err) console.log(err);
-    });
-  }
-});
+// schedule.scheduleJob(Hourly, () => {
+//   if (sensorData) {
+//     var data = {
+//       temperature: sensorData.temperature,
+//       humidity: sensorData.humidity,
+//       timestamp: functions.currentTime(),
+//     };
+//     db.collection("Our Room").insert(data, (err, res) => {
+//       if (err) console.log(err);
+//     });
+//   } else {
+//     data = {
+//       temperature: null,
+//       humidity: null,
+//       timestamp: functions.currentTime(),
+//     };
+//     db.collection("Our Room").insert(data, (err, res) => {
+//       if (err) console.log(err);
+//     });
+//   }
+// });
 
 // const bedroomtemperatureController = setInterval(()  =>
 // {

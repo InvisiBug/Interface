@@ -44,14 +44,13 @@ const schedule = require("node-schedule");
 //     #    #    # #    # # #    # #####  ###### ######  ####
 //
 ////////////////////////////////////////////////////////////////////////
-var study = null;
+var deviceData;
+var timer;
 
 var setpoint = 22;
 var hysteresis = 0.5;
 
 var addHeat = false;
-
-var timer;
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -65,7 +64,7 @@ var timer;
 //
 ////////////////////////////////////////////////////////////////////////
 app.get("/api/heating/sensor/study/status", (req, res) => {
-  res.json(study);
+  res.json(deviceData);
 });
 
 app.get("/api/heating/sensor/study/setpoint/status", (req, res) => {
@@ -94,14 +93,21 @@ client.on("message", (topic, payload) => {
     clearTimeout(timer);
 
     timer = setTimeout(() => {
-      console.log("Clearing Data");
-      study = null;
+      deviceData.isConnected = false;
     }, 10 * 1000);
 
     if (payload != "Study Heating Sensor Disconnected") {
-      study = JSON.parse(payload);
+      var mqttData = JSON.parse(payload);
+
+      deviceData = {
+        ...deviceData,
+        isConnected: true,
+        temperature: mqttData.temperature,
+        humidity: mqttData.humidity,
+        pressure: mqttData.pressure,
+        battery: mqttData.battery,
+      };
     } else {
-      // study = null;
       console.log("Study Heating Sensor Disconnected  at " + functions.printTime());
     }
   }
@@ -119,9 +125,12 @@ client.on("message", (topic, payload) => {
 //
 ////////////////////////////////////////////////////////////////////////
 const sensorUpdate = setInterval(() => {
-  io.emit("Study Heating Sensor", study);
-  // console.log(study)
+  sendSocketData();
 }, 1 * 1000);
+
+const sendSocketData = () => {
+  io.emit("Study Heating Sensor", deviceData);
+};
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -134,43 +143,43 @@ const sensorUpdate = setInterval(() => {
 //  ######  #    #   #   #    # #####  #    #  ####  ######
 //
 ////////////////////////////////////////////////////////////////////////
-var Hourly = new schedule.RecurrenceRule();
-Hourly.minute = 0;
+// var Hourly = new schedule.RecurrenceRule();
+// Hourly.minute = 0;
 
-schedule.scheduleJob(Hourly, () => {
-  var data;
-  if (study) {
-    data = {
-      temperature: study.temperature,
-      humidity: study.humidity,
-      timestamp: functions.currentTime(),
-    };
-    db.collection("Study").insert(data, (err, res) => {
-      if (err) console.log(err);
-    });
-  } else {
-    data = {
-      temperature: null,
-      humidity: null,
-      timestamp: functions.currentTime(),
-    };
-    db.collection("Study").insert(data, (err, res) => {
-      if (err) console.log(err);
-    });
-  }
-});
+// schedule.scheduleJob(Hourly, () => {
+//   var data;
+//   if (deviceData) {
+//     data = {
+//       temperature: deviceData.temperature,
+//       humidity: deviceData.humidity,
+//       timestamp: functions.currentTime(),
+//     };
+//     db.collection("Study").insert(data, (err, res) => {
+//       if (err) console.log(err);
+//     });
+//   } else {
+//     data = {
+//       temperature: null,
+//       humidity: null,
+//       timestamp: functions.currentTime(),
+//     };
+//     db.collection("Study").insert(data, (err, res) => {
+//       if (err) console.log(err);
+//     });
+//   }
+// });
 
 // const bedroomTemperatureController = setInterval(()  =>
 // {
 //   try
 //   {
-//     if((study.Temperature < setpoint - hysteresis))
+//     if((deviceData.Temperature < setpoint - hysteresis))
 //     {
 //       client.publish("Study Radiator Control", JSON.stringify({"Node": "Study Temperature Controller", "state": true}));
 //       client.publish("Heating Request Control",   JSON.stringify({"Node": "Study Temperature Controller", "state": true}));
 //     }
 //
-//     if((study.Temperature > setpoint + hysteresis))
+//     if((deviceData.Temperature > setpoint + hysteresis))
 //     {
 //       client.publish("Study Radiator Control", JSON.stringify({"Node": "Study Temperature Controller", "state": false}));
 //       client.publish("Heating Request Control",   JSON.stringify({"Node": "Study Temperature Controller", "state": false}));

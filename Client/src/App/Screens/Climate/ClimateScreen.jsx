@@ -8,7 +8,7 @@ import Month from "./Charts/Month";
 import Year from "./Charts/Year";
 
 import TimescaleSelection from "./Charts/Timescale";
-import Rooms from "./Rooms/Rooms.jsx";
+import Rooms from "./Rooms.jsx";
 import SensorInfo from "./SensorInfo.jsx";
 
 class Climate extends React.Component {
