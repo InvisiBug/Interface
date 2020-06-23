@@ -54,7 +54,7 @@ class LocalStorageUpdater extends React.Component {
 
           var deviceData = {
             isConnected: true,
-            temperature: weatherData.currently.apparentTemperature,
+            temperature: Math.round(weatherData.currently.apparentTemperature * 10) / 10,
             humidity: Math.ceil(weatherData.currently.humidity * 100)
           };
 
