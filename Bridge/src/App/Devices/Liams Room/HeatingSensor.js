@@ -54,6 +54,13 @@ var hysteresis = 0.5;
 
 var addHeat = false;
 
+timer = setTimeout(() => {
+  deviceData = {
+    ...deviceData,
+    isConnected: false,
+  };
+}, 10 * 1000);
+
 ////////////////////////////////////////////////////////////////////////
 //
 //    #    ######  ###
@@ -97,7 +104,7 @@ client.on("message", (topic, payload) => {
       deviceData = null;
     }, 10 * 1000);
 
-    if (payload != "Kitchen Heating Sensor Disconnected") {
+    if (payload != "Liams Room Heating Sensor Disconnected") {
       var mqttData = JSON.parse(payload);
 
       deviceData = {
@@ -109,7 +116,7 @@ client.on("message", (topic, payload) => {
         battery: mqttData.battery,
       };
     } else {
-      console.log("Kitchen heating sensor disconnected at " + functions.printTime());
+      console.log("Liams Room Heating Sensor Disconnected at " + functions.printTime());
     }
   }
 });

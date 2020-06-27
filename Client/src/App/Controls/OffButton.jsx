@@ -3,7 +3,7 @@ import { StyleSheet, css } from "aphrodite";
 
 const styles = StyleSheet.create({
   active: {
-    backgroundColor: "rgba(0,255,0,0.5)",
+    backgroundColor: "rgba(255,0,0,0.5)",
     border: "1px solid rgba(255, 255, 255, 1)",
     height: "50px",
     width: "100px",

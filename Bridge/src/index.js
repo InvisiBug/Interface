@@ -75,7 +75,12 @@ client.subscribe("#", (err) => {
 });
 
 client.on("connect", () => null);
-// client.on('message', (topic, payload) => console.log(chalk.white("Topic: " + topic) + chalk.cyan(" \t" + payload )));
+
+// client.on("message", (topic, payload) => console.log(chalk.white("Topic: " + topic) + chalk.cyan(" \t" + payload)));
+client.on("message", (topic, payload) => {
+  io.emit("MQTT Messages", JSON.parse(payload));
+  // console.log(JSON.parse(payload));
+});
 
 ////////////////////////////////////////////////////////////////////////
 //

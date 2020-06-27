@@ -1,10 +1,8 @@
 // Components
 import React from "react";
-import Container from "react-bootstrap/Container";
-import NavButtonSelection from "./NavBar/NavBar.jsx";
+import NavBar from "./NavBar/NavBar.jsx";
 
 // Modules
-// import BatteryMeter from './Battery Meter/BatteryMeter'
 import DateBox from "./Date and Time.jsx";
 import Dots from "./Dots";
 
@@ -16,6 +14,7 @@ import Climate from "./Screens/Climate/ClimateScreen.jsx";
 import Printer from "./Screens/Printer/Printer.jsx";
 import Heating from "./Screens/Heating/Heating.jsx";
 import Advanced from "./Screens/Advanced/AdvancedScreen";
+import Logger from "./Cache Loaders/MqttLogger";
 
 // import Plant           from './Components/Screens/PlantScreen.jsx';
 // import Schedules from './Screens/Schedules/Schedules.jsx';
@@ -64,10 +63,7 @@ class App extends React.Component {
         <div className="screenWrapper">
           <div className="background" />
 
-          <div className="navBarWrapper">
-            <NavButtonSelection changeScreen={this.changeScreen} screen={this.state.screen} />
-          </div>
-          {/* <BatteryMeter/> */}
+          <NavBar changeScreen={this.changeScreen} screen={this.state.screen} />
 
           {navigator.platform === "Win32" && <Dots />}
           {/* {navigator.platform === "MacIntel" && <Dots />} */}
@@ -91,6 +87,8 @@ class App extends React.Component {
             // this.state.screen === "Blanket"  ? <ElectricBlanket/>  :
             this.state.screen === "Heating" ? (
               <Heating />
+            ) : this.state.screen === "MQTT" ? (
+              <Logger />
             ) : null}
           </div>
         </div>

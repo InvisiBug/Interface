@@ -35,7 +35,8 @@ const functions = require("../../Functions.js");
 //     #    #    # #    # # #    # #####  ###### ######  ####
 //
 ////////////////////////////////////////////////////////////////////////
-var screenLEDs = null;
+var deviceData;
+var timer;
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -49,35 +50,35 @@ var screenLEDs = null;
 //
 ////////////////////////////////////////////////////////////////////////
 app.post("/api/screenLEDs/update", (req, res) => {
-  screenLEDs = req.body;
+  deviceData = req.body;
 
-  client.publish("Screen LEDs Control", JSON.stringify(screenLEDs));
+  client.publish("Screen LEDs Control", JSON.stringify(deviceData));
   res.end(null);
 });
 
 app.get("/api/screenLEDs/colour", (req, res) => {
-  screenLEDs.mode = null;
+  deviceData.mode = null;
 
   client.publish("Screen LEDs Control", "0");
   res.end(null);
 });
 
 app.get("/api/screenLEDs/ambient/on", (req, res) => {
-  screenLEDs.mode = "ambient";
+  deviceData.mode = "ambient";
 
   client.publish("Screen LEDs Control", "1");
   res.end(null);
 });
 
 app.get("/api/screenLEDs/rainbow/on", (req, res) => {
-  screenLEDs.mode = "rainbow";
+  deviceData.mode = "rainbow";
 
   client.publish("Screen LEDs Control", "2");
   res.end(null);
 });
 
 app.get("/api/screenLEDs/fade/on", (req, res) => {
-  screenLEDs.mode = "fade";
+  deviceData.mode = "fade";
 
   client.publish("Screen LEDs Control", "3");
   res.end(null);
@@ -96,11 +97,25 @@ app.get("/api/screenLEDs/fade/on", (req, res) => {
 ////////////////////////////////////////////////////////////////////////
 client.on("message", (topic, payload) => {
   if (topic == "Screen LEDs") {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      deviceData.isConnected = false;
+    }, 10 * 1000);
+
     if (payload != "Screen LEDs Disconnected") {
-      screenLEDs = JSON.parse(payload);
+      var mqttData = JSON.parse(payload);
+
+      deviceData = {
+        ...deviceData,
+        isConnected: true,
+        red: mqttData.red,
+        green: mqttData.green,
+        blue: mqttData.blue,
+        mode: mqttData.mode,
+      };
     } else {
-      screenLEDs = null;
-      console.log("Screen LEDs Disconnected at " + functions.printTime());
+      console.log("Screen LEDs Disconnected  at " + functions.printTime());
     }
   }
 });
@@ -117,5 +132,9 @@ client.on("message", (topic, payload) => {
 //
 ////////////////////////////////////////////////////////////////////////
 const sensorUpdate = setInterval(() => {
-  io.emit("Screen LEDs", screenLEDs);
+  sendSocketData();
 }, 1 * 1000);
+
+const sendSocketData = () => {
+  io.emit("Screen LEDs", deviceData);
+};
