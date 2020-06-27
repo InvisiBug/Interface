@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
     left: "0px",
     maxWidth: "120px",
 
-    background: "rgba(255, 255, 255, .05)"
+    background: "rgba(255, 255, 255, .05)",
+    border: "1px solid red"
   }
 });
 
