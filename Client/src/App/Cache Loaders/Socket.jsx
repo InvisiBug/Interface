@@ -1,7 +1,7 @@
 // Couldnt figure out how to check the local socket and open an ip socket ip on failure
 import openSocket from "socket.io-client";
 // import { DEVICES } from "../../Constants";
-import { localStorageSaver } from "../../Helpers/localStorageDriver";
+import { localStorageSaver, localStorageParser } from "../../Helpers/localStorageDriver";
 
 const Socket = () => {
   // const socket = openSocket('http://192.168.1.46:5001'); // Deployment
@@ -28,6 +28,22 @@ const Socket = () => {
       localStorageSaver(device.name, deviceData);
     });
     return null;
+  });
+
+  let logLength = 20;
+
+  var log = [];
+  if (localStorageParser("Mqtt")) {
+    log = localStorageParser("Mqtt");
+  }
+
+  socket.on("MQTT Messages", payload => {
+    for (let i = 0; i < logLength; i++) {
+      log[i] = log[i + 1];
+    }
+    log[logLength - 1] = payload;
+
+    localStorageSaver("Mqtt", log);
   });
 
   return null;

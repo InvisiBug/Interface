@@ -32,7 +32,15 @@ const app = (module.exports = express());
 //     #    #    # #    # # #    # #####  ###### ######  ####
 //
 ////////////////////////////////////////////////////////////////////////
-var tableLamp = null;
+var deviceData;
+var timer;
+
+timer = setTimeout(() => {
+  deviceData = {
+    ...deviceData,
+    isConnected: false,
+  };
+}, 10 * 1000);
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -46,19 +54,19 @@ var tableLamp = null;
 //
 ////////////////////////////////////////////////////////////////////////
 app.get("/api/tableLamp/Status", (req, res) => {
-  res.json(tableLamp);
+  res.json(deviceData);
 });
 
 app.post("/api/tableLamp/Update", (req, res) => {
-  tableLamp = {
+  deviceData = {
     Node: "Table Lamp",
     red: req.body.red,
     green: req.body.green,
     blue: req.body.blue,
   };
 
-  client.publish("Table Lamp Control", JSON.stringify(tableLamp));
-  res.json(tableLamp);
+  client.publish("Table Lamp Control", JSON.stringify(deviceData));
+  res.json(deviceData);
 });
 
 ////////////////////////////////////////////////////////////////////////
@@ -74,11 +82,23 @@ app.post("/api/tableLamp/Update", (req, res) => {
 ////////////////////////////////////////////////////////////////////////
 client.on("message", (topic, payload) => {
   if (topic == "Table Lamp") {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      deviceData.isConnected = false;
+    }, 10 * 1000);
+
     if (payload != "Table Lamp Disconnected") {
-      tableLamp = JSON.parse(payload);
-    } else {
-      tableLamp = null;
-      // console.log("Table Lamp Disconnected");
+      var mqttData = JSON.parse(payload);
+
+      deviceData = {
+        ...deviceData,
+        isConnected: true,
+        red: 20,
+        green: mqttData.green,
+        blue: mqttData.blue,
+        mode: mqttData.mode,
+      };
     }
   }
 });
@@ -95,5 +115,9 @@ client.on("message", (topic, payload) => {
 //
 ////////////////////////////////////////////////////////////////////////
 const sensorUpdate = setInterval(() => {
-  io.emit("Table Lamp", tableLamp);
+  sendSocketData();
 }, 1 * 1000);
+
+const sendSocketData = () => {
+  io.emit("Table Lamp", deviceData);
+};

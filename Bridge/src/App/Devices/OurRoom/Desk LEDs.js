@@ -21,6 +21,8 @@
 const express = require("express");
 const app = (module.exports = express());
 
+const functions = require("../../Functions");
+
 ////////////////////////////////////////////////////////////////////////
 //
 //  #     #
@@ -32,7 +34,15 @@ const app = (module.exports = express());
 //     #    #    # #    # # #    # #####  ###### ######  ####
 //
 ////////////////////////////////////////////////////////////////////////
-var deviceData = null;
+var deviceData;
+var timer;
+
+timer = setTimeout(() => {
+  deviceData = {
+    ...deviceData,
+    isConnected: false,
+  };
+}, 10 * 1000);
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -73,11 +83,25 @@ app.post("/api/deskLEDs/Update", (req, res) => {
 ////////////////////////////////////////////////////////////////////////
 client.on("message", (topic, payload) => {
   if (topic == "Desk LEDs") {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      deviceData.isConnected = false;
+    }, 10 * 1000);
+
     if (payload != "Desk LEDs Disconnected") {
-      deviceData = JSON.parse(payload);
+      var mqttData = JSON.parse(payload);
+
+      deviceData = {
+        ...deviceData,
+        isConnected: true,
+        red: mqttData.red,
+        green: mqttData.green,
+        blue: mqttData.blue,
+        mode: mqttData.mode,
+      };
     } else {
-      deviceData = null;
-      console.log("Desk LEDs Disconnected");
+      console.log("Desk LEDs Disconnected  at " + functions.printTime());
     }
   }
 });

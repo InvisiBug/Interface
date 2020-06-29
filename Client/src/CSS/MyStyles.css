@@ -8,117 +8,47 @@
 // #     # #    # #   ##   #   #      #   ##   #   
 //  #####   ####  #    #   #   ###### #    #   #  
 //
-///////////////////////////////////////////////////////////////////////*/ 
-html, body
-{
-  margin:  0;
+///////////////////////////////////////////////////////////////////////*/
+html,
+body {
+  margin: 0;
   padding: 0;
 }
 
-.screenWrapper
-{
+.screenWrapper {
   position: absolute;
   transform: translate(-50%, -50%);
-  height:    100%;
-  width:     100%;
-  top:       50%;
-  left:      50%;
+  height: 100%;
+  width: 100%;
+  top: 50%;
+  left: 50%;
 }
 
-.background
-{
-  position:  absolute;
+.background {
+  position: absolute;
   transform: translate(-50%, -50%);
-  height:    100%;
-  width:     100%;
-  top:       50%;
-  left:      50%;
-
+  height: 100%;
+  width: 100%;
+  top: 50%;
+  left: 50%;
 
   background: url("../App/Backgrounds/Red.jpg");
-  background-repeat: no-repeat;  
+  background-repeat: no-repeat;
   background-size: cover;
-  
+
   /*z-index: -1;*/
 }
 
-.dotsCanvas
-{
-  background: rgba(255,255,255,0);
-  position:   absolute;
-  width:      100%;
-  height:     100%;
-  padding:    0;
-  margin:     0;
+.dotsCanvas {
+  background: rgba(255, 255, 255, 0);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
 
-  top:        0;
-  left:       0;
-}
-
-.contentWrapper
-{
-  position:  absolute;
-  transform: translate(-100%, -50%);
-  height:    100%;
-  width:     90%;
-  top:       50%;
-  left:      100%;
-
-  /*background-color: red;*/
-}
-
-
-/*//////////////////////////////////////////////////////////////////////
-//
-//  ######                              
-//  #     #  ####  #    # ###### #####  
-//  #     # #    # #    # #      #    # 
-//  ######  #    # #    # #####  #    # 
-//  #       #    # # ## # #      #####  
-//  #       #    # ##  ## #      #   #  
-//  #        ####  #    # ###### #    #  
-//
-///////////////////////////////////////////////////////////////////////*/
-.heatingBoostModule
-{
-  position:  absolute;
-  transform: translate(-50%, -50%);
-  height:    120px;
-  width:     300px;
-  top:       50%;
-  left:      75%;
-
-  border-radius: 20px;
-
-  border:      1px solid rgba(255, 255, 255, 0.2);
-  background:  rgba(50, 50, 50, 0.1);
-  color:       white;
-  font-family: "Arial";
-  font-size:   25px;
-
-  display:         flex;
-  align-items:     center;
-  justify-content: center;
-  text-align:      center;
-}
-
-.heatingBoostTitle
-{
-  position:  absolute;
-  transform: translate(-50%, -50%);
-  top:       25%;
-  left:      50%;
-  white-space: nowrap;
-}
-
-.heatingBoostButtonsContainer
-{
-  /*background-color: red;*/
-  position:  absolute;
-  transform: translate(-50%, -50%);
-  width:     75%;
-  top:       70%;
-  left:      50%;
+  top: 0;
+  left: 0;
 }
 
 /*//////////////////////////////////////////////////////////////////////
@@ -132,65 +62,110 @@ html, body
 //  #        ####  #    # ###### #    #  
 //
 ///////////////////////////////////////////////////////////////////////*/
-.heatingControlsContainer
-{
-  position:  absolute;
+.heatingBoostModule {
+  position: absolute;
   transform: translate(-50%, -50%);
-  height:    200px;
-  width:     1100px;
-  top:       20%;
-  left:      50%;
-}
-
-.activeIndicator
-{
-  position:  absolute;
-  transform: translate(-50%, -50%);
-  height:    64px;
-  width:     64px;
-  top:       50%;
-  left:      50%;
-  opacity:   0.8;
-}
-
-.heatingOnOffModule
-{
-  position:  absolute;
-  transform: translate(-50%, -50%);
-  height:    120px;
-  width:     300px;
-  top:       50%;
-  left:      25%;
+  height: 120px;
+  width: 300px;
+  top: 50%;
+  left: 75%;
 
   border-radius: 20px;
 
-  border:      1px solid rgba(255, 255, 255, 0.2);
-  background:  rgba(50, 50, 50, 0.1);
-  color:       white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(50, 50, 50, 0.1);
+  color: white;
   font-family: "Arial";
-  font-size:   25px;
+  font-size: 25px;
 
-  display:         flex;
-  align-items:     center;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  text-align:      center;
+  text-align: center;
 }
 
-.heatingOnOffTitle
-{
-  position:  absolute;
+.heatingBoostTitle {
+  position: absolute;
   transform: translate(-50%, -50%);
-  top:       25%;
-  left:      50%;
+  top: 25%;
+  left: 50%;
   white-space: nowrap;
 }
 
-.heatingOnOffButtonsContainer
-{
+.heatingBoostButtonsContainer {
   /*background-color: red;*/
-  position:  absolute;
+  position: absolute;
   transform: translate(-50%, -50%);
-  width:     75%;
-  top:       70%;
-  left:      50%;
+  width: 75%;
+  top: 70%;
+  left: 50%;
+}
+
+/*//////////////////////////////////////////////////////////////////////
+//
+//  ######                              
+//  #     #  ####  #    # ###### #####  
+//  #     # #    # #    # #      #    # 
+//  ######  #    # #    # #####  #    # 
+//  #       #    # # ## # #      #####  
+//  #       #    # ##  ## #      #   #  
+//  #        ####  #    # ###### #    #  
+//
+///////////////////////////////////////////////////////////////////////*/
+.heatingControlsContainer {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 200px;
+  width: 1100px;
+  top: 20%;
+  left: 50%;
+}
+
+.activeIndicator {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 64px;
+  width: 64px;
+  top: 50%;
+  left: 50%;
+  opacity: 0.8;
+}
+
+.heatingOnOffModule {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 120px;
+  width: 300px;
+  top: 50%;
+  left: 25%;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(50, 50, 50, 0.1);
+  color: white;
+  font-family: "Arial";
+  font-size: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.heatingOnOffTitle {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 25%;
+  left: 50%;
+  white-space: nowrap;
+}
+
+.heatingOnOffButtonsContainer {
+  /*background-color: red;*/
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  top: 70%;
+  left: 50%;
 }

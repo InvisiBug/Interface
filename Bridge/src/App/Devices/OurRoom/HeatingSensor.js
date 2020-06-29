@@ -54,6 +54,13 @@ var hysteresis = 0.5;
 
 var addHeat = false;
 
+timer = setTimeout(() => {
+  deviceData = {
+    ...deviceData,
+    isConnected: false,
+  };
+}, 10 * 1000);
+
 ////////////////////////////////////////////////////////////////////////
 //
 //    #    ######  ###

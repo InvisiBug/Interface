@@ -13,7 +13,6 @@ import "./CSS/Weather.css";
 import "./CSS/Graphs.css";
 import "./CSS/Button.css";
 import "./CSS/Lights.css";
-import "./CSS/NavBar.css";
 import "./CSS/Schedule.css";
 import "./CSS/HeatingSensors.css";
 import "./CSS/Advanced.css";

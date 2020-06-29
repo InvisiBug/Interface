@@ -10,7 +10,7 @@ import ScreenLEDs from "./ScreenLEDs";
 class Lights extends React.Component {
   render() {
     return (
-      <div className="lightScreen">
+      <div>
         <Floodlight />
         <DeskLEDs />
         <TableLamp />

@@ -3,7 +3,7 @@ import React from "react";
 import { jsx, css } from "@emotion/core";
 
 const active = css`
-  background-color: rgba(0, 255, 0, 0.5);
+  background-color: rgba(255, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 1);
   height: 50px;
   width: 100px;
@@ -34,7 +34,7 @@ const OnButton = ({ name, isActive, handleClick }) => {
   return (
     <div>
       <div css={style} onClick={handleClick}>
-        On
+        Off
       </div>
     </div>
   );

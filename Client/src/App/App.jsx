@@ -1,10 +1,9 @@
 // Components
 import React from "react";
-import Container from "react-bootstrap/Container";
-import NavButtonSelection from "./NavBar/NavBar.jsx";
+import NavBar from "./NavBar/NavBar.jsx";
+import { StyleSheet, css } from "aphrodite";
 
 // Modules
-// import BatteryMeter from './Battery Meter/BatteryMeter'
 import DateBox from "./Date and Time.jsx";
 import Dots from "./Dots";
 
@@ -16,6 +15,7 @@ import Climate from "./Screens/Climate/ClimateScreen.jsx";
 import Printer from "./Screens/Printer/Printer.jsx";
 import Heating from "./Screens/Heating/Heating.jsx";
 import Advanced from "./Screens/Advanced/AdvancedScreen";
+import Logger from "./Cache Loaders/MqttLogger";
 
 // import Plant           from './Components/Screens/PlantScreen.jsx';
 // import Schedules from './Screens/Schedules/Schedules.jsx';
@@ -27,6 +27,55 @@ import CacheLoader from "./Cache Loaders/CacheLoader";
 import ScheduleCollector from "./Cache Loaders/ScheduleCollector";
 // import TemperatureGraphsDataCollector from "./Cache Loaders/TemperatureGraphsDataCollector";
 import Socket from "./Cache Loaders/Socket";
+import backgroundImage from "../App/Backgrounds/Red.jpg";
+import EmotionTester from "./EmotionTest";
+
+let navWidth = "50%";
+const styles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    transform: "translate(-50%, -50%)",
+    height: "100%",
+    width: "100%",
+    top: "50%",
+    left: "50%",
+    border: "10px solid orange"
+  },
+  navbar: {
+    position: "absolute",
+
+    height: "100%",
+    width: "10%",
+    top: "0px",
+    left: "0px",
+    maxWidth: "120px",
+
+    background: "rgba(255, 255, 255, .05)"
+  },
+  content: {
+    position: "absolute",
+    transform: "translate(-100%, -50%)",
+    height: "100%",
+    width: "90%",
+    top: "50%",
+    left: "100%",
+    border: "1px solid red"
+  },
+  background: {
+    position: "absolute",
+    transform: "translate(-50%, -50%)",
+    height: "100%",
+    width: "100%",
+    top: "50%",
+    left: "50%",
+
+    // background: url("../App/Backgrounds/Red.jpg"),
+    background: `url(${backgroundImage})`,
+    // background: "black",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover"
+  }
+});
 
 class App extends React.Component {
   constructor(props) {
@@ -54,47 +103,48 @@ class App extends React.Component {
 
   render() {
     return (
+      // <EmotionTester />
       <div>
-        <CacheLoader />
+        {/* <CacheLoader /> */}
         {/* <SystemDataCollector/> */}
         {/* <TemperatureGraphsDataCollector/> */}
-        <ScheduleCollector />
+        {/* <ScheduleCollector /> */}
         <Socket />
 
-        <div className="screenWrapper">
-          <div className="background" />
+        {/* <div classname={css(styles.navbar)}> */}
+        {/* <div className="background" /> */}
+        <div className={css(styles.background)} />
 
-          <div className="navBarWrapper">
-            <NavButtonSelection changeScreen={this.changeScreen} screen={this.state.screen} />
-          </div>
-          {/* <BatteryMeter/> */}
+        <NavBar style={styles.navbar} changeScreen={this.changeScreen} screen={this.state.screen} />
+        <EmotionTester />
 
-          {navigator.platform === "Win32" && <Dots />}
-          {/* {navigator.platform === "MacIntel" && <Dots />} */}
+        {/* {navigator.platform === "Win32" && <Dots />} */}
+        {/* {navigator.platform === "MacIntel" && <Dots />} */}
+        <div className={css(styles.content)}>
+          {this.state.screen !== "Printer" && <DateBox />}
 
-          <div className="contentWrapper">
-            {this.state.screen !== "Printer" && <DateBox />}
-
-            {this.state.screen === "Home" ? (
-              <Home />
-            ) : this.state.screen === "Computer" ? (
-              <Computer />
-            ) : this.state.screen === "Lights" ? (
-              <Lights />
-            ) : this.state.screen === "Climate" ? (
-              <Climate />
-            ) : this.state.screen === "Printer" ? (
-              <Printer />
-            ) : this.state.screen === "Advanced" ? (
-              <Advanced />
-            ) : // this.state.screen === "Schedules" ? <Schedules/>  :
-            // this.state.screen === "Blanket"  ? <ElectricBlanket/>  :
-            this.state.screen === "Heating" ? (
-              <Heating />
-            ) : null}
-          </div>
+          {this.state.screen === "Home" ? (
+            <Home />
+          ) : this.state.screen === "Computer" ? (
+            <Computer />
+          ) : this.state.screen === "Lights" ? (
+            <Lights />
+          ) : this.state.screen === "Climate" ? (
+            <Climate />
+          ) : this.state.screen === "Printer" ? (
+            <Printer />
+          ) : this.state.screen === "Advanced" ? (
+            <Advanced />
+          ) : // this.state.screen === "Schedules" ? <Schedules/>  :
+          // this.state.screen === "Blanket"  ? <ElectricBlanket/>  :
+          this.state.screen === "Heating" ? (
+            <Heating />
+          ) : this.state.screen === "MQTT" ? (
+            <Logger />
+          ) : null}
         </div>
       </div>
+      // </div>
     );
   }
 }
