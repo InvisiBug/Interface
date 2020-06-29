@@ -16,9 +16,9 @@ const styles = StyleSheet.create({
 
 const AdvancedScreen = () => {
   return (
-    <div className={css(styles.container)}>
-      <RadiatorFan />
-    </div>
+    // <div className={css(styles.container)}>
+    <RadiatorFan />
+    // </div>
   );
 };
 

@@ -9,9 +9,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     transform: "translate(-50%, -50%)",
     height: "850px",
-    width: "1200px",
+    width: "100%",
+    // width: "1200px",
     left: "50%",
-    top: "50%"
+    top: "50%",
+    border: "1px solid blue"
   }
 });
 

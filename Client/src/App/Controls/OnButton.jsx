@@ -1,37 +1,40 @@
+/** @jsx jsx */
 import React from "react";
-import { StyleSheet, css } from "aphrodite";
+import { jsx, css } from "@emotion/core";
 
-const styles = StyleSheet.create({
-  active: {
-    backgroundColor: "rgba(0,255,0,0.5)",
-    border: "1px solid rgba(255, 255, 255, 1)",
-    height: "50px",
-    width: "100px",
-    fontSize: "21px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "0.25rem"
-  },
+const active = css`
+  background-color: rgba(0, 255, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 1);
+  height: 50px;
+  width: 100px;
+  font-size: 21px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.25rem;
+  /* border: 1px solid red; */
+`;
 
-  inactive: {
-    backgroundColor: "rgba(255,255,255,0.2)",
-    border: "1px solid rgba(255, 255, 255, 1)",
-    height: "50px",
-    width: "100px",
-    fontSize: "21px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "0.25rem"
-  }
-});
+const inactive = css`
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 1);
+  height: 50px;
+  width: 100px;
+  font-size: 21px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.25rem;
+`;
 
 const OnButton = ({ name, isActive, handleClick }) => {
+  var style;
+  isActive ? (style = active) : (style = inactive);
+
   return (
     <div>
-      <div className={isActive ? css(styles.active) : css(styles.inactive)} onClick={() => handleClick()}>
-        {name}
+      <div css={style} onClick={handleClick}>
+        On
       </div>
     </div>
   );

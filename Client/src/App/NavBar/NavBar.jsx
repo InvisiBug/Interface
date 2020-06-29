@@ -27,8 +27,7 @@ const styles = StyleSheet.create({
     left: "0px",
     maxWidth: "120px",
 
-    background: "rgba(255, 255, 255, .05)",
-    border: "1px solid red"
+    background: "rgba(255, 255, 255, .05)"
   }
 });
 
@@ -63,10 +62,9 @@ const navButtons = [
   }
 ];
 
-const NavButtonSelection = ({ screen, changeScreen }) => {
-  console.log(screen);
+const NavBar = ({ style, screen, changeScreen }) => {
   return (
-    <div className={css(styles.container)}>
+    <div className={css(style)}>
       {navButtons.map(button => (
         <NavButton name={button.name} selection={screen} icon={button.icon} key={Math.random()} handleClick={() => changeScreen(button.name)} />
       ))}
@@ -74,4 +72,4 @@ const NavButtonSelection = ({ screen, changeScreen }) => {
   );
 };
 
-export default NavButtonSelection;
+export default NavBar;
