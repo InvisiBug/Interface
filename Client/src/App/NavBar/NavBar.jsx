@@ -53,7 +53,7 @@ const navButtons = [
   //   icon: Heating
   // },
   {
-    name: "Advanced",
+    name: "test",
     icon: Gear
   },
   {
