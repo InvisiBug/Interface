@@ -26,17 +26,17 @@ const inactive = css`
   border-radius: 0.25rem;
 `;
 
-const OnButton = ({ name, isActive, handleClick }) => {
+const AutoButton = ({ name, isActive, handleClick }) => {
   var style;
   isActive ? (style = active) : (style = inactive);
 
   return (
     <>
       <div css={style} onClick={handleClick}>
-        On
+        Auto
       </div>
     </>
   );
 };
 
-export default OnButton;
+export default AutoButton;

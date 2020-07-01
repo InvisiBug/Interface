@@ -32,11 +32,11 @@ const OnButton = ({ name, isActive, handleClick }) => {
   isActive ? (style = active) : (style = inactive);
 
   return (
-    <div>
+    <>
       <div css={style} onClick={handleClick}>
         Off
       </div>
-    </div>
+    </>
   );
 };
 

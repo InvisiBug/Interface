@@ -104,9 +104,9 @@ class Dots extends React.Component {
 
   render() {
     return (
-      <div>
+      <>
         <canvas ref={this.canvasRef} className="dotsCanvas" />
-      </div>
+      </>
     );
   }
 }
