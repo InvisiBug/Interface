@@ -27,7 +27,7 @@ class HeatingOnOff extends React.Component {
   componentWillUnmount = () => clearInterval(this.timer);
 
   getState = () => {
-    var cache = JSON.parse(localStorage.getItem("Heating Schedule"));
+    var cache = JSON.parse(localStorage.getItem("heatingSchedule"));
     try {
       cache.enable ? this.setState({ activeIndex: 1 }) : this.setState({ activeIndex: 0 });
 
@@ -45,9 +45,9 @@ class HeatingOnOff extends React.Component {
       }, 100);
     }, 1500);
 
-    var cache = JSON.parse(localStorage.getItem("Heating Schedule"));
+    var cache = JSON.parse(localStorage.getItem("heatingSchedule"));
     cache.enable = true;
-    localStorage.setItem("Heating Schedule", JSON.stringify(cache));
+    localStorage.setItem("heatingSchedule", JSON.stringify(cache));
 
     this.setState({ activeIndex: 1 });
 
@@ -70,9 +70,9 @@ class HeatingOnOff extends React.Component {
 
     this.setState({ activeIndex: 0 });
 
-    var cache = JSON.parse(localStorage.getItem("Heating Schedule"));
+    var cache = JSON.parse(localStorage.getItem("heatingSchedule"));
     cache.enable = false;
-    localStorage.setItem("Heating Schedule", JSON.stringify(cache));
+    localStorage.setItem("heatingSchedule", JSON.stringify(cache));
 
     fetch("/api/heating/enable/update", {
       headers: { "Content-Type": "application/json" },

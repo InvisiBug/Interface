@@ -104,7 +104,7 @@ client.on("message", (topic, payload) => {
     timer = setTimeout(() => {
       deviceData.isConnected = false;
     }, 10 * 1000);
-
+    // `${name} Heating Sensor Disconnected`
     if (payload != "Kitchen Heating Sensor Disconnected") {
       var mqttData = JSON.parse(payload);
 

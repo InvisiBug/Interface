@@ -23,6 +23,9 @@ const express = require("express");
 const app = (module.exports = express());
 const device = "computerPower";
 
+// Functions
+const functions = require("../../Functions.js");
+
 ////////////////////////////////////////////////////////////////////////
 //
 //  #     #
@@ -82,7 +85,7 @@ client.on("message", (topic, payload) => {
       deviceData = JSON.parse(payload);
     } else {
       deviceData = null;
-      console.log("Computer Power Disconnected");
+      console.log("Computer power disconnected at " + functions.printTime());
     }
   }
 });

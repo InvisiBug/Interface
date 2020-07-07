@@ -1,13 +1,10 @@
 // Components
 import React from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
 import Individual from "./Individual";
 import OnOff from "./On Off";
 import Boost from "./Boost";
-import ActiveIndicator from "./ActiveIndicator";
+// import ActiveIndicator from "./ActiveIndicator";
 
 class Schedule extends React.Component {
   constructor(props) {
@@ -27,9 +24,9 @@ class Schedule extends React.Component {
   componentWillUnmount = () => clearInterval(this.timer1);
 
   getHeatingSchedule = () => {
-    var cache = JSON.parse(localStorage.getItem("Heating Schedule"));
+    var cache = JSON.parse(localStorage.getItem("heatingSchedule"));
     try {
-      this.setState({ enable: cache.enable });
+      // this.setState({ enable: cache.enable });
       var newArray = [];
 
       newArray[0] = cache.monday; // *NB* Figure out how to make the array indexes the day of the week
@@ -49,7 +46,7 @@ class Schedule extends React.Component {
   };
 
   getEnable = () => {
-    var cache = JSON.parse(localStorage.getItem("Heating Schedule"));
+    var cache = JSON.parse(localStorage.getItem("heatingSchedule"));
     try {
       this.setState({ enable: cache.enable });
     } catch (error) {
@@ -58,9 +55,9 @@ class Schedule extends React.Component {
   };
 
   set = newVals => {
-    var cache = JSON.parse(localStorage.getItem("Heating Schedule"));
+    var cache = JSON.parse(localStorage.getItem("heatingSchedule"));
     cache[newVals.day] = newVals.values;
-    localStorage.setItem("Heating Schedule", JSON.stringify(cache));
+    localStorage.setItem("heatingSchedule", JSON.stringify(cache));
 
     // fetch("/api/heating/schedule/update",
     fetch("/api/ci/schedule/update", {
@@ -85,11 +82,11 @@ class Schedule extends React.Component {
 
   render() {
     return (
-      <div>
+      <>
         <div className="heatingControlsContainer">
           <OnOff />
           <Boost />
-          <ActiveIndicator />
+          {/* <ActiveIndicator /> */}
         </div>
 
         <div className="scheduleModule" onClick={() => this.wait()}>
@@ -97,7 +94,7 @@ class Schedule extends React.Component {
           <h1 className="scheduleTitle">Schedule</h1>
           <Individual data={this.state.data} enable={this.state.enable} set={this.set} />
         </div>
-      </div>
+      </>
     );
   }
 }

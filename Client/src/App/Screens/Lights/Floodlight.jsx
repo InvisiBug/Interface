@@ -1,41 +1,35 @@
-// Components
-import React, { useEffect, useState } from "react";
-import { StyleSheet, css } from "aphrodite";
+/** @jsx jsx */
+import { useEffect, useState } from "react";
+import { jsx, css } from "@emotion/core";
 
 // Boostrap Components
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-// Buttons
-// import OnButton from "../../Common Modules/On Button";
-// import OffButton from "../../Common Modules/Off Button";
-
 import OnButton from "../../Controls/OnButton";
 import OffButton from "../../Controls/OffButton";
 
-const styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    transform: "translate(-50%, -50%)",
-    height: "100px",
-    width: "300px",
-    top: "20%",
-    left: "50%",
+const container = css`
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 100px;
+  width: 300px;
+  top: 20%;
+  left: 50%;
 
-    borderRadius: "20px",
+  border-radius: 20px;
 
-    border: "1px solid rgba(255, 255, 255, 0.2)",
-    background: "rgba(50, 50, 50, 0.1)",
-    color: "white",
-    fontFamily: "Arial",
-    fontSize: "25px",
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(50, 50, 50, 0.1);
+  color: white;
+  font-family: Arial;
+  font-size: 25px;
 
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    textAlign: "center"
-  }
-});
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: cente;
+`;
 
 const Floodlight = () => {
   const [deviceData, setDeviceData] = useState(JSON.parse(localStorage.getItem("Floodlight")));
@@ -48,7 +42,7 @@ const Floodlight = () => {
   }, [deviceData]);
 
   return (
-    <div className={css(styles.container)}>
+    <div css={container}>
       <h3 className="plugTitle" style={{ color: deviceData.isConnected ? "white" : "orangeRed" }}>
         Floodlight
       </h3>

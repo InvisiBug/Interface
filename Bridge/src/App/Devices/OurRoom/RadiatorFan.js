@@ -127,7 +127,26 @@ client.on("message", (topic, payload) => {
       console.log("Radiator Fan Disconnected");
     }
   } else if (topic == "Radiator Fan Button") {
-    console.log(JSON.parse(payload));
+    if (!deviceData.isAutomatic) {
+      switch (deviceData.isOn) {
+        case true:
+          deviceData = {
+            ...deviceData,
+            isOn: false,
+          };
+          client.publish("Radiator Fan Control", "0");
+          break;
+
+        case false:
+          deviceData = {
+            ...deviceData,
+            isOn: true,
+          };
+          client.publish("Radiator Fan Control", "1");
+          break;
+      }
+      sendSocketData();
+    }
   }
 });
 

@@ -1,6 +1,8 @@
 // Components
+/** @jsx jsx */
 import React from "react";
-import { StyleSheet, css } from "aphrodite";
+// import { StyleSheet, css } from "aphrodite";
+import { jsx, css } from "@emotion/core";
 
 // Icons
 import House from "./Nav Bar Icons/Home.png";
@@ -17,19 +19,6 @@ import Gear from "./Nav Bar Icons/Gear.png";
 import Code from "./Nav Bar Icons/Code.png";
 
 import NavButton from "./NavButton";
-
-const styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    height: "100%",
-    width: "10%",
-    top: "0px",
-    left: "0px",
-    maxWidth: "120px",
-
-    background: "rgba(255, 255, 255, .05)"
-  }
-});
 
 const navButtons = [
   {
@@ -48,12 +37,12 @@ const navButtons = [
     name: "Climate",
     icon: Sun
   },
-  // {
-  //   name: "Heating",
-  //   icon: Heating
-  // },
   {
-    name: "test",
+    name: "Heating",
+    icon: Heating
+  },
+  {
+    name: "Advanced",
     icon: Gear
   },
   {
@@ -64,7 +53,7 @@ const navButtons = [
 
 const NavBar = ({ style, screen, changeScreen }) => {
   return (
-    <div className={css(style)}>
+    <div css={style}>
       {navButtons.map(button => (
         <NavButton name={button.name} selection={screen} icon={button.icon} key={Math.random()} handleClick={() => changeScreen(button.name)} />
       ))}
@@ -73,3 +62,13 @@ const NavBar = ({ style, screen, changeScreen }) => {
 };
 
 export default NavBar;
+
+// <>
+//   {navButtons.map(button => (
+//     <NavButton name={button.name} selection={screen} icon={button.icon} key={Math.random()} handleClick={() => changeScreen(button.name)} />
+//   ))}
+// </>
+
+// navButtons.map(button => (
+//   <NavButton name={button.name} selection={screen} icon={button.icon} key={Math.random()} handleClick={() => changeScreen(button.name)} />
+// ))

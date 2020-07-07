@@ -3,7 +3,7 @@ import React from "react";
 
 class SystemDataCollector extends React.Component {
   componentWillMount = () => {
-    // this.getHeatingSchedule();
+    this.getHeatingSchedule();
     // this.getBedroomClimateSetpoint();
   };
 
