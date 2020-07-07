@@ -37,10 +37,10 @@ const navButtons = [
     name: "Climate",
     icon: Sun
   },
-  // {
-  //   name: "Heating",
-  //   icon: Heating
-  // },
+  {
+    name: "Heating",
+    icon: Heating
+  },
   {
     name: "Advanced",
     icon: Gear
@@ -58,17 +58,17 @@ const NavBar = ({ style, screen, changeScreen }) => {
         <NavButton name={button.name} selection={screen} icon={button.icon} key={Math.random()} handleClick={() => changeScreen(button.name)} />
       ))}
     </div>
-
-    // <>
-    //   {navButtons.map(button => (
-    //     <NavButton name={button.name} selection={screen} icon={button.icon} key={Math.random()} handleClick={() => changeScreen(button.name)} />
-    //   ))}
-    // </>
-
-    // navButtons.map(button => (
-    //   <NavButton name={button.name} selection={screen} icon={button.icon} key={Math.random()} handleClick={() => changeScreen(button.name)} />
-    // ))
   );
 };
 
 export default NavBar;
+
+// <>
+//   {navButtons.map(button => (
+//     <NavButton name={button.name} selection={screen} icon={button.icon} key={Math.random()} handleClick={() => changeScreen(button.name)} />
+//   ))}
+// </>
+
+// navButtons.map(button => (
+//   <NavButton name={button.name} selection={screen} icon={button.icon} key={Math.random()} handleClick={() => changeScreen(button.name)} />
+// ))

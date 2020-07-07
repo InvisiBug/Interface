@@ -67,6 +67,7 @@ global.io = require("socket.io")(server);
 //
 ////////////////////////////////////////////////////////////////////////
 const mqtt = require("mqtt");
+// const { default: SensorInfo } = require("../../Client/src/App/Screens/Climate/SensorInfo.jsx");
 // global.client = mqtt.connect("mqtt://192.168.1.46");
 global.client = mqtt.connect("mqtt://kavanet.io");
 
@@ -80,10 +81,7 @@ client.on("connect", () => null);
 client.on("message", (topic, payload) => {
   try {
     io.emit("MQTT Messages", JSON.parse(payload));
-  } catch (error) {
-    console.log(JSON.parse(payload));
-  }
-  // console.log(JSON.parse(payload));
+  } catch {}
 });
 
 ////////////////////////////////////////////////////////////////////////
@@ -94,7 +92,7 @@ client.on("message", (topic, payload) => {
 //  #  #  # #    # #    # #    # #      #####   ####
 //  #     # #    # #    # #    # #      #           #
 //  #     # #    # #    # #    # #      #      #    #
-//  #     #  ####  #####   ####  ###### #####1#  ####
+//  #     #  ####  #####   ####  ###### ######  ####
 //
 ////////////////////////////////////////////////////////////////////////
 // const heating        = require('./App/Devices/Heating.js');
@@ -113,6 +111,12 @@ app.use(require("./App/Devices/Liams Room/HeatingSensor.js"));
 
 // Study
 app.use(require("./App/Devices/Study/HeatingSensor.js"));
+
+// app.use(new Sensor(name, disconnectMessage, )
+
+// forEach((sensor) => {
+//   app.use(new class(sensor.name, other stuff))
+// }
 
 // Our Roomrs
 app.use(require("./App/Devices/OurRoom/Desk LEDs"));

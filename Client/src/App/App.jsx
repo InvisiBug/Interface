@@ -20,7 +20,7 @@ import Advanced from "./Screens/Advanced/AdvancedScreen";
 import Logger from "./Cache Loaders/MqttLogger";
 
 // import Plant           from './Components/Screens/PlantScreen.jsx';
-// import Schedules from './Screens/Schedules/Schedules.jsx';
+// import Schedules from "./Screens/Schedules/Schedules.jsx";
 // import ElectricBlanket from './Screens/Electric Blanket/Electric Blanket.jsx'
 
 // Cache Loader
@@ -29,16 +29,6 @@ import ScheduleCollector from "./Cache Loaders/ScheduleCollector";
 // import TemperatureGraphsDataCollector from "./Cache Loaders/TemperatureGraphsDataCollector";
 import Socket from "./Cache Loaders/Socket";
 import backgroundImage from "../App/Backgrounds/Red.jpg";
-
-const containter = css`
-  position: absolute;
-  transform: translate(-50%, -50%);
-  height: 100%;
-  width: 100%;
-  top: 50%;
-  left: 50%;
-  /* border: 10px solid orange; */
-`;
 
 const background = css`
   position: absolute;
@@ -95,8 +85,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      screen: null,
-      response: false
+      screen: null
     };
   }
 
@@ -145,7 +134,8 @@ class App extends React.Component {
               <Printer />
             ) : this.state.screen === "Advanced" ? (
               <Advanced />
-            ) : // this.state.screen === "Schedules" ? <Schedules/>  :
+            ) : //) //: this.state.screen === "Schedules" ? (
+            //<Schedules />
             // this.state.screen === "Blanket"  ? <ElectricBlanket/>  :
             this.state.screen === "Heating" ? (
               <Heating />
