@@ -2,7 +2,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { jsx, css } from "@emotion/core";
-import SimpleOnOff from "../../Controls/SimpleOnOff";
+import SimpleOnOff from "../../Ui Library/SimpleOnOff";
 
 const ComputerPower = () => {
   const [deviceData, setDeviceData] = useState(
@@ -23,6 +23,7 @@ const ComputerPower = () => {
       onAction={() => fetch("/api/ComputerPower/On")}
       offAction={() => fetch("/api/ComputerPower/Off")}
       state={deviceData.isOn}
+      connection={deviceData.isConnected}
     />
   );
 };

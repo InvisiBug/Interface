@@ -79,7 +79,10 @@ const SimpleOnOff = ({
 }) => {
   return (
     <div css={container} style={{ top: `${pos[0]}%`, left: `${pos[1]}%` }}>
-      <h3 css={titleStyle} style={{ color: true ? "white" : "orangeRed" }}>
+      <h3
+        css={titleStyle}
+        style={{ color: connection ? "white" : "orangeRed" }}
+      >
         {title}
       </h3>
 

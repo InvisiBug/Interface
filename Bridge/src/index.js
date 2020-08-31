@@ -70,6 +70,7 @@ const mqtt = require("mqtt");
 // const { default: SensorInfo } = require("../../Client/src/App/Screens/Climate/SensorInfo.jsx");
 // global.client = mqtt.connect("mqtt://192.168.1.46");
 global.client = mqtt.connect("mqtt://kavanet.io");
+client.setMaxListeners(15); // Disables event listener warning
 
 client.subscribe("#", (err) => {
   err ? console.log(err) : console.log("Subscribed to " + "All");

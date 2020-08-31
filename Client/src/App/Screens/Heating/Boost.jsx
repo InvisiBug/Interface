@@ -1,7 +1,7 @@
 // Components
 import React from "react";
 import { useEffect, useState } from "react";
-import SimpleOnOff from "../../Controls/SimpleOnOff";
+import SimpleOnOff from "../../Ui Library/SimpleOnOff";
 
 const Boost = () => {
   const [deviceData, setDeviceData] = useState(
@@ -17,8 +17,8 @@ const Boost = () => {
 
   return (
     <SimpleOnOff
-      title={"Boost"}
-      pos={[25, 50]}
+      title={"1 Hr Boost"}
+      pos={[20, 25]}
       onAction={() => fetch("/api/ci/boost/on")}
       offAction={() => fetch("/api/ci/boost/off")}
       state={deviceData.boost}

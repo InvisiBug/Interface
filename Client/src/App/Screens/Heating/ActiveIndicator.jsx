@@ -10,7 +10,7 @@ const container = css`
   transform: translate(-50%, -50%);
   height: 64px;
   width: 64px;
-  top: 50%;
+  top: 20%;
   left: 50%;
   opacity: 0.8;
 `;
@@ -30,7 +30,7 @@ const ActiveIndicator = () => {
   return (
     <>
       <div>
-        {deviceData.isOn && <img src={Active} alt="" css={container} />}
+        {deviceData.isActive && <img src={Active} alt="" css={container} />}
       </div>
     </>
   );

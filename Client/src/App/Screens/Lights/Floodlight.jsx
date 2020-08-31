@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { jsx, css } from "@emotion/core";
 
-import SimpleOnOff from "../../Controls/SimpleOnOff";
+import SimpleOnOff from "../../Ui Library/SimpleOnOff";
 
 const Floodlight = () => {
   const [deviceData, setDeviceData] = useState(

@@ -61,14 +61,12 @@ app.get("/api/RadiatorFan/Status", (req, res) => {
 
 // Automatic / Manual
 app.get("/api/RadiatorFanAutomatic/On", (req, res) => {
-  console.log("Auto Mode On");
   deviceData.isAutomatic = true;
   sendSocketData();
   res.json(null);
 });
 
 app.get("/api/RadiatorFanAutomatic/off", (req, res) => {
-  console.log("Auto Mode Off");
   deviceData.isAutomatic = false;
   sendSocketData();
   res.json(null);
@@ -79,8 +77,6 @@ app.get("/api/RadiatorFan/On", (req, res) => {
   if (!deviceData.isAutomatic) {
     deviceData.isOn = true;
     client.publish("Radiator Fan Control", "1"); // Toggle power button
-  } else {
-    console.log("Fan Not In Manual");
   }
   sendSocketData();
   res.json(null);
@@ -90,8 +86,6 @@ app.get("/api/RadiatorFan/Off", (req, res) => {
   if (!deviceData.isAutomatic) {
     deviceData.isOn = false;
     client.publish("Radiator Fan Control", "0"); // Toggle power button
-  } else {
-    console.log("Fan Not In Manual");
   }
 
   sendSocketData();

@@ -36,33 +36,33 @@ const storage = require("node-persist");
 // #     # #       ###
 //
 ////////////////////////////////////////////////////////////////////////
-app.post("/api/calorImperium/outside/set", async (req, res) => {
-  console.log(req.body);
-  await storage.init();
-  await storage.setItem("outsideSetpoint", req.body);
+// app.post("/api/calorImperium/outside/set", async (req, res) => {
+//   console.log(req.body);
+//   await storage.init();
+//   await storage.setItem("outsideSetpoint", req.body);
 
-  res.end(null);
-});
+//   res.end(null);
+// });
 
-app.get("/api/calorImperium/outside/get", async () => {
-  await storage.init();
+// app.get("/api/calorImperium/outside/get", async () => {
+//   await storage.init();
 
-  try {
-    x = await storage.getItem("outsideSetpoint");
-    data = x.value;
+//   try {
+//     x = await storage.getItem("outsideSetpoint");
+//     data = x.value;
 
-    res.json(data);
-  } catch (e) {
-    console.log(e);
-  }
-});
+//     res.json(data);
+//   } catch (e) {
+//     console.log(e);
+//   }
+// });
 
 app.post("/api/ci/schedule/update", async (req, res) => {
   console.log(req.body);
 
   data = req.body.vals;
 
-  var dataToSend = {};
+  let dataToSend = {};
 
   for (var key in data) {
     dataToSend[key] = frontendToBackend(data[key]);
@@ -70,56 +70,55 @@ app.post("/api/ci/schedule/update", async (req, res) => {
 
   console.log(JSON.stringify(dataToSend));
 
-  await storage.init();
-  await storage.setItem("heatingSchedule", req.body);
+  // await storage.init();
+  // await storage.setItem("heatingSchedule", req.body);
 
   res.end(null);
 });
 
 // ----------  Boost  ----------
 app.get("/api/ci/boost/on", async (req, res) => {
-  await storage.init();
-
-  try {
-    let datapoint = await storage.getItem("heatingSchedule");
-
-    datapoint = {
-      ...datapoint,
-      vals: { ...datapoint.vals, boost: true },
-    };
-
-    await storage.setItem("heatingSchedule", datapoint);
-
-    console.log(datapoint);
-  } catch (e) {
-    console.log(e);
-  }
-
+  let data = await getStore("heatingSchedule");
+  data = {
+    ...data,
+    vals: { ...data.vals, boost: true },
+  };
+  await setStore("heatingSchedule", data);
   sendHeatingSchedule();
-
   res.end(null);
 });
 
 app.get("/api/ci/boost/off", async (req, res) => {
-  await storage.init();
-
-  try {
-    let datapoint = await storage.getItem("heatingSchedule");
-
-    datapoint = {
-      ...datapoint,
-      vals: { ...datapoint.vals, boost: false },
-    };
-
-    await storage.setItem("heatingSchedule", datapoint);
-
-    console.log(datapoint);
-  } catch (e) {
-    console.log(e);
-  }
-
+  let data = await getStore("heatingSchedule");
+  data = {
+    ...data,
+    vals: { ...data.vals, boost: false },
+  };
+  await setStore("heatingSchedule", data);
   sendHeatingSchedule();
+  res.end(null);
+});
 
+// -----  Manual  -----
+app.get("/api/ci/manual/on", async (req, res) => {
+  let data = await getStore("heatingSchedule");
+  data = {
+    ...data,
+    vals: { ...data.vals, auto: false },
+  };
+  await setStore("heatingSchedule", data);
+  sendHeatingSchedule();
+  res.end(null);
+});
+
+app.get("/api/ci/manual/off", async (req, res) => {
+  let data = await getStore("heatingSchedule");
+  data = {
+    ...data,
+    vals: { ...data.vals, auto: true },
+  };
+  await setStore("heatingSchedule", data);
+  sendHeatingSchedule();
   res.end(null);
 });
 
@@ -134,25 +133,23 @@ app.get("/api/ci/boost/off", async (req, res) => {
 //  #####    #    ####  #    # #    #  ####  ######    ######  #    # #   ##   ###### #    #  ####
 //
 ////////////////////////////////////////////////////////////////////////
-// set = async (data) => {
-//   console.log(data);
-//   await storage.init();
-//   await storage.setItem("outsideSetpoint", data);
-// };
+setStore = async (store, data) => {
+  await storage.init();
+  try {
+    await storage.setItem(store, data);
+  } catch (e) {
+    console.log(e);
+  }
+};
 
-// get = async (data) => {
-//   await storage.init();
-
-//   try {
-//     x = await storage.getItem("outsideSetpoint");
-//     data = x.value;
-
-//     console.log(data);
-//     return data;
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
+getStore = async (store) => {
+  await storage.init();
+  try {
+    return await storage.getItem(store);
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -183,15 +180,9 @@ var heatingScheduleSocket = setInterval(async () => {
 }, 1 * 1000);
 
 const sendHeatingSchedule = async () => {
-  await storage.init();
-
   try {
-    let datapoint = await storage.getItem("heatingSchedule");
-    data = datapoint.vals;
-
-    // console.log(backendToFrontend(datapoint.vals));
-
-    io.emit("Heating Schedule", data);
+    const data = await getStore("heatingSchedule");
+    io.emit("Heating Schedule", data.vals);
   } catch (e) {
     console.log(e);
   }

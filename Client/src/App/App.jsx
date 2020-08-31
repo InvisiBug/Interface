@@ -1,4 +1,3 @@
-// Components
 /** @jsx jsx */
 import React from "react";
 import NavBar from "./NavBar/NavBar.jsx";
@@ -29,6 +28,7 @@ import ScheduleCollector from "./Cache Loaders/ScheduleCollector";
 // import TemperatureGraphsDataCollector from "./Cache Loaders/TemperatureGraphsDataCollector";
 import Socket from "./Cache Loaders/Socket";
 import backgroundImage from "../App/Backgrounds/Red.jpg";
+import { useEffect, useState } from "react";
 
 const background = css`
   position: absolute;
@@ -56,8 +56,6 @@ const windowContainer = css`
 `;
 
 const navBar = css`
-  /* position: absolute; */
-
   height: 100%;
   width: 10%;
   /* top: 0px; */
@@ -80,73 +78,58 @@ const screenContainer = css`
   flex-grow: 1;
 `;
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
+const App = () => {
+  const [screen, setScreen] = useState(
+    JSON.parse(localStorage.getItem("screen"))
+  );
 
-    this.state = {
-      screen: null
-    };
-  }
-
-  componentWillMount = () => {
-    try {
-      var cache = JSON.parse(localStorage.getItem("screen")); // need to save to variable for the try catch block to work
-      this.setState({ screen: cache });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  changeScreen = newScreen => {
-    this.setState({ screen: newScreen });
+  const changeScreen = newScreen => {
+    setScreen(newScreen);
     localStorage.setItem("screen", '"' + newScreen + '"');
   };
 
-  render() {
-    return (
-      <>
-        <CacheLoader />
-        {/* <TemperatureGraphsDataCollector/> */}
-        <ScheduleCollector />
-        <Socket />
+  return (
+    <>
+      <CacheLoader />
+      {/* <TemperatureGraphsDataCollector/> */}
+      {/* <ScheduleCollector /> */}
+      <Socket />
 
-        <div css={background} />
+      <div css={background} />
 
-        {/* {navigator.platform === "Win32" && <Dots />} */}
-        {navigator.platform === "MacIntel" && <Dots />}
+      {/* {navigator.platform === "Win32" && <Dots />} */}
+      {navigator.platform === "MacIntel" && <Dots />}
 
-        <div css={windowContainer}>
-          <NavBar style={navBar} changeScreen={this.changeScreen} screen={this.state.screen} />
-          {/* <NavBar css={navBar} changeScreen={this.changeScreen} screen={this.state.screen} /> */}
-          <div css={screenContainer}>
-            <DateBox />
+      <div css={windowContainer}>
+        <NavBar style={navBar} changeScreen={changeScreen} screen={screen} />
+        {/* <NavBar css={navBar} changeScreen={changeScreen} screen={screen} /> */}
+        <div css={screenContainer}>
+          {/* <DateBox /> */}
 
-            {this.state.screen === "Home" ? (
-              <Home />
-            ) : this.state.screen === "Computer" ? (
-              <Computer />
-            ) : this.state.screen === "Lights" ? (
-              <Lights />
-            ) : this.state.screen === "Climate" ? (
-              <Climate />
-            ) : this.state.screen === "Printer" ? (
-              <Printer />
-            ) : this.state.screen === "Advanced" ? (
-              <Advanced />
-            ) : //) //: this.state.screen === "Schedules" ? (
-            //<Schedules />
-            // this.state.screen === "Blanket"  ? <ElectricBlanket/>  :
-            this.state.screen === "Heating" ? (
-              <Heating />
-            ) : this.state.screen === "MQTT" ? (
-              <Logger />
-            ) : null}
-          </div>
+          {screen === "Home" ? (
+            <Home />
+          ) : screen === "Computer" ? (
+            <Computer />
+          ) : screen === "Lights" ? (
+            <Lights />
+          ) : screen === "Climate" ? (
+            <Climate />
+          ) : screen === "Printer" ? (
+            <Printer />
+          ) : screen === "Advanced" ? (
+            <Advanced />
+          ) : //) //: screen === "Schedules" ? (
+          //<Schedules />
+          // screen === "Blanket"  ? <ElectricBlanket/>  :
+          screen === "Heating" ? (
+            <Heating />
+          ) : screen === "MQTT" ? (
+            <Logger />
+          ) : null}
         </div>
-      </>
-    );
-  }
-}
+      </div>
+    </>
+  );
+};
 
 export default App;
