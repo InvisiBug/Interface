@@ -21,10 +21,10 @@ import Code from "./Nav Bar Icons/Code.png";
 import NavButton from "./NavButton";
 
 const navButtons = [
-  {
-    name: "Home",
-    icon: House
-  },
+  // {
+  //   name: "Home",
+  //   icon: House
+  // },
   {
     name: "Computer",
     icon: Computer

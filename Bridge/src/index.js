@@ -104,7 +104,7 @@ app.use(require("./App/Devices/Living Room/HeatingSensor.js"));
 
 // Kitchen
 app.use(require("./App/Devices/Kitchen/HeatingSensor.js"));
-app.use(require("./App/Devices/Kitchen/Heating Controller.js"));
+// app.use(require("./App/Devices/Kitchen/Heating Controller.js"));
 
 // Liam's Room
 app.use(require("./App/Devices/Liams Room/HeatingSensor.js"));
@@ -176,7 +176,7 @@ app.get("/api/test", (req, res) => {
   res.json(forecastWeatherData);
 });
 
-var ourRoomSchedule = {
+var heatingSchedule = {
   monday: [6, 8, 18, 23],
   tuesday: [6, 8, 18, 23],
   wednesday: [6, 8, 18, 23],
@@ -188,6 +188,10 @@ var ourRoomSchedule = {
   boost: false,
   heatingOn: true,
 };
+
+app.get("/api/heating/status", (req, res) => {
+  res.end(JSON.stringify(heatingSchedule));
+});
 
 ////////////////////////////////////////////////////////////////////////
 //

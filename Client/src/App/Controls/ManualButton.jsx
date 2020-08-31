@@ -32,11 +32,9 @@ const ManualButton = ({ name, isActive, handleClick }) => {
   isActive ? (style = active) : (style = inactive);
 
   return (
-    <>
-      <div css={style} onClick={handleClick}>
-        Manual
-      </div>
-    </>
+    <div css={style} onClick={handleClick}>
+      Manual
+    </div>
   );
 };
 

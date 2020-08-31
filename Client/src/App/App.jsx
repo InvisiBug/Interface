@@ -108,7 +108,7 @@ class App extends React.Component {
       <>
         <CacheLoader />
         {/* <TemperatureGraphsDataCollector/> */}
-        {/* <ScheduleCollector /> */}
+        <ScheduleCollector />
         <Socket />
 
         <div css={background} />

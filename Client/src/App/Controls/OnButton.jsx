@@ -26,16 +26,14 @@ const inactive = css`
   border-radius: 0.25rem;
 `;
 
-const OnButton = ({ name, isActive, handleClick }) => {
+const OnButton = ({ isActive, handleClick }) => {
   var style;
   isActive ? (style = active) : (style = inactive);
 
   return (
-    <>
-      <div css={style} onClick={handleClick}>
-        On
-      </div>
-    </>
+    <div css={style} onClick={handleClick}>
+      On
+    </div>
   );
 };
 

@@ -10,18 +10,15 @@ class SystemDataCollector extends React.Component {
   };
 
   componentDidMount = () => {
-    this.timer1 = setInterval(() =>
-      // 1 second timer
-      {}, 1 * 1000);
+    this.timer1 = setInterval(() => {}, 1 * 1000); // 1 second timer
 
-    this.timer2 = setInterval(() =>
+    this.timer2 = setInterval(() => {
       // 5 min timer
-      {
-        this.getDay();
-        this.getWeek();
-        this.getMonth();
-        this.getYear();
-      }, 300 * 1000);
+      this.getDay();
+      this.getWeek();
+      this.getMonth();
+      this.getYear();
+    }, 300 * 1000);
   };
 
   getDay = () => {
@@ -91,7 +88,10 @@ class SystemDataCollector extends React.Component {
           for (var i = 0; i < data.length; i++) {
             let day;
 
-            if (data[i].Timestamp.Days === "Monday" && data[i].Timestamp.Hour === 0) {
+            if (
+              data[i].Timestamp.Days === "Monday" &&
+              data[i].Timestamp.Hour === 0
+            ) {
               day = "Monday";
             } else {
               day = null;

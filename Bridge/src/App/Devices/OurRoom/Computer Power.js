@@ -21,7 +21,6 @@
 // Express
 const express = require("express");
 const app = (module.exports = express());
-const device = "computerPower";
 
 // Functions
 const functions = require("../../Functions.js");
@@ -37,7 +36,8 @@ const functions = require("../../Functions.js");
 //     #    #    # #    # # #    # #####  ###### ######  ####
 //
 ////////////////////////////////////////////////////////////////////////
-var deviceData = null;
+var deviceData;
+var timer;
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -50,21 +50,17 @@ var deviceData = null;
 // #     # #       ###
 //
 ////////////////////////////////////////////////////////////////////////
-app.get("/api/computerPower/Status", (req, res) => {
-  res.json(deviceData);
-});
-
 app.get("/api/ComputerPower/On", (req, res) => {
-  console.log("Computer Power On");
-
-  client.publish("Computer Power Control", "1"); // Toggle power button
-  res.json(null);
+  client.publish("Computer Power Control", "1");
+  deviceData.isOn = true;
+  sendSocketData();
+  res.json(null); // Toggle power button
 });
 
 app.get("/api/ComputerPower/Off", (req, res) => {
-  console.log("Computer Power Off");
-
   client.publish("Computer Power Control", "0");
+  deviceData.isOn = false;
+  sendSocketData();
   res.json(null);
 });
 
@@ -81,10 +77,19 @@ app.get("/api/ComputerPower/Off", (req, res) => {
 ////////////////////////////////////////////////////////////////////////
 client.on("message", (topic, payload) => {
   if (topic == "Computer Power") {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      deviceData.isConnected = false;
+    }, 10 * 1000);
+
     if (payload != "Computer Power Disconnected") {
-      deviceData = JSON.parse(payload);
+      deviceData = {
+        ...deviceData,
+        isConnected: true,
+        isOn: JSON.parse(payload).state,
+      };
     } else {
-      deviceData = null;
       console.log("Computer power disconnected at " + functions.printTime());
     }
   }
@@ -102,5 +107,9 @@ client.on("message", (topic, payload) => {
 //
 ////////////////////////////////////////////////////////////////////////
 const sensorUpdate = setInterval(() => {
-  io.emit("Computer Power", deviceData);
+  sendSocketData();
 }, 1 * 1000);
+
+var sendSocketData = () => {
+  io.emit("Computer Power", deviceData);
+};

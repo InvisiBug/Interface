@@ -1,1 +1,1 @@
-{"key":"heatingSchedule","value":{"vals":{"monday":[8,8.5,20,21],"tuesday":[8,8.5,20,21],"wednesday":[8,8.5,20,21],"thursday":[8,8.5,20,21],"friday":[8,8.5,20,21],"saturday":[9,9.5,20,21],"sunday":[9,9.5,20,21],"enable":true,"boost":false,"heatingOn":false}}}
+{"key":"heatingSchedule","value":{"vals":{"monday":[6.25,8,18,23],"tuesday":[6,8,18,23],"wednesday":[6,8,18,23],"thursday":[6,8,18,23],"friday":[6,8,18,23],"saturday":[10,15,16,24],"sunday":[10,15,18,24],"enable":false,"boost":false,"isOn":true}}}

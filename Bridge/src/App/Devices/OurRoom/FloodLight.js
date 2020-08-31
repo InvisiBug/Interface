@@ -36,9 +36,9 @@ const app = (module.exports = express());
 var deviceData;
 var timer;
 
-timer = setTimeout(() => {
-  deviceData.isConnected = false;
-}, 10 * 1000);
+// timer = setTimeout(() => {
+//   deviceData.isConnected = false;
+// }, 10 * 1000);
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -111,6 +111,6 @@ const sensorUpdate = setInterval(() => {
   sendSocketData();
 }, 1 * 1000);
 
-var sendSocketData = () => {
+const sendSocketData = () => {
   io.emit("Floodlight", deviceData);
 };

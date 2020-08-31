@@ -28,15 +28,10 @@ const inactive = css`
 `;
 
 const OnButton = ({ name, isActive, handleClick }) => {
-  var style;
-  isActive ? (style = active) : (style = inactive);
-
   return (
-    <>
-      <div css={style} onClick={handleClick}>
-        Off
-      </div>
-    </>
+    <div css={isActive ? active : inactive} onClick={handleClick}>
+      Off
+    </div>
   );
 };
 

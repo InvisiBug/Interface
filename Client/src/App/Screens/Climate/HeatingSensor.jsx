@@ -35,8 +35,10 @@ const styles = StyleSheet.create({
   }
 });
 
-const HeatingSensor = ({ showGraph, top, left, datapoint }) => {
-  const [deviceData, setDeviceData] = useState(localStorageParser(`${datapoint} Heating Sensor`));
+const HeatingSensor = ({ showGraph, pos, datapoint }) => {
+  const [deviceData, setDeviceData] = useState(
+    localStorageParser(`${datapoint} Heating Sensor`)
+  );
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -47,7 +49,11 @@ const HeatingSensor = ({ showGraph, top, left, datapoint }) => {
 
   return (
     <div
-      style={{ color: deviceData.isConnected ? "white" : "orangeRed", top: `${top}%`, left: `${left}%` }}
+      style={{
+        color: deviceData.isConnected ? "white" : "orangeRed",
+        top: `${pos[0]}%`,
+        left: `${pos[1]}%`
+      }}
       className={css(styles.container)}
       onClick={() => showGraph(datapoint)}
     >

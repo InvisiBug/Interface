@@ -1,38 +1,39 @@
+/** @jsx jsx */
 // Components
 import React from "react";
+import { useEffect, useState } from "react";
 import Active from "./Active.png";
-// Modules
+import { jsx, css } from "@emotion/core";
 
-class ActiveIndicator extends React.Component {
-  constructor(props) {
-    super(props);
+const container = css`
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 64px;
+  width: 64px;
+  top: 50%;
+  left: 50%;
+  opacity: 0.8;
+`;
 
-    this.state = {
-      active: null
-    };
-  }
+const ActiveIndicator = () => {
+  const [deviceData, setActive] = useState(
+    JSON.parse(localStorage.getItem("Heating Schedule"))
+  );
 
-  componentWillMount = () => this.getActive();
-  componentDidMount = () =>
-    (this.timer1 = setInterval(() => {
-      this.getActive();
-    }, 100));
-  componentWillUnmount = () => clearInterval(this.timer1);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setActive(JSON.parse(localStorage.getItem("Heating Schedule")));
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [deviceData]);
 
-  getActive = () => {
-    var cache = JSON.parse(localStorage.getItem("Heating Schedule"));
-    try {
-      this.setState({ active: cache.heatingOn });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  render() {
-    return <div>{this.state.active && <img src={Active} alt="" className="activeIndicator" />}</div>;
-  }
-}
+  return (
+    <>
+      <div>
+        {deviceData.isOn && <img src={Active} alt="" css={container} />}
+      </div>
+    </>
+  );
+};
 
 export default ActiveIndicator;
-
-// <AmbientButton/>

@@ -22,7 +22,7 @@
 const express = require("express");
 const app = (module.exports = express());
 
-// Persistan Storage
+// Persistant Storage
 const storage = require("node-persist");
 
 ////////////////////////////////////////////////////////////////////////
@@ -51,8 +51,7 @@ app.get("/api/calorImperium/outside/get", async () => {
     x = await storage.getItem("outsideSetpoint");
     data = x.value;
 
-    console.log(data);
-    // res.json(data);
+    res.json(data);
   } catch (e) {
     console.log(e);
   }
@@ -66,13 +65,60 @@ app.post("/api/ci/schedule/update", async (req, res) => {
   var dataToSend = {};
 
   for (var key in data) {
-    dataToSend[key] = tabletToSystem(data[key]);
+    dataToSend[key] = frontendToBackend(data[key]);
   }
 
   console.log(JSON.stringify(dataToSend));
 
   await storage.init();
   await storage.setItem("heatingSchedule", req.body);
+
+  res.end(null);
+});
+
+// ----------  Boost  ----------
+app.get("/api/ci/boost/on", async (req, res) => {
+  await storage.init();
+
+  try {
+    let datapoint = await storage.getItem("heatingSchedule");
+
+    datapoint = {
+      ...datapoint,
+      vals: { ...datapoint.vals, boost: true },
+    };
+
+    await storage.setItem("heatingSchedule", datapoint);
+
+    console.log(datapoint);
+  } catch (e) {
+    console.log(e);
+  }
+
+  sendHeatingSchedule();
+
+  res.end(null);
+});
+
+app.get("/api/ci/boost/off", async (req, res) => {
+  await storage.init();
+
+  try {
+    let datapoint = await storage.getItem("heatingSchedule");
+
+    datapoint = {
+      ...datapoint,
+      vals: { ...datapoint.vals, boost: false },
+    };
+
+    await storage.setItem("heatingSchedule", datapoint);
+
+    console.log(datapoint);
+  } catch (e) {
+    console.log(e);
+  }
+
+  sendHeatingSchedule();
 
   res.end(null);
 });
@@ -133,21 +179,26 @@ var outsideSetpointSocket = setInterval(async () => {
 }, 1000);
 
 var heatingScheduleSocket = setInterval(async () => {
+  sendHeatingSchedule();
+}, 1 * 1000);
+
+const sendHeatingSchedule = async () => {
   await storage.init();
 
   try {
     let datapoint = await storage.getItem("heatingSchedule");
     data = datapoint.vals;
 
-    io.emit("heatingSchedule", data);
+    // console.log(backendToFrontend(datapoint.vals));
+
+    io.emit("Heating Schedule", data);
   } catch (e) {
     console.log(e);
   }
-}, 1000);
+};
 
-///
-
-var tabletToSystem = (tempValues) => {
+// ---------  Helpers  ----------
+var frontendToBackend = (tempValues) => {
   try {
     var adjustedValues = [];
 
@@ -165,20 +216,18 @@ var tabletToSystem = (tempValues) => {
         : null;
 
       var value = parseFloat(Math.floor(tempValues[index]) + "." + last[index]);
-      // console.log(value)
 
       adjustedValues[index] = value;
     }
     return adjustedValues;
-  } catch (
-    error // enable, boost and heatingOn are handled here
-  ) {
+  } catch (error) {
+    // enable, boost and heatingOn are handled here
     // console.log(error)
     return tempValues;
   }
 };
 
-var systemToTablet = (values) => {
+var backendToFrontend = (values) => {
   try {
     let newValues = [];
     let finalVals = [];
@@ -206,9 +255,8 @@ var systemToTablet = (values) => {
       finalVals[index] = parseFloat(first[index] + "." + last[index]);
     }
     return finalVals;
-  } catch (
-    error // enable, boost and heatingOn are handled here
-  ) {
+  } catch (error) {
+    // enable, boost and heatingOn are handled here
     // console.log(error)
     return values;
   }
