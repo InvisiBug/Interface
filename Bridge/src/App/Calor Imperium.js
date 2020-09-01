@@ -36,7 +36,7 @@ const storage = require("node-persist");
 // #     # #       ###
 //
 ////////////////////////////////////////////////////////////////////////
-// app.post("/api/calorImperium/outside/set", async (req, res) => {
+// app.post("/api/ci/outside/set", async (req, res) => {
 //   console.log(req.body);
 //   await storage.init();
 //   await storage.setItem("outsideSetpoint", req.body);
@@ -44,7 +44,7 @@ const storage = require("node-persist");
 //   res.end(null);
 // });
 
-// app.get("/api/calorImperium/outside/get", async () => {
+// app.get("/api/ci/outside/get", async () => {
 //   await storage.init();
 
 //   try {
@@ -57,70 +57,67 @@ const storage = require("node-persist");
 //   }
 // });
 
+// -----  Schedule  -----
 app.post("/api/ci/schedule/update", async (req, res) => {
-  console.log(req.body);
-
-  data = req.body.vals;
-
-  let dataToSend = {};
-
-  for (var key in data) {
-    dataToSend[key] = frontendToBackend(data[key]);
-  }
-
-  console.log(JSON.stringify(dataToSend));
-
-  // await storage.init();
-  // await storage.setItem("heatingSchedule", req.body);
-
+  await setStore("heatingSchedule", frontendToBackend(req.body.data));
+  sendHeatingSchedule();
   res.end(null);
 });
 
 // ----------  Boost  ----------
 app.get("/api/ci/boost/on", async (req, res) => {
-  let data = await getStore("heatingSchedule");
-  data = {
-    ...data,
-    vals: { ...data.vals, boost: true },
-  };
-  await setStore("heatingSchedule", data);
+  await toggleLogic("boost", true);
   sendHeatingSchedule();
   res.end(null);
 });
 
 app.get("/api/ci/boost/off", async (req, res) => {
-  let data = await getStore("heatingSchedule");
-  data = {
-    ...data,
-    vals: { ...data.vals, boost: false },
-  };
-  await setStore("heatingSchedule", data);
+  await toggleLogic("boost", false);
   sendHeatingSchedule();
   res.end(null);
 });
 
 // -----  Manual  -----
 app.get("/api/ci/manual/on", async (req, res) => {
-  let data = await getStore("heatingSchedule");
-  data = {
-    ...data,
-    vals: { ...data.vals, auto: false },
-  };
-  await setStore("heatingSchedule", data);
+  await toggleLogic("auto", false);
   sendHeatingSchedule();
   res.end(null);
 });
 
 app.get("/api/ci/manual/off", async (req, res) => {
-  let data = await getStore("heatingSchedule");
-  data = {
-    ...data,
-    vals: { ...data.vals, auto: true },
-  };
-  await setStore("heatingSchedule", data);
+  await toggleLogic("auto", true);
   sendHeatingSchedule();
   res.end(null);
 });
+
+// ----- On / Off -----
+app.get("/api/ci/on", async (req, res) => {
+  let data = await getStore("heatingSchedule");
+  if (!data.auto) {
+    await toggleLogic("isOn", true);
+    sendHeatingSchedule();
+  }
+  res.end(null);
+});
+
+app.get("/api/ci/off", async (req, res) => {
+  let data = await getStore("heatingSchedule");
+  if (!data.auto) {
+    await toggleLogic("isOn", false);
+    sendHeatingSchedule();
+  }
+  sendHeatingSchedule();
+  res.end(null);
+});
+
+const toggleLogic = async (point, value) => {
+  let data = await getStore("heatingSchedule");
+  data = {
+    ...data,
+    [point]: value,
+  };
+  await setStore("heatingSchedule", data);
+};
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -166,7 +163,7 @@ var outsideSetpointSocket = setInterval(async () => {
   await storage.init();
 
   try {
-    let datapoint = await storage.getItem("outsideSetpoint");
+    const datapoint = await storage.getItem("outsideSetpoint");
     data = datapoint.value;
 
     io.emit("outsideSetpoint", data);
@@ -182,73 +179,66 @@ var heatingScheduleSocket = setInterval(async () => {
 const sendHeatingSchedule = async () => {
   try {
     const data = await getStore("heatingSchedule");
-    io.emit("Heating Schedule", data.vals);
+    const adjustedData = backendToFrontend(data);
+
+    io.emit("Heating Schedule", adjustedData);
   } catch (e) {
     console.log(e);
   }
 };
 
 // ---------  Helpers  ----------
-var frontendToBackend = (tempValues) => {
-  try {
-    var adjustedValues = [];
+const frontendToBackend = (data) => {
+  var newData = {};
 
-    for (var index of tempValues.keys()) {
-      var last = [];
+  for (var key in data) {
+    if (data[key].length > 1) {
+      var newVals = [];
+      for (var index in data[key]) {
+        newVals[index] = parseFloat(Math.floor(data[key][index])) + toNodeDecimalConverter(data[key][index]); // used to convert to a string here
+      }
+      newData[key] = newVals;
+    } else newData[key] = data[key];
+  }
+  return newData;
+};
 
-      tempValues[index] % 1 === 0.25
-        ? (last[index] = "15")
-        : tempValues[index] % 1 === 0.5
-        ? (last[index] = "30")
-        : tempValues[index] % 1 === 0.75
-        ? (last[index] = "45")
-        : tempValues[index] % 1 === 0.0
-        ? (last[index] = "00")
-        : null;
+const backendToFrontend = (data) => {
+  var newData = {};
+  for (var key in data) {
+    if (data[key].length > 1) {
+      var newVals = [];
+      for (var index in data[key]) {
+        newVals[index] = parseFloat(Math.floor(data[key][index])) + toReactDecimalConverter(data[key][index]); // used to convert to a string here
+      }
+      newData[key] = newVals;
+    } else newData[key] = data[key];
+  }
+  return newData;
+};
 
-      var value = parseFloat(Math.floor(tempValues[index]) + "." + last[index]);
-
-      adjustedValues[index] = value;
-    }
-    return adjustedValues;
-  } catch (error) {
-    // enable, boost and heatingOn are handled here
-    // console.log(error)
-    return tempValues;
+const toNodeDecimalConverter = (val) => {
+  switch (val % 1) {
+    case 0.25:
+      return 0.15;
+    case 0.5:
+      return 0.3;
+    case 0.75:
+      return 0.45;
+    default:
+      return 0.0;
   }
 };
 
-var backendToFrontend = (values) => {
-  try {
-    let newValues = [];
-    let finalVals = [];
-
-    var first = [];
-    var last = [];
-
-    for (let index of values.keys()) {
-      // newValues[index] = values[index].toString().padStart(4, '0');
-
-      newValues[index] = (Math.round(values[index] * 100) / 100).toFixed(2);
-      newValues[index] = newValues[index].toString().padStart(5, "0");
-
-      first[index] = newValues[index].substring(0, 2);
-      last[index] = newValues[index].substring(2, 4);
-
-      newValues[index].substring(3, 5) == "15"
-        ? (last[index] = "25")
-        : newValues[index].substring(3, 5) == "30"
-        ? (last[index] = "50")
-        : newValues[index].substring(3, 5) == "45"
-        ? (last[index] = "75")
-        : null;
-
-      finalVals[index] = parseFloat(first[index] + "." + last[index]);
-    }
-    return finalVals;
-  } catch (error) {
-    // enable, boost and heatingOn are handled here
-    // console.log(error)
-    return values;
+const toReactDecimalConverter = (val) => {
+  switch (parseFloat((val % 1).toFixed(2))) {
+    case 0.15:
+      return 0.25;
+    case 0.3:
+      return 0.5;
+    case 0.45:
+      return 0.75;
+    default:
+      return 0.0;
   }
 };

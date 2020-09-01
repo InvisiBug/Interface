@@ -13,9 +13,6 @@ import "./CSS/Weather.css";
 import "./CSS/Graphs.css";
 import "./CSS/Button.css";
 import "./CSS/Lights.css";
-import "./CSS/Schedule.css";
-import "./CSS/HeatingSensors.css";
-import "./CSS/Advanced.css";
 
 // Render to page
 ReactDOM.render(<App />, document.getElementById("root")); // Change this back to router if needed

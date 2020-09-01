@@ -35,32 +35,27 @@ const rooms = [
   }
 ];
 
-class FirstFloor extends React.Component {
-  render() {
-    return (
-      <div
-        style={{ filter: this.props.blurFactor }}
-        className="floorPlanPictureContainer"
-      >
-        <img
-          src={FloorPlanPicture}
-          alt="floorplanPic"
-          className="floorPlanPicture"
+const FirstFloor = (blurFactor, showGraph) => {
+  return (
+    <div style={{ filter: blurFactor }} className="floorPlanPictureContainer">
+      <img
+        src={FloorPlanPicture}
+        alt="floorplanPic"
+        className="floorPlanPicture"
+      />
+
+      {rooms.map(room => (
+        <HeatingSensor
+          datapoint={room.name}
+          key={room.name}
+          pos={room.pos}
+          showGraph={showGraph}
         />
+      ))}
 
-        {rooms.map(room => (
-          <HeatingSensor
-            datapoint={room.name}
-            key={room.name}
-            pos={room.pos}
-            showGraph={this.props.showGraph}
-          />
-        ))}
-
-        {/* <OutsideSetpoint /> */}
-      </div>
-    );
-  }
-}
+      {/* <OutsideSetpoint /> */}
+    </div>
+  );
+};
 
 export default FirstFloor;

@@ -13,7 +13,6 @@ const container = css`
   /* // width: "1200px", */
   left: 50%;
   top: 50%;
-  border: 1px solid blue;
 `;
 
 class Computer extends React.Component {

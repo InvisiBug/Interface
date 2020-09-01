@@ -98,13 +98,14 @@ const App = () => {
       <div css={background} />
 
       {/* {navigator.platform === "Win32" && <Dots />} */}
-      {navigator.platform === "MacIntel" && <Dots />}
+      {/* {navigator.platform === "MacIntel" && <Dots />} */}
 
       <div css={windowContainer}>
         <NavBar style={navBar} changeScreen={changeScreen} screen={screen} />
         {/* <NavBar css={navBar} changeScreen={changeScreen} screen={screen} /> */}
+
         <div css={screenContainer}>
-          {/* <DateBox /> */}
+          <DateBox />
 
           {screen === "Home" ? (
             <Home />

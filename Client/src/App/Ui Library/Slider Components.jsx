@@ -20,7 +20,12 @@ const textColour = "white";
 // #     # #    # #    # #####  ###### ######  ####
 //
 ////////////////////////////////////////////////////////////////////////
-export function HandleStart({ domain: [min, max], handle: { id, value, percent }, getHandleProps, disabled }) {
+export function HandleStart({
+  domain: [min, max],
+  handle: { id, value, percent },
+  getHandleProps,
+  disabled
+}) {
   // *NB* , removed after disabled
   return (
     <div
@@ -42,13 +47,26 @@ export function HandleStart({ domain: [min, max], handle: { id, value, percent }
       {...getHandleProps(id)}
     >
       <div style={{ fontFamily: "Roboto", fontSize: 11, marginTop: 8 }}>
-        {value % 1 === 0.25 ? "15" : value % 1 === 0.5 ? "30" : value % 1 === 0.75 ? "45" : value % 1 === 0.0 ? "00" : null}
+        {value % 1 === 0.25
+          ? "15"
+          : value % 1 === 0.5
+          ? "30"
+          : value % 1 === 0.75
+          ? "45"
+          : value % 1 === 0.0
+          ? "00"
+          : null}
       </div>
     </div>
   );
 }
 
-export function HandleEnd({ domain: [min, max], handle: { id, value, percent }, getHandleProps, disabled }) {
+export function HandleEnd({
+  domain: [min, max],
+  handle: { id, value, percent },
+  getHandleProps,
+  disabled
+}) {
   return (
     <div
       style={{
@@ -69,7 +87,15 @@ export function HandleEnd({ domain: [min, max], handle: { id, value, percent }, 
       {...getHandleProps(id)}
     >
       <div style={{ fontFamily: "Roboto", fontSize: 11, marginTop: 8 }}>
-        {value % 1 === 0.25 ? "15" : value % 1 === 0.5 ? "30" : value % 1 === 0.75 ? "45" : value % 1 === 0.0 ? "00" : null}
+        {value % 1 === 0.25
+          ? "15"
+          : value % 1 === 0.5
+          ? "30"
+          : value % 1 === 0.75
+          ? "45"
+          : value % 1 === 0.0
+          ? "00"
+          : null}
       </div>
     </div>
   );
