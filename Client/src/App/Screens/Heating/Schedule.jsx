@@ -9,9 +9,9 @@ import Col from "react-bootstrap/Col";
 const container = css`
   position: absolute;
   transform: translate(-50%, -50%);
-  height: 520px;
+  height: 570px;
   width: 100%;
-  top: 60%;
+  top: 70%;
   left: 50%;
 
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -25,10 +25,14 @@ const container = css`
 `;
 
 const slider = css`
-  margin-top: 20px;
+  margin-top: 30px;
   &:first-of-type {
     margin-top: 50px;
   }
+`;
+
+const dateCol = css`
+  text-align: center;
 `;
 
 const days = [
@@ -76,7 +80,7 @@ const Schedule = () => {
       <div css={container}>
         {days.map(day => (
           <Row css={slider} key={day}>
-            <Col md={{ span: 1, offset: 0 }} className="dateCol">
+            <Col md={{ span: 1, offset: 0 }} css={dateCol}>
               <p className="dayText">
                 {day.charAt(0).toUpperCase() + day.slice(1).substring(0, 2)}
               </p>

@@ -20,7 +20,7 @@
 ////////////////////////////////////////////////////////////////////////
 // Express
 const express = require("express");
-const app = (module.exports = express());
+var app = (module.exports = express());
 
 // Persistant Storage
 const storage = require("node-persist");
@@ -56,13 +56,6 @@ const storage = require("node-persist");
 //     console.log(e);
 //   }
 // });
-
-// -----  Schedule  -----
-app.post("/api/ci/schedule/update", async (req, res) => {
-  await setStore("heatingSchedule", frontendToBackend(req.body.data));
-  sendHeatingSchedule();
-  res.end(null);
-});
 
 // ----------  Boost  ----------
 app.get("/api/ci/boost/on", async (req, res) => {
@@ -130,7 +123,7 @@ const toggleLogic = async (point, value) => {
 //  #####    #    ####  #    # #    #  ####  ######    ######  #    # #   ##   ###### #    #  ####
 //
 ////////////////////////////////////////////////////////////////////////
-setStore = async (store, data) => {
+const setStore = async (store, data) => {
   await storage.init();
   try {
     await storage.setItem(store, data);
@@ -139,7 +132,7 @@ setStore = async (store, data) => {
   }
 };
 
-getStore = async (store) => {
+const getStore = async (store) => {
   await storage.init();
   try {
     return await storage.getItem(store);
@@ -161,11 +154,9 @@ getStore = async (store) => {
 ////////////////////////////////////////////////////////////////////////
 var outsideSetpointSocket = setInterval(async () => {
   await storage.init();
-
   try {
     const datapoint = await storage.getItem("outsideSetpoint");
     data = datapoint.value;
-
     io.emit("outsideSetpoint", data);
   } catch (e) {
     console.log(e);

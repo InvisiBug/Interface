@@ -135,6 +135,7 @@ app.use(require("./App/Devices/OurRoom/RadiatorFan.js"));
 app.use(require("./App/Historical.js"));
 
 // Calor Imperium
+app.use(require("./App/HeatingController.js"));
 app.use(require("./App/Calor Imperium.js"));
 
 ////////////////////////////////////////////////////////////////////////
@@ -209,3 +210,77 @@ app.get("/api/heating/status", (req, res) => {
 
 app.listen(fetchPort, console.log("App is listening on port " + fetchPort));
 io.listen(socketPort, console.log("Socket is open on port " + socketPort));
+
+// Persistant Storage
+const storage = require("node-persist");
+
+////////////////////////////////////////////////////////////////////////
+//
+//  #####                                              ######
+// #     # #####  ####  #####    ##    ####  ######    #     # #####  # #    # ###### #####   ####
+// #         #   #    # #    #  #  #  #    # #         #     # #    # # #    # #      #    # #
+//  #####    #   #    # #    # #    # #      #####     #     # #    # # #    # #####  #    #  ####
+//       #   #   #    # #####  ###### #  ### #         #     # #####  # #    # #      #####       #
+// #     #   #   #    # #   #  #    # #    # #         #     # #   #  #  #  #  #      #   #  #    #
+//  #####    #    ####  #    # #    #  ####  ######    ######  #    # #   ##   ###### #    #  ####
+//
+////////////////////////////////////////////////////////////////////////
+const getStore = async (store) => {
+  await storage.init();
+  try {
+    return await storage.getItem(store);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const setStore = async (store, input) => {
+  await storage.init();
+  try {
+    await storage.setItem(store, input);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const heatingSensorInput = (room) => {
+  // const str = `${room} ${"Heating Sensor"}`;
+  // console.log(str);
+  var deviceData;
+
+  timer = setTimeout(() => {
+    deviceData = {
+      ...deviceData,
+      isConnected: false,
+    };
+  }, 10 * 1000);
+
+  client.on("message", async (topic, payload) => {
+    if (topic == `${room} ${"Heating Sensor"}`) {
+      clearTimeout(timer);
+
+      timer = setTimeout(async () => {
+        deviceData = null;
+        await setStore(`${room} ${"Heating Sensor"}`, deviceData);
+      }, 10 * 1000);
+
+      if (payload != `${room} ${"Heating Sensor Disconnected"}`) {
+        var mqttData = JSON.parse(payload);
+
+        deviceData = {
+          ...deviceData,
+          isConnected: true,
+          temperature: mqttData.temperature,
+          humidity: mqttData.humidity,
+          pressure: mqttData.pressure,
+          battery: mqttData.battery,
+        };
+
+        await setStore(`${room} ${"Heating Sensor"}`, deviceData);
+      } else {
+        console.log(`${room} ${"Heating Sensor Disconnected at "}` + functions.printTime());
+      }
+    }
+  });
+};
+heatingSensorInput("Our Room");

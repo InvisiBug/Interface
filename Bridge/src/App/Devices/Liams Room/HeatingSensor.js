@@ -35,6 +35,9 @@ const db = new Engine.Db(path.join(__dirname, "../../../Databases/Heating"), {})
 // Schedule
 const schedule = require("node-schedule");
 
+// Persistant Storage
+const storage = require("node-persist");
+
 ////////////////////////////////////////////////////////////////////////
 //
 //  #     #
@@ -60,6 +63,35 @@ timer = setTimeout(() => {
     isConnected: false,
   };
 }, 10 * 1000);
+
+////////////////////////////////////////////////////////////////////////
+//
+//  #####                                              ######
+// #     # #####  ####  #####    ##    ####  ######    #     # #####  # #    # ###### #####   ####
+// #         #   #    # #    #  #  #  #    # #         #     # #    # # #    # #      #    # #
+//  #####    #   #    # #    # #    # #      #####     #     # #    # # #    # #####  #    #  ####
+//       #   #   #    # #####  ###### #  ### #         #     # #####  # #    # #      #####       #
+// #     #   #   #    # #   #  #    # #    # #         #     # #   #  #  #  #  #      #   #  #    #
+//  #####    #    ####  #    # #    #  ####  ######    ######  #    # #   ##   ###### #    #  ####
+//
+////////////////////////////////////////////////////////////////////////
+const getStore = async (store) => {
+  await storage.init();
+  try {
+    return await storage.getItem(store);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const setStore = async (store, input) => {
+  await storage.init();
+  try {
+    await storage.setItem(store, input);
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -96,12 +128,13 @@ app.post("/api/heating/sensor/liamsRoom/setpoint/set", (req, res) => {
 //  #     #  #### #    #       #       #     # ######  ####   ####  #    #  ####  ######    #     # ######  ####  ###### #   ##   ###### #####
 //
 ////////////////////////////////////////////////////////////////////////
-client.on("message", (topic, payload) => {
+client.on("message", async (topic, payload) => {
   if (topic == "Liams Room Heating Sensor") {
     clearTimeout(timer);
 
-    timer = setTimeout(() => {
+    timer = setTimeout(async () => {
       deviceData = null;
+      await setStore("Liams Room Heating Sensor", deviceData);
     }, 10 * 1000);
 
     if (payload != "Liams Room Heating Sensor Disconnected") {
@@ -115,6 +148,8 @@ client.on("message", (topic, payload) => {
         pressure: mqttData.pressure,
         battery: mqttData.battery,
       };
+
+      await setStore("Liams Room Heating Sensor", deviceData);
     } else {
       console.log("Liams Room Heating Sensor Disconnected at " + functions.printTime());
     }

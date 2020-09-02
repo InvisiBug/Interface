@@ -38,6 +38,38 @@ const db = new Engine.Db(path.join(__dirname, "../../../Databases/Heating"), {})
 // Schedule
 const schedule = require("node-schedule");
 
+// Persistant Storage
+const storage = require("node-persist");
+
+////////////////////////////////////////////////////////////////////////
+//
+//  #####                                              ######
+// #     # #####  ####  #####    ##    ####  ######    #     # #####  # #    # ###### #####   ####
+// #         #   #    # #    #  #  #  #    # #         #     # #    # # #    # #      #    # #
+//  #####    #   #    # #    # #    # #      #####     #     # #    # # #    # #####  #    #  ####
+//       #   #   #    # #####  ###### #  ### #         #     # #####  # #    # #      #####       #
+// #     #   #   #    # #   #  #    # #    # #         #     # #   #  #  #  #  #      #   #  #    #
+//  #####    #    ####  #    # #    #  ####  ######    ######  #    # #   ##   ###### #    #  ####
+//
+////////////////////////////////////////////////////////////////////////
+const getStore = async (store) => {
+  await storage.init();
+  try {
+    return await storage.getItem(store);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const setStore = async (store, input) => {
+  await storage.init();
+  try {
+    await storage.setItem(store, input);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 ////////////////////////////////////////////////////////////////////////
 //
 //  #     #
@@ -56,13 +88,6 @@ var setpoint = 22;
 var hysteresis = 0.5;
 
 var addHeat = false;
-
-timer = setTimeout(() => {
-  deviceData = {
-    ...deviceData,
-    isConnected: false,
-  };
-}, 10 * 1000);
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -100,12 +125,13 @@ app.post("/api/heating/sensor/livingRoom/setpoint/set", (req, res) => {
 //  #     #  #### #    #       #       #     # ######  ####   ####  #    #  ####  ######    #     # ######  ####  ###### #   ##   ###### #####
 //
 ////////////////////////////////////////////////////////////////////////
-client.on("message", (topic, payload) => {
+client.on("message", async (topic, payload) => {
   if (topic == "Living Room Heating Sensor") {
     clearTimeout(timer);
 
-    timer = setTimeout(() => {
+    timer = setTimeout(async () => {
       deviceData.isConnected = false;
+      await setStore("Living Room Heating Sensor", deviceData);
     }, 10 * 1000);
 
     if (payload != "Living Room Heating Sensor Disconnected") {
@@ -119,6 +145,9 @@ client.on("message", (topic, payload) => {
         pressure: mqttData.pressure,
         battery: mqttData.battery,
       };
+
+      await setStore("Living Room Heating Sensor", deviceData);
+      console.log(await getStore("Living Room Heating Sensor"));
     } else {
       console.log("Living room heating sensor disconnected at " + functions.printTime());
     }
