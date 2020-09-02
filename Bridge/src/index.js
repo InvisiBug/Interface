@@ -21,7 +21,7 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
-const app = express();
+const app = (module.exports = express());
 const chalk = require("chalk");
 
 app.use(bodyParser.json()); // Used to handle data in post requests
@@ -67,7 +67,6 @@ global.io = require("socket.io")(server);
 //
 ////////////////////////////////////////////////////////////////////////
 const mqtt = require("mqtt");
-// const { default: SensorInfo } = require("../../Client/src/App/Screens/Climate/SensorInfo.jsx");
 // global.client = mqtt.connect("mqtt://192.168.1.46");
 global.client = mqtt.connect("mqtt://kavanet.io");
 client.setMaxListeners(15); // Disables event listener warning
@@ -100,26 +99,7 @@ client.on("message", (topic, payload) => {
 // General
 app.use(require("./App/Weather.js"));
 
-// Living Room
-app.use(require("./App/Devices/Living Room/HeatingSensor.js"));
-
-// Kitchen
-app.use(require("./App/Devices/Kitchen/HeatingSensor.js"));
-// app.use(require("./App/Devices/Kitchen/Heating Controller.js"));
-
-// Liam's Room
-app.use(require("./App/Devices/Liams Room/HeatingSensor.js"));
-
-// Study
-app.use(require("./App/Devices/Study/HeatingSensor.js"));
-
-// app.use(new Sensor(name, disconnectMessage, )
-
-// forEach((sensor) => {
-//   app.use(new class(sensor.name, other stuff))
-// }
-
-// Our Roomrs
+// Our Room
 app.use(require("./App/Devices/OurRoom/Desk LEDs"));
 app.use(require("./App/Devices/OurRoom/Screen LEDs"));
 app.use(require("./App/Devices/OurRoom/FloodLight"));
@@ -128,7 +108,6 @@ app.use(require("./App/Devices/OurRoom/FloodLight.js"));
 app.use(require("./App/Devices/OurRoom/Computer Audio.js"));
 app.use(require("./App/Devices/OurRoom/Computer Power.js"));
 // app.use(require('./App/Devices/Our Room/Blanket.js'));
-app.use(require("./App/Devices/OurRoom/HeatingSensor.js"));
 app.use(require("./App/Devices/OurRoom/RadiatorFan.js"));
 
 // Historical
@@ -137,6 +116,25 @@ app.use(require("./App/Historical.js"));
 // Calor Imperium
 app.use(require("./App/HeatingController.js"));
 app.use(require("./App/Calor Imperium.js"));
+
+////////////////////////////////////////////////////////////////////////
+//
+// #     #                  #     #
+// ##    # ###### #    #    ##   ##  ####  #####  #    # #      ######  ####
+// # #   # #      #    #    # # # # #    # #    # #    # #      #      #
+// #  #  # #####  #    #    #  #  # #    # #    # #    # #      #####   ####
+// #   # # #      # ## #    #     # #    # #    # #    # #      #           #
+// #    ## #      ##  ##    #     # #    # #    # #    # #      #      #    #
+// #     # ###### #    #    #     #  ####  #####   ####  ###### ######  ####
+//
+////////////////////////////////////////////////////////////////////////
+const heatingSensor = require("./App/Inputs/HeatingSensor");
+
+const sensors = ["Our Room", "Study", "Living Room", "Kitchen", "Liams Room"];
+
+sensors.map((room, index) => {
+  heatingSensor.newSensor(room);
+});
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -174,23 +172,6 @@ app.use(require("./App/Calor Imperium.js"));
   };
 });
 
-app.get("/api/test", (req, res) => {
-  res.json(forecastWeatherData);
-});
-
-var heatingSchedule = {
-  monday: [6, 8, 18, 23],
-  tuesday: [6, 8, 18, 23],
-  wednesday: [6, 8, 18, 23],
-  thursday: [6, 8, 18, 23],
-  friday: [6, 8, 18, 23],
-  saturday: [10, 15, 16, 24],
-  sunday: [10, 15, 18.07, 24],
-  enable: true,
-  boost: false,
-  heatingOn: true,
-};
-
 app.get("/api/heating/status", (req, res) => {
   res.end(JSON.stringify(heatingSchedule));
 });
@@ -207,80 +188,5 @@ app.get("/api/heating/status", (req, res) => {
 //
 ////////////////////////////////////////////////////////////////////////
 // Start the app
-
 app.listen(fetchPort, console.log("App is listening on port " + fetchPort));
 io.listen(socketPort, console.log("Socket is open on port " + socketPort));
-
-// Persistant Storage
-const storage = require("node-persist");
-
-////////////////////////////////////////////////////////////////////////
-//
-//  #####                                              ######
-// #     # #####  ####  #####    ##    ####  ######    #     # #####  # #    # ###### #####   ####
-// #         #   #    # #    #  #  #  #    # #         #     # #    # # #    # #      #    # #
-//  #####    #   #    # #    # #    # #      #####     #     # #    # # #    # #####  #    #  ####
-//       #   #   #    # #####  ###### #  ### #         #     # #####  # #    # #      #####       #
-// #     #   #   #    # #   #  #    # #    # #         #     # #   #  #  #  #  #      #   #  #    #
-//  #####    #    ####  #    # #    #  ####  ######    ######  #    # #   ##   ###### #    #  ####
-//
-////////////////////////////////////////////////////////////////////////
-const getStore = async (store) => {
-  await storage.init();
-  try {
-    return await storage.getItem(store);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-const setStore = async (store, input) => {
-  await storage.init();
-  try {
-    await storage.setItem(store, input);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-const heatingSensorInput = (room) => {
-  // const str = `${room} ${"Heating Sensor"}`;
-  // console.log(str);
-  var deviceData;
-
-  timer = setTimeout(() => {
-    deviceData = {
-      ...deviceData,
-      isConnected: false,
-    };
-  }, 10 * 1000);
-
-  client.on("message", async (topic, payload) => {
-    if (topic == `${room} ${"Heating Sensor"}`) {
-      clearTimeout(timer);
-
-      timer = setTimeout(async () => {
-        deviceData = null;
-        await setStore(`${room} ${"Heating Sensor"}`, deviceData);
-      }, 10 * 1000);
-
-      if (payload != `${room} ${"Heating Sensor Disconnected"}`) {
-        var mqttData = JSON.parse(payload);
-
-        deviceData = {
-          ...deviceData,
-          isConnected: true,
-          temperature: mqttData.temperature,
-          humidity: mqttData.humidity,
-          pressure: mqttData.pressure,
-          battery: mqttData.battery,
-        };
-
-        await setStore(`${room} ${"Heating Sensor"}`, deviceData);
-      } else {
-        console.log(`${room} ${"Heating Sensor Disconnected at "}` + functions.printTime());
-      }
-    }
-  });
-};
-heatingSensorInput("Our Room");
