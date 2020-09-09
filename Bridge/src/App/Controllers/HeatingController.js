@@ -12,39 +12,7 @@
 // Express
 const express = require("express");
 var app = (module.exports = express());
-const fs = require("fs");
-const path = require("path");
-
-const storageDriver = require("../../helpers/StorageDriver");
-
-////////////////////////////////////////////////////////////////////////
-//
-//  #####                                              ######
-// #     # #####  ####  #####    ##    ####  ######    #     # #####  # #    # ###### #####   ####
-// #         #   #    # #    #  #  #  #    # #         #     # #    # # #    # #      #    # #
-//  #####    #   #    # #    # #    # #      #####     #     # #    # # #    # #####  #    #  ####
-//       #   #   #    # #####  ###### #  ### #         #     # #####  # #    # #      #####       #
-// #     #   #   #    # #   #  #    # #    # #         #     # #   #  #  #  #  #      #   #  #    #
-//  #####    #    ####  #    # #    #  ####  ######    ######  #    # #   ##   ###### #    #  ####
-//
-////////////////////////////////////////////////////////////////////////
-const setStore = (store, data) => {
-  var storePath = path.join(__dirname, `${"../../../PersistantStorage/"}${store}${".json"}`);
-  try {
-    fs.writeFileSync(storePath, JSON.stringify(data));
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-const getStore = (store) => {
-  const storePath = path.join(__dirname, "../../../", "PersistantStorage", `${store}${".json"}`);
-  try {
-    return JSON.parse(fs.readFileSync(storePath, "utf8"));
-  } catch (e) {
-    console.log(e);
-  }
-};
+const store = require("../../helpers/StorageDriver");
 
 const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 var oneshot = [false, false, false];
@@ -60,7 +28,7 @@ var oneshot = [false, false, false];
 //
 ////////////////////////////////////////////////////////////////////////
 setInterval(() => {
-  let scheduleData = storageDriver.getStore("heatingSchedule");
+  let scheduleData = store.getStore("heatingSchedule");
 
   var date = new Date();
   const day = date.getDay();
@@ -92,7 +60,7 @@ setInterval(() => {
     onehsot = [false, false, oneshot[2]];
   }
 
-  storageDriver.setStore("heatingSchedule", scheduleData);
+  store.setStore("heatingSchedule", scheduleData);
 }, 1.5 * 1000);
 
 const toggleLogic = (data, point, value) => {

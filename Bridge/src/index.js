@@ -131,7 +131,7 @@ const heatingSensor = require("./App/Inputs/HeatingSensor");
 
 const sensors = ["Our Room", "Study", "Living Room", "Kitchen", "Liams Room"];
 sensors.map((room, index) => {
-  heatingSensor.newSensor(room, true);
+  heatingSensor.newSensor(room, false);
 });
 
 ////////////////////////////////////////////////////////////////////////

@@ -21,8 +21,6 @@
 // Express
 const express = require("express");
 var app = (module.exports = express());
-const fs = require("fs");
-const path = require("path");
 const storageDriver = require("../helpers/StorageDriver");
 
 ////////////////////////////////////////////////////////////////////////
