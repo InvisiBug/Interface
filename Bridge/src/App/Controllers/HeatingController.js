@@ -15,6 +15,8 @@ var app = (module.exports = express());
 const fs = require("fs");
 const path = require("path");
 
+const storageDriver = require("../../helpers/StorageDriver");
+
 ////////////////////////////////////////////////////////////////////////
 //
 //  #####                                              ######
@@ -58,28 +60,31 @@ var oneshot = [false, false, false];
 //
 ////////////////////////////////////////////////////////////////////////
 setInterval(() => {
-  let data = getStore("heatingSchedule");
+  let scheduleData = storageDriver.getStore("heatingSchedule");
 
   var date = new Date();
   const day = date.getDay();
   const time = date.getHours() + "." + date.getMinutes();
 
-  if ((data[days[day]][0] <= time && time <= data[days[day]][1]) || (data[days[day]][2] <= time && time <= data[days[day]][3])) {
-    data = toggleLogic(data, "isActive", true);
+  if (
+    (scheduleData[days[day]][0] <= time && time <= scheduleData[days[day]][1]) ||
+    (scheduleData[days[day]][2] <= time && time <= scheduleData[days[day]][3] && scheduleData.auto)
+  ) {
+    scheduleData = toggleLogic(scheduleData, "isActive", true);
     if (!oneshot[0]) {
       console.log("Send heating on signal");
       oneshot[0] = true;
     }
     oneshot = [oneshot[0], false, false];
-  } else if (!data.auto && data.isOn) {
-    data = toggleLogic(data, "isActive", true);
+  } else if (!scheduleData.auto && scheduleData.isOn) {
+    scheduleData = toggleLogic(scheduleData, "isActive", true);
     if (!oneshot[1]) {
       console.log("Send heating on signal");
       oneshot[1] = true;
     }
-    oneshot = [false, oneshot[1], oneshot[2]];
+    oneshot = [false, oneshot[1], false];
   } else {
-    data = toggleLogic(data, "isActive", false);
+    scheduleData = toggleLogic(scheduleData, "isActive", false);
     if (!oneshot[2]) {
       console.log("Send heating off signal");
       oneshot[2] = true;
@@ -87,7 +92,7 @@ setInterval(() => {
     onehsot = [false, false, oneshot[2]];
   }
 
-  setStore("heatingSchedule", data);
+  storageDriver.setStore("heatingSchedule", scheduleData);
 }, 1.5 * 1000);
 
 const toggleLogic = (data, point, value) => {

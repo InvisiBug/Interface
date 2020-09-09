@@ -2,10 +2,7 @@
 const express = require("express");
 const app = (module.exports = express());
 
-const store = require("../../StorageDriver");
-
-// Persistant Storage
-const storage = require("node-persist");
+const store = require("../../helpers/StorageDriver");
 
 // MQTT
 const mqtt = require("mqtt");
@@ -22,13 +19,13 @@ const newSensor = (room, saveToStorage) => {
   var deviceData;
   var timer;
 
-  connection.on("message", async (topic, payload) => {
+  connection.on("message", (topic, payload) => {
     if (topic == `${room} ${"Heating Sensor"}`) {
       clearTimeout(timer);
 
-      timer = setTimeout(async () => {
+      timer = setTimeout(() => {
         deviceData.isConnected = false;
-        if (saveToStorage) await store.setStore(`${room} ${"Heating Sensor"}`, deviceData);
+        if (saveToStorage) store.setStore(`${room} ${"Heating Sensor"}`, deviceData);
       }, 10 * 1000);
 
       if (payload != `${room} ${"Heating Sensor Disconnected"}`) {
@@ -42,7 +39,7 @@ const newSensor = (room, saveToStorage) => {
           pressure: mqttData.pressure,
           battery: mqttData.battery,
         };
-        if (saveToStorage) await store.setStore(`${room} ${"Heating Sensor"}`, deviceData);
+        if (saveToStorage) store.setStore(`${room} ${"Heating Sensor"}`, deviceData);
       } else {
         console.log(`${room} ${"Heating Sensor Disconnected"}`);
       }
