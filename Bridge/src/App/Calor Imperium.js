@@ -21,9 +21,8 @@
 // Express
 const express = require("express");
 var app = (module.exports = express());
-
-// Persistant Storage
-const storage = require("node-persist");
+const fs = require("fs");
+const path = require("path");
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -56,6 +55,12 @@ const storage = require("node-persist");
 //     console.log(e);
 //   }
 // });
+// -----  Schedule  -----
+app.post("/api/ci/schedule/update", async (req, res) => {
+  setStore("heatingSchedule", frontendToBackend(req.body.data));
+  sendHeatingSchedule();
+  res.end(null);
+});
 
 // ----------  Boost  ----------
 app.get("/api/ci/boost/on", async (req, res) => {
@@ -103,13 +108,13 @@ app.get("/api/ci/off", async (req, res) => {
   res.end(null);
 });
 
-const toggleLogic = async (point, value) => {
-  let data = await getStore("heatingSchedule");
+const toggleLogic = (point, value) => {
+  let data = getStore("heatingSchedule");
   data = {
     ...data,
     [point]: value,
   };
-  await setStore("heatingSchedule", data);
+  setStore("heatingSchedule", data);
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -123,22 +128,18 @@ const toggleLogic = async (point, value) => {
 //  #####    #    ####  #    # #    #  ####  ######    ######  #    # #   ##   ###### #    #  ####
 //
 ////////////////////////////////////////////////////////////////////////
-const setStore = async (store, data) => {
-  await storage.init();
-  try {
-    await storage.setItem(store, data);
-  } catch (e) {
-    console.log(e);
-  }
+const setStore = (store, data) => {
+  const storePath = path.join(__dirname, `${"../../PersistantStorage/"}${store}${".json"}`);
+  fs.writeFileSync(storePath, JSON.stringify(data), (err) => {
+    if (err) throw err;
+    console.log("It's saved!");
+  });
 };
 
-const getStore = async (store) => {
-  await storage.init();
-  try {
-    return await storage.getItem(store);
-  } catch (e) {
-    console.log(e);
-  }
+const getStore = (store) => {
+  const storePath = path.join(__dirname, "../../", "PersistantStorage", `${store}${".json"}`);
+  const data = JSON.parse(fs.readFileSync(storePath, "utf8"));
+  return data;
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -152,24 +153,24 @@ const getStore = async (store) => {
 //  #####   ####   ####  #    # ######   #
 //
 ////////////////////////////////////////////////////////////////////////
-var outsideSetpointSocket = setInterval(async () => {
-  await storage.init();
-  try {
-    const datapoint = await storage.getItem("outsideSetpoint");
-    data = datapoint.value;
-    io.emit("outsideSetpoint", data);
-  } catch (e) {
-    console.log(e);
-  }
-}, 1000);
+// var outsideSetpointSocket = setInterval(async () => {
+//   await storage.init();
+//   try {
+//     const datapoint = await storage.getItem("outsideSetpoint");
+//     data = datapoint.value;
+//     io.emit("outsideSetpoint", data);
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }, 1000);
 
-var heatingScheduleSocket = setInterval(async () => {
+var heatingScheduleSocket = setInterval(() => {
   sendHeatingSchedule();
 }, 1 * 1000);
 
-const sendHeatingSchedule = async () => {
+const sendHeatingSchedule = () => {
   try {
-    const data = await getStore("heatingSchedule");
+    const data = getStore("heatingSchedule");
     const adjustedData = backendToFrontend(data);
 
     io.emit("Heating Schedule", adjustedData);

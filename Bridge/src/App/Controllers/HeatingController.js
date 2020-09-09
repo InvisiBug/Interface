@@ -12,9 +12,8 @@
 // Express
 const express = require("express");
 var app = (module.exports = express());
-
-// Persistant Storage
-const storage = require("node-persist");
+const fs = require("fs");
+const path = require("path");
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -27,25 +26,26 @@ const storage = require("node-persist");
 //  #####    #    ####  #    # #    #  ####  ######    ######  #    # #   ##   ###### #    #  ####
 //
 ////////////////////////////////////////////////////////////////////////
-const getStore = async (store) => {
-  await storage.init();
+const setStore = (store, data) => {
+  var storePath = path.join(__dirname, `${"../../../PersistantStorage/"}${store}${".json"}`);
   try {
-    return await storage.getItem(store);
+    fs.writeFileSync(storePath, JSON.stringify(data));
   } catch (e) {
     console.log(e);
   }
 };
 
-const setStore = async (store, input) => {
-  await storage.init();
+const getStore = (store) => {
+  const storePath = path.join(__dirname, "../../../", "PersistantStorage", `${store}${".json"}`);
   try {
-    await storage.setItem(store, input);
+    return JSON.parse(fs.readFileSync(storePath, "utf8"));
   } catch (e) {
     console.log(e);
   }
 };
 
 const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+var oneshot = [false, false, false];
 ////////////////////////////////////////////////////////////////////////
 //
 // #######
@@ -57,8 +57,8 @@ const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", 
 //    #    # #    # ###### #    #  ####
 //
 ////////////////////////////////////////////////////////////////////////
-setInterval(async () => {
-  let data = await getStore("heatingSchedule");
+setInterval(() => {
+  let data = getStore("heatingSchedule");
 
   var date = new Date();
   const day = date.getDay();
@@ -66,13 +66,28 @@ setInterval(async () => {
 
   if ((data[days[day]][0] <= time && time <= data[days[day]][1]) || (data[days[day]][2] <= time && time <= data[days[day]][3])) {
     data = toggleLogic(data, "isActive", true);
+    if (!oneshot[0]) {
+      console.log("Send heating on signal");
+      oneshot[0] = true;
+    }
+    oneshot = [oneshot[0], false, false];
   } else if (!data.auto && data.isOn) {
     data = toggleLogic(data, "isActive", true);
+    if (!oneshot[1]) {
+      console.log("Send heating on signal");
+      oneshot[1] = true;
+    }
+    oneshot = [false, oneshot[1], oneshot[2]];
   } else {
     data = toggleLogic(data, "isActive", false);
+    if (!oneshot[2]) {
+      console.log("Send heating off signal");
+      oneshot[2] = true;
+    }
+    onehsot = [false, false, oneshot[2]];
   }
 
-  await setStore("heatingSchedule", data);
+  setStore("heatingSchedule", data);
 }, 1.5 * 1000);
 
 const toggleLogic = (data, point, value) => {

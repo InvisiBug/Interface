@@ -19,7 +19,6 @@
 //
 ////////////////////////////////////////////////////////////////////////
 const express = require("express");
-const path = require("path");
 const bodyParser = require("body-parser");
 const app = (module.exports = express());
 const chalk = require("chalk");
@@ -114,7 +113,7 @@ app.use(require("./App/Devices/OurRoom/RadiatorFan.js"));
 app.use(require("./App/Historical.js"));
 
 // Calor Imperium
-app.use(require("./App/HeatingController.js"));
+app.use(require("./App/Controllers/HeatingController.js"));
 app.use(require("./App/Calor Imperium.js"));
 
 ////////////////////////////////////////////////////////////////////////
@@ -131,9 +130,8 @@ app.use(require("./App/Calor Imperium.js"));
 const heatingSensor = require("./App/Inputs/HeatingSensor");
 
 const sensors = ["Our Room", "Study", "Living Room", "Kitchen", "Liams Room"];
-
 sensors.map((room, index) => {
-  heatingSensor.newSensor(room);
+  heatingSensor.newSensor(room, false);
 });
 
 ////////////////////////////////////////////////////////////////////////
@@ -170,10 +168,6 @@ sensors.map((room, index) => {
       ]);
     }
   };
-});
-
-app.get("/api/heating/status", (req, res) => {
-  res.end(JSON.stringify(heatingSchedule));
 });
 
 ////////////////////////////////////////////////////////////////////////

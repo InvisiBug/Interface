@@ -18,7 +18,7 @@ connection.subscribe("#", (err) => {
 
 connection.on("connect", () => null);
 
-const newSensor = (room) => {
+const newSensor = (room, saveToStorage) => {
   var deviceData;
   var timer;
 
@@ -28,7 +28,7 @@ const newSensor = (room) => {
 
       timer = setTimeout(async () => {
         deviceData.isConnected = false;
-        await store.setStore(`${room} ${"Heating Sensor"}`, deviceData);
+        if (saveToStorage) await store.setStore(`${room} ${"Heating Sensor"}`, deviceData);
       }, 10 * 1000);
 
       if (payload != `${room} ${"Heating Sensor Disconnected"}`) {
@@ -42,15 +42,14 @@ const newSensor = (room) => {
           pressure: mqttData.pressure,
           battery: mqttData.battery,
         };
-
-        await store.setStore(`${room} ${"Heating Sensor"}`, deviceData);
+        if (saveToStorage) await store.setStore(`${room} ${"Heating Sensor"}`, deviceData);
       } else {
         console.log(`${room} ${"Heating Sensor Disconnected"}`);
       }
     }
   });
 
-  const sensorUpdate = setInterval(() => {
+  setInterval(() => {
     sendSocketData();
   }, 1 * 1000);
 
