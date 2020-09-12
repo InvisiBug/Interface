@@ -63,9 +63,6 @@ const Schedule = () => {
       [day]: newVals
     };
 
-    // console.log(schedule);
-    // console.log(data);
-
     fetch("/api/ci/schedule/update", {
       headers: { "Content-Type": "application/json" },
       method: "POST",

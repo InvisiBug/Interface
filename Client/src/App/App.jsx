@@ -13,7 +13,6 @@ import Home from "./Screens/Home/HomeScreen.jsx";
 import Lights from "./Screens/Lights/LightsScreen.jsx";
 import Computer from "./Screens/Computer/ComputerScreen.jsx";
 import Climate from "./Screens/Climate/ClimateScreen.jsx";
-import Printer from "./Screens/Printer/Printer.jsx";
 import Heating from "./Screens/Heating/Heating.jsx";
 import Advanced from "./Screens/Advanced/AdvancedScreen";
 import Logger from "./Cache Loaders/MqttLogger";
@@ -24,7 +23,6 @@ import Logger from "./Cache Loaders/MqttLogger";
 
 // Cache Loader
 import CacheLoader from "./Cache Loaders/CacheLoader";
-import ScheduleCollector from "./Cache Loaders/ScheduleCollector";
 // import TemperatureGraphsDataCollector from "./Cache Loaders/TemperatureGraphsDataCollector";
 import Socket from "./Cache Loaders/Socket";
 import backgroundImage from "../App/Backgrounds/Red.jpg";
@@ -115,14 +113,9 @@ const App = () => {
             <Lights />
           ) : screen === "Climate" ? (
             <Climate />
-          ) : screen === "Printer" ? (
-            <Printer />
           ) : screen === "Advanced" ? (
             <Advanced />
-          ) : //) //: screen === "Schedules" ? (
-          //<Schedules />
-          // screen === "Blanket"  ? <ElectricBlanket/>  :
-          screen === "Heating" ? (
+          ) : screen === "Heating" ? (
             <Heating />
           ) : screen === "MQTT" ? (
             <Logger />
