@@ -34,11 +34,9 @@ const app = (module.exports = express());
 //
 ////////////////////////////////////////////////////////////////////////
 var deviceData;
-var timer;
-
-// timer = setTimeout(() => {
-//   deviceData.isConnected = false;
-// }, 10 * 1000);
+var timer = setTimeout(() => {
+  deviceData.isConnected = false;
+}, 10 * 1000);
 
 ////////////////////////////////////////////////////////////////////////
 //

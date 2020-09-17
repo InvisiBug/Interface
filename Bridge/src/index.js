@@ -115,7 +115,9 @@ app.use(require("./App/Historical.js"));
 // Calor Imperium
 app.use(require("./App/Controllers/HeatingController.js"));
 app.use(require("./App/Calor Imperium.js"));
+app.use(require("./App/Interfaces/Heating.js"));
 
+app.use(require("./App/Services/HouseClimateStats"));
 ////////////////////////////////////////////////////////////////////////
 //
 // #     #                  #     #
@@ -127,11 +129,11 @@ app.use(require("./App/Calor Imperium.js"));
 // #     # ###### #    #    #     #  ####  #####   ####  ###### ######  ####
 //
 ////////////////////////////////////////////////////////////////////////
-const heatingSensor = require("./App/Inputs/HeatingSensor");
+const heatingSensor = require("./App/Interfaces/HeatingSensor");
 
 const sensors = ["Our Room", "Study", "Living Room", "Kitchen", "Liams Room"];
 sensors.map((room, index) => {
-  heatingSensor.newSensor(room, false);
+  heatingSensor.newSensor(room, true);
 });
 
 ////////////////////////////////////////////////////////////////////////

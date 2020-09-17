@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import React from "react";
 import { jsx, css } from "@emotion/core";
+import { useState, useEffect } from "react";
 
 const container = css`
   position: absolute;
@@ -40,42 +41,39 @@ const timeText = css`
   display: flex;
   justify-content: flex-end;
 `;
+const getTime = date => {
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? "pm" : "am";
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  var strTime = hours + ":" + minutes + " " + ampm;
+  return strTime;
+};
 
-class DateAndTime extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      time: this.getTime(new Date()),
-      long: localStorage.getItem("longDate")
-    };
-  }
+const DateAndTime = () => {
+  const [data, setData] = useState({
+    time: getTime(new Date()),
+    long: localStorage.getItem("longDate") // *NB* make it so this doesnt use local storage
+  });
 
-  componentWillMount() {
-    this.interval = setInterval(() => {
-      this.setState({ time: this.getTime(new Date()) });
-      this.setState({ long: localStorage.getItem("longDate") });
-    }, 1000);
-  }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setData({
+        time: getTime(new Date()),
+        long: localStorage.getItem("longDate")
+      });
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [data]);
 
-  getTime(date) {
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? "pm" : "am";
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    var strTime = hours + ":" + minutes + " " + ampm;
-    return strTime;
-  }
-
-  render() {
-    return (
-      <div css={container}>
-        <div css={dateText}>{this.state.long}</div>
-        <div css={timeText}>{this.state.time}</div>
-      </div>
-    );
-  }
-}
+  return (
+    <div css={container}>
+      <div css={dateText}>{data.long}</div>
+      <div css={timeText}>{data.time}</div>
+    </div>
+  );
+};
 
 export default DateAndTime;

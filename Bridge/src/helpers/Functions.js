@@ -18,29 +18,8 @@ const currentTime = () => {
   let month = d.getMonth() + 1;
   let year = d.getFullYear();
 
-  var daysOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  var monthOfYear = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+  var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  var monthOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   let days = daysOfWeek[d.getDay()];
   let months = monthOfYear[d.getMonth()];
@@ -74,7 +53,16 @@ var printTime = () => {
   return strTime;
 };
 
+const toggleLogic = (data, point, value) => {
+  data = {
+    ...data,
+    [point]: value,
+  };
+  return data;
+};
+
 module.exports = {
   currentTime: currentTime,
   printTime: printTime,
+  toggleLogic: toggleLogic,
 };

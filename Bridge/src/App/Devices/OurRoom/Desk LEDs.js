@@ -21,7 +21,7 @@
 const express = require("express");
 const app = (module.exports = express());
 
-const functions = require("../../Functions");
+const functions = require("../../../helpers/Functions");
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -35,13 +35,8 @@ const functions = require("../../Functions");
 //
 ////////////////////////////////////////////////////////////////////////
 var deviceData;
-var timer;
-
-timer = setTimeout(() => {
-  deviceData = {
-    ...deviceData,
-    isConnected: false,
-  };
+var timer = setTimeout(() => {
+  deviceData.isConnected = false;
 }, 10 * 1000);
 
 ////////////////////////////////////////////////////////////////////////

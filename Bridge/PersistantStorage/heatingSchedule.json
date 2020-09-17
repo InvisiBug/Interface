@@ -1,1 +1,1 @@
-{"monday":[5.3,10.3,18,21],"tuesday":[4,10,18,21],"wednesday":[6,10,16.15,20.3],"thursday":[6,10,18,24],"friday":[7,11,18,21],"saturday":[7,11,19,22],"sunday":[9,11,19,22],"auto":true,"boost":false,"isOn":false,"isActive":false}
+{"monday":[5.3,10.3,18,21],"tuesday":[4,10,18,21],"wednesday":[4,10,16.15,21],"thursday":[6,11,16,21],"friday":[7,11,18,21],"saturday":[4.15,11,16.3,24],"sunday":[9,11,19,22],"auto":false,"boost":false,"isOn":false,"isActive":false}
