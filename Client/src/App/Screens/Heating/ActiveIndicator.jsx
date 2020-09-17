@@ -17,12 +17,12 @@ const container = css`
 
 const ActiveIndicator = () => {
   const [deviceData, setActive] = useState(
-    JSON.parse(localStorage.getItem("Heating Schedule"))
+    JSON.parse(localStorage.getItem("Heating"))
   );
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setActive(JSON.parse(localStorage.getItem("Heating Schedule")));
+      setActive(JSON.parse(localStorage.getItem("Heating")));
     }, 100);
     return () => clearTimeout(timer);
   }, [deviceData]);
@@ -30,7 +30,7 @@ const ActiveIndicator = () => {
   return (
     <>
       <div>
-        {deviceData.isActive && <img src={Active} alt="" css={container} />}
+        {deviceData.isOn && <img src={Active} alt="" css={container} />}
       </div>
     </>
   );

@@ -24,11 +24,8 @@ class Dots extends React.Component {
     var lineLength = 100;
     var lineWidth = 0.05;
 
-    for (
-      var i = 0;
-      i < total;
-      i++ // Create array of random stars
-    ) {
+    // Create array of stars
+    for (var i = 0; i < total; i++) {
       stars.push({
         x: Math.random() * canvas.width, // Positions
         y: Math.random() * canvas.height,
@@ -45,11 +42,8 @@ class Dots extends React.Component {
 
       ctx.globalCompositeOperation = "lighter";
 
-      for (
-        var i = 0;
-        i < total;
-        i++ // Draw stars
-      ) {
+      // Draw stars
+      for (var i = 0; i < total; i++) {
         ctx.beginPath();
         ctx.arc(stars[i].x, stars[i].y, stars[i].radius, 0, 2 * Math.PI);
         ctx.fill();
@@ -88,8 +82,10 @@ class Dots extends React.Component {
         stars[i].x += stars[i].vx / 100;
         stars[i].y += stars[i].vy / 100;
 
-        if (stars[i].x < 0 || stars[i].x > canvas.width) stars[i].vx = -stars[i].vx;
-        if (stars[i].y < 0 || stars[i].y > canvas.height) stars[i].vy = -stars[i].vy;
+        if (stars[i].x < 0 || stars[i].x > canvas.width)
+          stars[i].vx = -stars[i].vx;
+        if (stars[i].y < 0 || stars[i].y > canvas.height)
+          stars[i].vy = -stars[i].vy;
       }
     }
 
@@ -103,11 +99,7 @@ class Dots extends React.Component {
   }
 
   render() {
-    return (
-      <>
-        <canvas ref={this.canvasRef} className="dotsCanvas" />
-      </>
-    );
+    return <canvas ref={this.canvasRef} className="dotsCanvas" />;
   }
 }
 

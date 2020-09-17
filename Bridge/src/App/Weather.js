@@ -28,6 +28,10 @@ var schedule = require("node-schedule");
 // Request
 const request = require("request");
 
+const store = require("../helpers/StorageDriver");
+
+const saveToStorage = true;
+
 ////////////////////////////////////////////////////////////////////////
 //
 //  #     #
@@ -72,29 +76,86 @@ app.get("/api/weather/get/current", (req, res) => {
 // #        ####  #    #  ####    #   #  ####  #    #  ####
 //
 ////////////////////////////////////////////////////////////////////////
-var getForecast = () => {
+const getDaily = () => {
   request(
     "https://api.darksky.net/forecast/1a79dafc70696fa86e4f51559476b6d9/52.954399,-1.135709?units=si&exclude=minutely,hourly,flags,currently",
     (error, response, body) => {
       if (!error && response.statusCode == 200) {
         forecastWeatherData = JSON.parse(body);
+        store.setStore(`${"Daily Forcast"}`, forecastWeatherData);
       }
     }
   );
 };
 
-var getCurrent = () => {
+const getCurrent = () => {
   request(
-    "https://api.darksky.net/forecast/1a79dafc70696fa86e4f51559476b6d9/52.954399,-1.135709?units=si&exclude=minutely,hourly,flags,alerts",
+    "https://api.darksky.net/forecast/1a79dafc70696fa86e4f51559476b6d9/52.954399,-1.135709?units=si&exclude=minutely,daily,hourly,flags",
     (error, response, body) => {
       if (!error && response.statusCode == 200) {
         currentWeatherData = JSON.parse(body);
+
+        let environmentalData = store.getStore("Environmental Data");
+
+        environmentalData = {
+          ...environmentalData,
+          outside: {
+            ...environmentalData.outside,
+            current: {
+              ...environmentalData.outside.current,
+              temperature: currentWeatherData.currently.apparentTemperature,
+              humidity: currentWeatherData.currently.humidity,
+              pressure: currentWeatherData.currently.pressure,
+              windSpeed: currentWeatherData.currently.windSpeed,
+              windBearing: currentWeatherData.currently.windBearing,
+              cloudCover: currentWeatherData.currently.cloudCover,
+            },
+          },
+        };
+        store.setStore("Environmental Data", environmentalData);
       }
     }
   );
 };
 
-getForecast();
+setInterval(() => {
+  getCurrent();
+}, 30 * 60 * 1000);
+
+var hours = [];
+const next24Hrs = () => {
+  request(
+    "https://api.darksky.net/forecast/1a79dafc70696fa86e4f51559476b6d9/52.954399,-1.135709?units=si&exclude=minutely,daily,flags,currently",
+    (error, response, body) => {
+      if (!error && response.statusCode == 200) {
+        data = JSON.parse(body);
+        // console.log(data);
+
+        for (let i = 0; i < 24; i++) {
+          hours[i] = data.hourly.data[i].apparentTemperature;
+        }
+
+        let environmentalData = store.getStore("Environmental Data");
+
+        environmentalData = {
+          ...environmentalData,
+          outside: {
+            ...environmentalData.outside,
+            next24Hrs: hours,
+          },
+        };
+        // console.log(environmentalData);
+        store.setStore("Environmental Data", environmentalData);
+      }
+      // console.log(environmentalData);
+      // store.setStore(`${"Next 24 Hrs"}`, hours);
+    }
+  );
+};
+
+next24Hrs();
+//api.darksky.net/forecast/1a79dafc70696fa86e4f51559476b6d9/52.954399,-1.135709?units=si&exclude=minutely,daily,flags,currently
+getDaily();
 getCurrent();
 
 ////////////////////////////////////////////////////////////////////////
@@ -109,9 +170,10 @@ getCurrent();
 //
 ////////////////////////////////////////////////////////////////////////
 var weatherUpdate = new schedule.RecurrenceRule();
-weatherUpdate.minute = 0;
+weatherUpdate.minute = 5;
 
 schedule.scheduleJob(weatherUpdate, function () {
-  getForecast();
+  getDaily();
   getCurrent();
+  next24Hrs();
 });

@@ -22,7 +22,7 @@ const express = require("express");
 const app = (module.exports = express());
 
 // Functions
-const functions = require("../../Functions.js");
+const functions = require("../../../helpers/Functions.js");
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -36,7 +36,9 @@ const functions = require("../../Functions.js");
 //
 ////////////////////////////////////////////////////////////////////////
 var deviceData;
-var timer;
+var timer = setTimeout(() => {
+  deviceData.isConnected = false;
+}, 10 * 1000);
 
 ////////////////////////////////////////////////////////////////////////
 //

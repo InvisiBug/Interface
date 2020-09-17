@@ -21,9 +21,7 @@
 // Express
 const express = require("express");
 var app = (module.exports = express());
-
-// Persistant Storage
-const storage = require("node-persist");
+const storageDriver = require("../helpers/StorageDriver");
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -36,7 +34,7 @@ const storage = require("node-persist");
 // #     # #       ###
 //
 ////////////////////////////////////////////////////////////////////////
-// app.post("/api/ci/outside/set", async (req, res) => {
+// app.post("/api/ci/outside/set",  (req, res) => {
 //   console.log(req.body);
 //   await storage.init();
 //   await storage.setItem("outsideSetpoint", req.body);
@@ -44,7 +42,7 @@ const storage = require("node-persist");
 //   res.end(null);
 // });
 
-// app.get("/api/ci/outside/get", async () => {
+// app.get("/api/ci/outside/get",  () => {
 //   await storage.init();
 
 //   try {
@@ -56,89 +54,66 @@ const storage = require("node-persist");
 //     console.log(e);
 //   }
 // });
-
-// ----------  Boost  ----------
-app.get("/api/ci/boost/on", async (req, res) => {
-  await toggleLogic("boost", true);
+// -----  Schedule  -----
+app.post("/api/ci/schedule/update", (req, res) => {
+  storageDriver.setStore("heatingSchedule", frontendToBackend(req.body.data));
   sendHeatingSchedule();
   res.end(null);
 });
 
-app.get("/api/ci/boost/off", async (req, res) => {
-  await toggleLogic("boost", false);
+// ----------  Boost  ----------
+app.get("/api/ci/boost/on", (req, res) => {
+  toggleLogic("boost", true);
+  sendHeatingSchedule();
+  res.end(null);
+});
+
+app.get("/api/ci/boost/off", (req, res) => {
+  toggleLogic("boost", false);
   sendHeatingSchedule();
   res.end(null);
 });
 
 // -----  Manual  -----
-app.get("/api/ci/manual/on", async (req, res) => {
-  await toggleLogic("auto", false);
+app.get("/api/ci/manual/on", (req, res) => {
+  toggleLogic("auto", false);
   sendHeatingSchedule();
   res.end(null);
 });
 
-app.get("/api/ci/manual/off", async (req, res) => {
-  await toggleLogic("auto", true);
+app.get("/api/ci/manual/off", (req, res) => {
+  toggleLogic("auto", true);
   sendHeatingSchedule();
   res.end(null);
 });
 
 // ----- On / Off -----
-app.get("/api/ci/on", async (req, res) => {
-  let data = await getStore("heatingSchedule");
+app.get("/api/ci/on", (req, res) => {
+  let data = storageDriver.getStore("heatingSchedule");
   if (!data.auto) {
-    await toggleLogic("isOn", true);
+    toggleLogic("isOn", true);
     sendHeatingSchedule();
   }
   res.end(null);
 });
 
-app.get("/api/ci/off", async (req, res) => {
-  let data = await getStore("heatingSchedule");
+app.get("/api/ci/off", (req, res) => {
+  let data = storageDriver.getStore("heatingSchedule");
   if (!data.auto) {
-    await toggleLogic("isOn", false);
+    toggleLogic("isOn", false);
     sendHeatingSchedule();
   }
   sendHeatingSchedule();
   res.end(null);
 });
 
-const toggleLogic = async (point, value) => {
-  let data = await getStore("heatingSchedule");
+const toggleLogic = (point, value) => {
+  let data = storageDriver.getStore("heatingSchedule");
   data = {
     ...data,
     [point]: value,
   };
-  await setStore("heatingSchedule", data);
-};
-
-////////////////////////////////////////////////////////////////////////
-//
-//  #####                                              ######
-// #     # #####  ####  #####    ##    ####  ######    #     # #####  # #    # ###### #####   ####
-// #         #   #    # #    #  #  #  #    # #         #     # #    # # #    # #      #    # #
-//  #####    #   #    # #    # #    # #      #####     #     # #    # # #    # #####  #    #  ####
-//       #   #   #    # #####  ###### #  ### #         #     # #####  # #    # #      #####       #
-// #     #   #   #    # #   #  #    # #    # #         #     # #   #  #  #  #  #      #   #  #    #
-//  #####    #    ####  #    # #    #  ####  ######    ######  #    # #   ##   ###### #    #  ####
-//
-////////////////////////////////////////////////////////////////////////
-const setStore = async (store, data) => {
-  await storage.init();
-  try {
-    await storage.setItem(store, data);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-const getStore = async (store) => {
-  await storage.init();
-  try {
-    return await storage.getItem(store);
-  } catch (e) {
-    console.log(e);
-  }
+  storageDriver.setStore("heatingSchedule", data);
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -152,24 +127,24 @@ const getStore = async (store) => {
 //  #####   ####   ####  #    # ######   #
 //
 ////////////////////////////////////////////////////////////////////////
-var outsideSetpointSocket = setInterval(async () => {
-  await storage.init();
-  try {
-    const datapoint = await storage.getItem("outsideSetpoint");
-    data = datapoint.value;
-    io.emit("outsideSetpoint", data);
-  } catch (e) {
-    console.log(e);
-  }
-}, 1000);
+// var outsideSetpointSocket = setInterval( () => {
+//   await storage.init();
+//   try {
+//     const datapoint = await storage.getItem("outsideSetpoint");
+//     data = datapoint.value;
+//     io.emit("outsideSetpoint", data);
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }, 1000);
 
-var heatingScheduleSocket = setInterval(async () => {
+var heatingScheduleSocket = setInterval(() => {
   sendHeatingSchedule();
 }, 1 * 1000);
 
-const sendHeatingSchedule = async () => {
+const sendHeatingSchedule = () => {
   try {
-    const data = await getStore("heatingSchedule");
+    const data = storageDriver.getStore("heatingSchedule");
     const adjustedData = backendToFrontend(data);
 
     io.emit("Heating Schedule", adjustedData);

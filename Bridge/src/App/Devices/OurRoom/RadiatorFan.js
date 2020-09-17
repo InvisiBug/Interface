@@ -23,6 +23,8 @@ const express = require("express");
 const app = (module.exports = express());
 const device = "radiatorFan";
 
+const store = require("../../../helpers/StorageDriver");
+
 ////////////////////////////////////////////////////////////////////////
 //
 //  #     #
@@ -34,16 +36,12 @@ const device = "radiatorFan";
 //     #    #    # #    # # #    # #####  ###### ######  ####
 //
 ////////////////////////////////////////////////////////////////////////
-// var deviceData = null;
-var deviceData = {
-  isAutomatic: false,
-  isOn: false,
-  isConnected: false,
-};
+const saveToStorage = true;
+var deviceData = { isAutomatic: true }; // means isAutomatic gets written to long term storage
+var timer = setTimeout(() => {
+  deviceData.isConnected = false;
+}, 10 * 1000);
 
-// var deviceData;
-
-var timer;
 ////////////////////////////////////////////////////////////////////////
 //
 //    #    ######  ###
@@ -55,10 +53,6 @@ var timer;
 // #     # #       ###
 //
 ////////////////////////////////////////////////////////////////////////
-app.get("/api/RadiatorFan/Status", (req, res) => {
-  res.json(deviceData);
-});
-
 // Automatic / Manual
 app.get("/api/RadiatorFanAutomatic/On", (req, res) => {
   deviceData.isAutomatic = true;
@@ -87,7 +81,6 @@ app.get("/api/RadiatorFan/Off", (req, res) => {
     deviceData.isOn = false;
     client.publish("Radiator Fan Control", "0"); // Toggle power button
   }
-
   sendSocketData();
   res.json(null);
 });
@@ -109,6 +102,7 @@ client.on("message", (topic, payload) => {
 
     timer = setTimeout(() => {
       deviceData.isConnected = false;
+      if (saveToStorage) store.setStore(`${"Radiator Fan"}`, deviceData);
     }, 10 * 1000);
 
     if (payload != "Radiator Fan Disconnected") {
@@ -117,6 +111,7 @@ client.on("message", (topic, payload) => {
         isConnected: true,
         isOn: JSON.parse(payload).state,
       };
+      if (saveToStorage) store.setStore(`${"Radiator Fan"}`, deviceData);
     } else {
       console.log("Radiator Fan Disconnected");
     }

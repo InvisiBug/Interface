@@ -13,22 +13,17 @@ import Home from "./Screens/Home/HomeScreen.jsx";
 import Lights from "./Screens/Lights/LightsScreen.jsx";
 import Computer from "./Screens/Computer/ComputerScreen.jsx";
 import Climate from "./Screens/Climate/ClimateScreen.jsx";
-import Printer from "./Screens/Printer/Printer.jsx";
 import Heating from "./Screens/Heating/Heating.jsx";
 import Advanced from "./Screens/Advanced/AdvancedScreen";
 import Logger from "./Cache Loaders/MqttLogger";
 
-// import Plant           from './Components/Screens/PlantScreen.jsx';
-// import Schedules from "./Screens/Schedules/Schedules.jsx";
-// import ElectricBlanket from './Screens/Electric Blanket/Electric Blanket.jsx'
-
 // Cache Loader
 import CacheLoader from "./Cache Loaders/CacheLoader";
-import ScheduleCollector from "./Cache Loaders/ScheduleCollector";
 // import TemperatureGraphsDataCollector from "./Cache Loaders/TemperatureGraphsDataCollector";
 import Socket from "./Cache Loaders/Socket";
 import backgroundImage from "../App/Backgrounds/Red.jpg";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import MyButton from "./Ui Library/Atoms/Button";
 
 const background = css`
   position: absolute;
@@ -79,9 +74,7 @@ const screenContainer = css`
 `;
 
 const App = () => {
-  const [screen, setScreen] = useState(
-    JSON.parse(localStorage.getItem("screen"))
-  );
+  const [screen, setScreen] = useState(JSON.parse(localStorage.getItem("screen")));
 
   const changeScreen = newScreen => {
     setScreen(newScreen);
@@ -102,7 +95,8 @@ const App = () => {
 
       <div css={windowContainer}>
         <NavBar style={navBar} changeScreen={changeScreen} screen={screen} />
-        {/* <NavBar css={navBar} changeScreen={changeScreen} screen={screen} /> */}
+
+        <MyButton>Button</MyButton>
 
         <div css={screenContainer}>
           <DateBox />
@@ -115,14 +109,9 @@ const App = () => {
             <Lights />
           ) : screen === "Climate" ? (
             <Climate />
-          ) : screen === "Printer" ? (
-            <Printer />
           ) : screen === "Advanced" ? (
             <Advanced />
-          ) : //) //: screen === "Schedules" ? (
-          //<Schedules />
-          // screen === "Blanket"  ? <ElectricBlanket/>  :
-          screen === "Heating" ? (
+          ) : screen === "Heating" ? (
             <Heating />
           ) : screen === "MQTT" ? (
             <Logger />

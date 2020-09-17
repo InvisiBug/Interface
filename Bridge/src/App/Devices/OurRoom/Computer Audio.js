@@ -50,7 +50,7 @@ app.get("/api/computerAudio/Status", (req, res) => {
 });
 
 app.post("/api/ComputerAudio/On", (req, res) => {
-  console.log("Computer Audio On: " + req.body.Device);
+  // console.log("Computer Audio On: " + req.body.Device);
   if (req.body.Device == "Master") {
     client.publish("Computer Audio Control", "1"); // Toggle power button
 
@@ -76,7 +76,7 @@ app.post("/api/ComputerAudio/On", (req, res) => {
 });
 
 app.post("/api/ComputerAudio/Off", (req, res) => {
-  console.log("Computer Audio Off: " + req.body.Device);
+  // console.log("Computer Audio Off: " + req.body.Device);
   if (req.body.Device == "Master") {
     client.publish("Computer Audio Control", "0"); // Toggle power button
 

@@ -6,9 +6,9 @@ import React from "react";
 
 // CSS
 import "./CSS/Computer.css";
-import "./CSS/MyStyles.css";
+// import "./CSS/MyStyles.css";
 import "./CSS/Climate.css";
-import "./CSS/Modules.css";
+// import "./CSS/Modules.css";
 import "./CSS/Weather.css";
 import "./CSS/Graphs.css";
 import "./CSS/Button.css";

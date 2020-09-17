@@ -7,17 +7,15 @@ import DeskLEDs from "./Desk LEDs";
 import TableLamp from "./TableLamp";
 import ScreenLEDs from "./ScreenLEDs";
 
-class Lights extends React.Component {
-  render() {
-    return (
-      <div>
-        <Floodlight />
-        <DeskLEDs />
-        <TableLamp />
-        <ScreenLEDs />
-      </div>
-    );
-  }
-}
+const Lights = () => {
+  return (
+    <div>
+      <Floodlight />
+      <DeskLEDs />
+      <TableLamp />
+      <ScreenLEDs />
+    </div>
+  );
+};
 
 export default Lights;
