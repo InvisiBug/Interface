@@ -23,6 +23,7 @@ const camelRoomName = (roomName) => {
 };
 
 const newSensor = (room, saveToStorage) => {
+  var timer;
   var deviceData = {
     isConnected: false,
     temperature: -1,
@@ -31,12 +32,12 @@ const newSensor = (room, saveToStorage) => {
     battery: -1,
   };
 
-  timer = setTimeout(() => {
-    deviceData = {
-      ...deviceData,
-      isConnected: false,
-    };
-  }, 10 * 1000);
+  // timer = setTimeout(() => {
+  //   deviceData = {
+  //     ...deviceData,
+  //     isConnected: false,
+  //   };
+  // }, 10 * 1000);
 
   connection.on("message", (topic, payload) => {
     if (topic == `${room} ${"Heating Sensor"}`) {

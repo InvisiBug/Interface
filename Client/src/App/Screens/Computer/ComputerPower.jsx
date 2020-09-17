@@ -5,9 +5,7 @@ import { jsx, css } from "@emotion/core";
 import SimpleOnOff from "../../Ui Library/SimpleOnOff";
 
 const ComputerPower = () => {
-  const [deviceData, setDeviceData] = useState(
-    JSON.parse(localStorage.getItem("Computer Power"))
-  );
+  const [deviceData, setDeviceData] = useState(JSON.parse(localStorage.getItem("Computer Power")));
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -19,7 +17,7 @@ const ComputerPower = () => {
   return (
     <SimpleOnOff
       title={"Computer Power"}
-      pos={[15, 30]}
+      pos={[10, 30]}
       onAction={() => fetch("/api/ComputerPower/On")}
       offAction={() => fetch("/api/ComputerPower/Off")}
       state={deviceData.isOn}

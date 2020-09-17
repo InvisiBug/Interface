@@ -56,7 +56,6 @@ connection.on("message", (topic, payload) => {
 
     if (payload != `${"Heating Disconnected"}`) {
       var mqttData = JSON.parse(payload);
-      console.log(mqttData)
 
       deviceData = {
         ...deviceData,

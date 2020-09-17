@@ -20,7 +20,7 @@ import Logger from "./Cache Loaders/MqttLogger";
 // Cache Loader
 import CacheLoader from "./Cache Loaders/CacheLoader";
 // import TemperatureGraphsDataCollector from "./Cache Loaders/TemperatureGraphsDataCollector";
-import Socket from "./Cache Loaders/Socket";
+import Socket from "./Interfaces/Socket";
 import backgroundImage from "../App/Backgrounds/Red.jpg";
 import { useState } from "react";
 import MyButton from "./Ui Library/Atoms/Button";
@@ -48,6 +48,7 @@ const windowContainer = css`
   left: 50%;
 
   display: flex;
+  color: white; /* Sets golbally */
 `;
 
 const navBar = css`
@@ -96,7 +97,7 @@ const App = () => {
       <div css={windowContainer}>
         <NavBar style={navBar} changeScreen={changeScreen} screen={screen} />
 
-        <MyButton>Button</MyButton>
+        {/* <MyButton>Button</MyButton> */}
 
         <div css={screenContainer}>
           <DateBox />

@@ -33,6 +33,17 @@ const app = (module.exports = express());
 //
 ////////////////////////////////////////////////////////////////////////
 var computerAudio = null;
+var timer;
+var deviceData = {
+  isConnected: false,
+  left: false,
+  right: false,
+  sub: false,
+  mixer: false,
+};
+// var timer = setTimeout(() => {
+//   deviceData.isConnected = false;
+// }, 10 * 1000);
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -122,6 +133,27 @@ client.on("message", (topic, payload) => {
       console.log("Computer Audio Disconnected");
     }
   }
+
+  if (topic == "Computer Audio") {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      deviceData.isConnected = false;
+    }, 10 * 1000);
+
+    if (payload != "Computer Audio Disconnected") {
+      deviceData = {
+        ...deviceData,
+        isConnected: true,
+        left: JSON.parse(payload).Left,
+        right: JSON.parse(payload).Right,
+        sub: JSON.parse(payload).Sub,
+        mixer: JSON.parse(payload).Mixer,
+      };
+    } else {
+      console.log("Computer Audio Disconnected");
+    }
+  }
 });
 
 ////////////////////////////////////////////////////////////////////////
@@ -136,5 +168,10 @@ client.on("message", (topic, payload) => {
 //
 ////////////////////////////////////////////////////////////////////////
 const sensorUpdate = setInterval(() => {
-  io.emit("Computer Audio", computerAudio);
+  sendSocketData();
 }, 1 * 1000);
+
+const sendSocketData = () => {
+  io.emit("New Computer Audio", deviceData);
+  io.emit("Computer Audio", computerAudio);
+};

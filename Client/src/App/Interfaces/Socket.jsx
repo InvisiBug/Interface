@@ -1,10 +1,7 @@
 // Couldnt figure out how to check the local socket and open an ip socket ip on failure
 import openSocket from "socket.io-client";
 // import { DEVICES } from "../../Constants";
-import {
-  localStorageSaver,
-  localStorageParser
-} from "../../Helpers/localStorageDriver";
+import { localStorageSaver, localStorageParser } from "../../Helpers/localStorageDriver";
 
 const Socket = () => {
   // const socket = openSocket("http://192.168.1.46:5001"); // Deployment
@@ -21,6 +18,7 @@ const Socket = () => {
     "Table Lamp",
     "Floodlight",
     "Computer Audio",
+    "New Computer Audio",
     "Computer Power",
     "Outside Setpoint",
     "Radiator Fan",
