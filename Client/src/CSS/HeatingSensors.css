@@ -17,29 +17,28 @@
 //  #       #  #  #  # #   ## #    #    #    #  #    # #    # #    # 
 //  ####### #   ##   # #    #  ####     #     #  ####   ####  #    # 
 //
-///////////////////////////////////////////////////////////////////////*/ 
-.livingRoomValuesContainer
-{
+///////////////////////////////////////////////////////////////////////*/
+.livingRoomValuesContainer {
   /*background-color: red;*/
-  position:  absolute;
+  position: absolute;
   transform: translate(-50%, -50%);
-  height:    7.5%;
-  width:     150px;
-  top:       72%;
-  left:      20.5%;
+  height: 7.5%;
+  width: 150px;
+  top: 72%;
+  left: 20.5%;
 
   border-radius: 20px;
 
-  border:      1px solid rgba(255, 255, 255, 0.2);
-  background:  rgba(50, 50, 50, 0.2);
-  color:       white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(50, 50, 50, 0.2);
+  color: white;
   font-family: "Arial";
-  font-size:   20px;
+  font-size: 20px;
 
-  display:         flex;
-  align-items:     center;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  text-align:      center;
+  text-align: center;
 }
 
 /*//////////////////////////////////////////////////////////////////////
@@ -52,29 +51,28 @@
 //  #   #  #   #   #    # #    # #      #   ## 
 //  #    # #   #    ####  #    # ###### #    # 
 //
-///////////////////////////////////////////////////////////////////////*/ 
-.kitchenValuesContainer
-{
+///////////////////////////////////////////////////////////////////////*/
+.kitchenValuesContainer {
   /*background-color: red;*/
-  position:  absolute;
+  position: absolute;
   transform: translate(-50%, -50%);
-  height:    7.5%;
-  width:     150px;
-  top:       40%;
-  left:     19%;
+  height: 7.5%;
+  width: 150px;
+  top: 40%;
+  left: 19%;
 
   border-radius: 20px;
 
-  border:      1px solid rgba(255, 255, 255, 0.2);
-  background:  rgba(50, 50, 50, 0.2);
-  color:       white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(50, 50, 50, 0.2);
+  color: white;
   font-family: "Arial";
-  font-size:   20px;
+  font-size: 20px;
 
-  display:         flex;
-  align-items:     center;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  text-align:      center;
+  text-align: center;
 }
 
 /*//////////////////////////////////////////////////////////////////////
@@ -87,29 +85,29 @@
 // #       # #    # #    #     #    #    #    #  #    # #    # #    # 
 // ####### # #    # #    #      ####     #     #  ####   ####  #    #                                                                     
 //
-///////////////////////////////////////////////////////////////////////*/ 
+///////////////////////////////////////////////////////////////////////*/
 .liamsRoomValuesContainer /* Fix the positioning issue */
-{
+ {
   /*background-color: red;*/
-  position:  absolute;
+  position: absolute;
   transform: translate(-50%, -50%);
-  height:    7.5%;
-  width:     150px;
-  top:       73%;
-  left:      51%;
+  height: 7.5%;
+  width: 150px;
+  top: 73%;
+  left: 51%;
 
   border-radius: 20px;
 
-  border:      1px solid rgba(255, 255, 255, 0.2);
-  background:  rgba(50, 50, 50, 0.2);
-  color:       white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(50, 50, 50, 0.2);
+  color: white;
   font-family: "Arial";
-  font-size:   20px;
+  font-size: 20px;
 
-  display:         flex;
-  align-items:     center;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  text-align:      center;
+  text-align: center;
 }
 
 /*//////////////////////////////////////////////////////////////////////
@@ -122,29 +120,28 @@
 //  #     #   #   #    # #    #   #   
 //   #####    #    ####  #####    #                             
 //
-///////////////////////////////////////////////////////////////////////*/ 
-.studyValuesContainer
-{
+///////////////////////////////////////////////////////////////////////*/
+.studyValuesContainer {
   /*background-color: red;*/
-  position:  absolute;
+  position: absolute;
   transform: translate(-50%, -50%);
-  height:    45px;
-  width:     110px;
-  top:       36%;
-  left:      49.5%;
+  height: 45px;
+  width: 110px;
+  top: 36%;
+  left: 49.5%;
 
   border-radius: 20px;
 
-  border:      1px solid rgba(255, 255, 255, 0.2);
-  background:  rgba(50, 50, 50, 0.2);
-  color:       white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(50, 50, 50, 0.2);
+  color: white;
   font-family: "Arial";
-  font-size:   15px;
+  font-size: 15px;
 
-  display:         flex;
-  align-items:     center;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  text-align:      center;
+  text-align: center;
 }
 
 /*//////////////////////////////////////////////////////////////////////
@@ -157,51 +154,51 @@
 // #     # #    # #   #     #    #  #    # #    # #    # 
 // #######  ####  #    #    #     #  ####   ####  #    # 
 //
-///////////////////////////////////////////////////////////////////////*/ 
+///////////////////////////////////////////////////////////////////////*/
 .ourRoomValuesContainer /* Fix the positioning issue */
-{
+ {
   /*background-color: red;*/
-  position:  absolute;
+  position: absolute;
   transform: translate(-50%, -50%);
-  height:    7.5%;
-  width:     150px;
-  top:       55%;
-  left:      86%;
+  height: 7.5%;
+  width: 150px;
+  top: 55%;
+  left: 86%;
 
   border-radius: 20px;
 
-  border:      1px solid rgba(255, 255, 255, 0.2);
-  background:  rgba(50, 50, 50, 0.2);
-  color:       white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(50, 50, 50, 0.2);
+  color: white;
   font-family: "Arial";
-  font-size:   20px;
+  font-size: 20px;
 
-  display:         flex;
-  align-items:     center;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  text-align:      center;
+  text-align: center;
 }
 
 .ourRoomSetpointContainer /* Fix the positioning issue */
-{
+ {
   /*background-color: red;*/
-  position:  absolute;
+  position: absolute;
   transform: translate(-50%, -50%);
-  height:    7.5%;
-  width:     35%;
-  top:       74%;
-  left:      50%;
+  height: 7.5%;
+  width: 35%;
+  top: 74%;
+  left: 50%;
 
   border-radius: 20px;
 
-  border:      1px solid rgba(255, 255, 255, 0.2);
-  background:  rgba(50, 50, 50, 0.2);
-  color:       white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(50, 50, 50, 0.2);
+  color: white;
   font-family: "Arial";
-  font-size:   25px;
+  font-size: 25px;
 
-  display:         flex;
-  align-items:     center;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  text-align:      center;
+  text-align: center;
 }

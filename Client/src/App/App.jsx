@@ -8,7 +8,7 @@ import DateBox from "./Date and Time.jsx";
 import Dots from "./Dots";
 
 // Screens
-import Home from "./Screens/Home/HomeScreen.jsx";
+
 import Lights from "./Screens/Lights/LightsScreen.jsx";
 import Computer from "./Screens/Computer/ComputerScreen.jsx";
 import Climate from "./Screens/Climate/ClimateScreen.jsx";
@@ -99,9 +99,7 @@ const App = () => {
         <div css={screenContainer}>
           <DateBox />
 
-          {screen === "Home" ? (
-            <Home />
-          ) : screen === "Computer" ? (
+          {screen === "Computer" ? (
             <Computer />
           ) : screen === "Lights" ? (
             <Lights />
