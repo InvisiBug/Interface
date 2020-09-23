@@ -1,7 +1,7 @@
 // Components
 import React from "react";
 import Container from "react-bootstrap/Container";
-import Button from "../../../Common Modules/Button";
+import Button from "../../../Helpers/Button";
 
 class RainbowButton extends React.Component {
   constructor() {

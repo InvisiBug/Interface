@@ -5,7 +5,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
 // Buttons
-import TimeScaleButtons from "../../../Common Modules/Button";
+import TimeScaleButtons from "../../../Helpers/Button";
 
 class Timescale extends React.Component {
   constructor(props) {

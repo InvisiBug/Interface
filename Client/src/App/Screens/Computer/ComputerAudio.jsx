@@ -6,8 +6,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 // Buttons
-import OnButton from "../../Common Modules/On Button";
-import OffButton from "../../Common Modules/Off Button";
+import OnButton from "../../Helpers/On Button";
+import OffButton from "../../Helpers/Off Button";
 
 const ComputerAudio = () => {
   const [deviceData, setDeviceData] = useState(JSON.parse(localStorage.getItem("Computer Audio")));

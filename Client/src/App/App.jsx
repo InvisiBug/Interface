@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import React from "react";
 import NavBar from "./NavBar/NavBar.jsx";
-// import { StyleSheet, css } from "aphrodite";
 import { jsx, css } from "@emotion/core";
 
 // Modules
@@ -18,7 +17,6 @@ import Advanced from "./Screens/Advanced/AdvancedScreen";
 import Logger from "./Cache Loaders/MqttLogger";
 
 // Cache Loader
-import CacheLoader from "./Cache Loaders/CacheLoader";
 // import TemperatureGraphsDataCollector from "./Cache Loaders/TemperatureGraphsDataCollector";
 import Socket from "./Interfaces/Socket";
 import backgroundImage from "../App/Backgrounds/Red.jpg";
@@ -47,7 +45,6 @@ const windowContainer = css`
   left: 50%;
 
   display: flex;
-  color: white; /* Sets golbally */
 `;
 
 const navBar = css`
@@ -73,6 +70,12 @@ const screenContainer = css`
   flex-grow: 1;
 `;
 
+const dots = css`
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background-color: green;
+`;
+
 const App = () => {
   const [screen, setScreen] = useState(JSON.parse(localStorage.getItem("screen")));
 
@@ -83,17 +86,14 @@ const App = () => {
 
   return (
     <>
-      <CacheLoader />
       {/* <TemperatureGraphsDataCollector/> */}
-      {/* <ScheduleCollector /> */}
       <Socket />
 
       <div css={background} />
 
-      {/* {navigator.platform === "Win32" && <Dots />} */}
-      {/* {navigator.platform === "MacIntel" && <Dots />} */}
-
       <div css={windowContainer}>
+        {/* {navigator.platform === "Win32" && <Dots />} */}
+        {/* {navigator.platform === "MacIntel" && <Dots css={dots} />} */}
         <NavBar style={navBar} changeScreen={changeScreen} screen={screen} />
 
         <div css={screenContainer}>
