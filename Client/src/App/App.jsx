@@ -23,7 +23,6 @@ import CacheLoader from "./Cache Loaders/CacheLoader";
 import Socket from "./Interfaces/Socket";
 import backgroundImage from "../App/Backgrounds/Red.jpg";
 import { useState } from "react";
-import MyButton from "./Ui Library/Atoms/Button";
 
 const background = css`
   position: absolute;
@@ -96,8 +95,6 @@ const App = () => {
 
       <div css={windowContainer}>
         <NavBar style={navBar} changeScreen={changeScreen} screen={screen} />
-
-        {/* <MyButton>Button</MyButton> */}
 
         <div css={screenContainer}>
           <DateBox />

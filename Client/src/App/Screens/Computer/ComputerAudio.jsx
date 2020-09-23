@@ -16,7 +16,6 @@ const ComputerAudio = () => {
     const timer = setTimeout(() => {
       setDeviceData(JSON.parse(localStorage.getItem("New Computer Audio")));
     }, 100);
-    console.log(deviceData);
     return () => clearTimeout(timer);
   }, [deviceData]);
 

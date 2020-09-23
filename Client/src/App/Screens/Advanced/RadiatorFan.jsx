@@ -2,12 +2,10 @@
 import { useEffect, useState } from "react";
 import { jsx, css } from "@emotion/core";
 
-import AutoOnOff from "../../Ui Library/AutoOnOff";
+import AutoOnOff from "../../Ui Library/Controllers/AutoControl";
 
 const RadiatorFan = () => {
-  const [deviceData, setDeviceData] = useState(
-    JSON.parse(localStorage.getItem("Radiator Fan"))
-  );
+  const [deviceData, setDeviceData] = useState(JSON.parse(localStorage.getItem("Radiator Fan")));
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -19,7 +17,7 @@ const RadiatorFan = () => {
   return (
     <AutoOnOff
       title={"Radiator Fan"}
-      pos={[50, 50]}
+      pos={[50, 75]}
       onAction={() => fetch("/api/RadiatorFan/On")}
       offAction={() => fetch("/api/RadiatorFan/Off")}
       autoAction={() => fetch("/api/RadiatorFanAutomatic/On")}

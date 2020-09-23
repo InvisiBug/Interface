@@ -1,6 +1,5 @@
 // Couldnt figure out how to check the local socket and open an ip socket ip on failure
 import openSocket from "socket.io-client";
-// import { DEVICES } from "../../Constants";
 import { localStorageSaver, localStorageParser } from "../../Helpers/localStorageDriver";
 
 const Socket = () => {
@@ -23,7 +22,8 @@ const Socket = () => {
     "Outside Setpoint",
     "Radiator Fan",
     "Heating Schedule",
-    "Heating"
+    "Heating",
+    "Sun"
   ];
 
   devices.map(device => {

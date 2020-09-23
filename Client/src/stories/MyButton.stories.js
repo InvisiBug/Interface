@@ -1,37 +1,31 @@
 import React from "react";
 
-// import { Button } from "./Button";
-import OnButton from "../App/Ui Library/Button";
+import Button from "../App/Ui Library/Button";
 
 export default {
-  title: "Mine/Button",
-  component: OnButton,
+  title: "Kavanet/Button",
+  component: Button,
   argTypes: {
-    // backgroundColor: { control: "color" }
-    isActive: { control: "boolean" }
+    activeColour: { control: "color" }
   }
 };
 
-const Template = args => <OnButton {...args} />;
+const Template = args => <Button {...args} />;
 
-export const Primary = Template.bind({});
-Primary.args = {
-  isActive: true
+export const On = Template.bind({});
+On.args = {
+  children: "On",
+  size: "m",
+  activeColour: "rgba(0, 255, 0, 0.5)",
+  isActive: false,
+  handleClick: () => console.log(`${On.args.children} ${"Pressed"}`),
 };
 
-// export const Secondary = Template.bind({});
-// Secondary.args = {
-//   label: "Button"
-// };
-
-// export const Large = Template.bind({});
-// Large.args = {
-//   size: "large",
-//   label: "Button"
-// };
-
-// export const Small = Template.bind({});
-// Small.args = {
-//   size: "small",
-//   label: "Button"
-// };
+export const Off = Template.bind({});
+Off.args = {
+  children: "Off",
+  size: "m",
+  activeColour: "rgba(255,0,0,.5)",
+  isActive: false,
+  handleClick: () => console.log(`${Off.args.children} ${"Pressed"}`)
+};

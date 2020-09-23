@@ -6,6 +6,7 @@ import Floodlight from "./Floodlight";
 import DeskLEDs from "./Desk LEDs";
 import TableLamp from "./TableLamp";
 import ScreenLEDs from "./ScreenLEDs";
+import Sun from "./Sun";
 
 const Lights = () => {
   return (
@@ -14,6 +15,7 @@ const Lights = () => {
       <DeskLEDs />
       <TableLamp />
       <ScreenLEDs />
+      <Sun />
     </div>
   );
 };

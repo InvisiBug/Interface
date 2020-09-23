@@ -1,8 +1,6 @@
-/** @jsx jsx */
 import React from "react";
 import { useEffect, useState } from "react";
-import { jsx, css } from "@emotion/core";
-import SimpleOnOff from "../../Ui Library/SimpleOnOff";
+import SimpleControl from "../../Ui Library/Controllers/SimpleControl";
 
 const ComputerPower = () => {
   const [deviceData, setDeviceData] = useState(JSON.parse(localStorage.getItem("Computer Power")));
@@ -15,9 +13,9 @@ const ComputerPower = () => {
   }, [deviceData]);
 
   return (
-    <SimpleOnOff
+    <SimpleControl
       title={"Computer Power"}
-      pos={[10, 30]}
+      pos={[30, 10]}
       onAction={() => fetch("/api/ComputerPower/On")}
       offAction={() => fetch("/api/ComputerPower/Off")}
       state={deviceData.isOn}
