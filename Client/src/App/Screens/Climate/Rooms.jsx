@@ -29,10 +29,10 @@ const rooms = [
     name: "Our Room",
     pos: [55, 86]
   },
-  {
-    name: "Outside",
-    pos: [10, 86]
-  }
+  // {
+  //   name: "Outside", *NB* Bring this back
+  //   pos: [10, 86]
+  // }
 ];
 
 const FirstFloor = (blurFactor, showGraph) => {
