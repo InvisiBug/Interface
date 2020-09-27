@@ -1,7 +1,5 @@
-/** @jsx jsx */
+import React from "react";
 import { useEffect, useState } from "react";
-import { jsx, css } from "@emotion/core";
-
 import AutoOnOff from "../../Ui Library/Controllers/AutoControl";
 
 const RadiatorFan = () => {
