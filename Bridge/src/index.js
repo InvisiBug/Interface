@@ -104,6 +104,7 @@ app.use(require("./App/Devices/OurRoom/Screen LEDs"));
 app.use(require("./App/Devices/OurRoom/FloodLight"));
 app.use(require("./App/Devices/OurRoom/Table Lamp"));
 app.use(require("./App/Devices/OurRoom/FloodLight.js"));
+app.use(require("./App/Devices/OurRoom/Sun.js"));
 app.use(require("./App/Devices/OurRoom/Computer Audio.js"));
 app.use(require("./App/Devices/OurRoom/Computer Power.js"));
 // app.use(require('./App/Devices/Our Room/Blanket.js'));

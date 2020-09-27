@@ -17,7 +17,9 @@ const functions = require("../../helpers/Functions");
 const { defaultConfiguration } = require("../Calor Imperium");
 
 const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-var oneshot = [false, false, false];
+// var oneshot = [false, false, false, false];
+
+var latch = false;
 ////////////////////////////////////////////////////////////////////////
 //
 // #######
@@ -30,68 +32,81 @@ var oneshot = [false, false, false];
 //
 ////////////////////////////////////////////////////////////////////////
 setInterval(() => {
-  // On Off Controller
   let scheduleData = store.getStore("heatingSchedule");
 
   var date = new Date();
   const day = date.getDay();
   const time = date.getHours() + "." + date.getMinutes();
 
+  // console.log(`${"Time: "} ${time} ${" Schedule: "}${scheduleData[days[day]]}`);
+
   if (scheduleData.auto) {
+    // Schedule in auto mode
     if (
       (scheduleData[days[day]][0] <= time && time <= scheduleData[days[day]][1]) ||
       (scheduleData[days[day]][2] <= time && time <= scheduleData[days[day]][3])
     ) {
-      scheduleData = functions.toggleLogic(scheduleData, "isActive", true);
-      if (!oneshot[0]) {
-        console.log("Send heating on signal");
-        oneshot[0] = true;
-      }
-      oneshot = [oneshot[0], false, false];
+      // On demand from schedule
+      scheduleData = functions.toggleLogic(scheduleData, "isActive", true); // wont turn off if the schedule goes from on to off
+      sendOnSignal();
+    } else {
+      // off demand from schedule
+      sendOffSignal();
     }
   } else if (!scheduleData.auto && scheduleData.isOn) {
+    // On button
     scheduleData = functions.toggleLogic(scheduleData, "isActive", true);
-    if (!oneshot[1]) {
-      console.log("Send heating on signal");
-      oneshot[1] = true;
-    }
-    oneshot = [false, oneshot[1], false];
+    sendOnSignal();
   } else {
+    // Off button
     scheduleData = functions.toggleLogic(scheduleData, "isActive", false);
-    if (!oneshot[2]) {
-      console.log("Send heating off signal");
-      oneshot[2] = true;
-    }
-    // onehsot = [false, false, oneshot[2]];
-    oneshot[0] = false; // *NB* Figure out this bullshit later
-    oneshot[1] = false;
+    sendOffSignal();
   }
   store.setStore("heatingSchedule", scheduleData);
+
+  // console.log(oneshot);
 }, 1.5 * 1000);
 
+const sendOnSignal = () => {
+  if (!latch) {
+    latch = !latch;
+    console.log("Send On Signal");
+  }
+};
+
+const sendOffSignal = () => {
+  if (latch) {
+    latch = !latch;
+    console.log("Send Off Signal");
+  }
+};
+
+// *NB* This bit can be condensed down
+// Heating
 setInterval(() => {
   let heating = store.getStore("Heating");
-  if (oneshot[0] || oneshot[1]) {
+  if (latch) {
     if (heating.isConnected && !heating.isOn) {
-      console.log("Turn on stupid");
+      console.log("Heating Turn On ");
       client.publish("Heating Control", "1");
     }
-  } else if (oneshot[2] && heating.isOn) {
-    console.log("Turn Off stupid");
+  } else if (heating.isConnected && heating.isOn) {
+    console.log("Heating Turn Off");
     client.publish("Heating Control", "0");
   }
 }, 2 * 1000);
 
+// Radiator Fan
 setInterval(() => {
   let radiatorFan = store.getStore("Radiator Fan");
   if (radiatorFan.isAutomatic) {
-    if (oneshot[0] || oneshot[1]) {
+    if (latch) {
       if (radiatorFan.isConnected && !radiatorFan.isOn) {
-        console.log("Turn on stupid");
+        console.log("Radiator Fan Turn On");
         client.publish("Radiator Fan Control", "1");
       }
-    } else if (oneshot[2] && radiatorFan.isOn) {
-      console.log("Turn Off stupid");
+    } else if (radiatorFan.isConnected && radiatorFan.isOn) {
+      console.log("Radiator Fan Turn Off");
       client.publish("Radiator Fan Control", "0");
     }
   }
