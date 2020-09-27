@@ -13,7 +13,7 @@
 const express = require("express");
 var app = (module.exports = express());
 const store = require("../../helpers/StorageDriver");
-const functions = require("../../helpers/Functions");
+const { toggleLogic } = require("../../helpers/Functions");
 const { defaultConfiguration } = require("../Calor Imperium");
 
 const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
@@ -40,31 +40,33 @@ setInterval(() => {
 
   // console.log(`${"Time: "} ${time} ${" Schedule: "}${scheduleData[days[day]]}`);
 
-  if (scheduleData.auto) {
-    // Schedule in auto mode
-    if (
-      (scheduleData[days[day]][0] <= time && time <= scheduleData[days[day]][1]) ||
-      (scheduleData[days[day]][2] <= time && time <= scheduleData[days[day]][3])
-    ) {
-      // On demand from schedule
-      scheduleData = functions.toggleLogic(scheduleData, "isActive", true); // wont turn off if the schedule goes from on to off
+  // *NB* make boost override everything
+  if (!scheduleData.boost) {
+    if (scheduleData.auto) {
+      // Schedule in auto mode
+      if (
+        (scheduleData[days[day]][0] <= time && time <= scheduleData[days[day]][1]) || // Seems to be some overlap ie schedule on at 16:02 when should be on at 16:15
+        (scheduleData[days[day]][2] <= time && time <= scheduleData[days[day]][3])
+      ) {
+        // On demand from schedule
+        scheduleData = toggleLogic(scheduleData, "isActive", true);
+        sendOnSignal();
+      } else if (!scheduleData.boost) {
+        // off demand from schedule
+        console.log("jdkshadkjsah");
+        sendOffSignal();
+      }
+    } else if (!scheduleData.auto && scheduleData.isOn) {
+      // On button
+      scheduleData = toggleLogic(scheduleData, "isActive", true);
       sendOnSignal();
     } else {
-      // off demand from schedule
+      // Off button
+      scheduleData = toggleLogic(scheduleData, "isActive", false);
       sendOffSignal();
     }
-  } else if (!scheduleData.auto && scheduleData.isOn) {
-    // On button
-    scheduleData = functions.toggleLogic(scheduleData, "isActive", true);
-    sendOnSignal();
-  } else {
-    // Off button
-    scheduleData = functions.toggleLogic(scheduleData, "isActive", false);
-    sendOffSignal();
+    store.setStore("heatingSchedule", scheduleData);
   }
-  store.setStore("heatingSchedule", scheduleData);
-
-  // console.log(oneshot);
 }, 1.5 * 1000);
 
 const sendOnSignal = () => {
@@ -111,3 +113,30 @@ setInterval(() => {
     }
   }
 }, 1 * 1000);
+
+// Boost
+setInterval(() => {
+  let heating = store.getStore("heatingSchedule");
+  let now = new Date();
+
+  if (heating.boost) {
+    if (now < heating.boostTime) {
+      console.log("On Boosted");
+      sendOnSignal();
+    } else {
+      console.log("Off Boosted");
+      toggleLogic("boost", false);
+      sendOffSignal();
+    }
+  }
+}, 2 * 1000);
+
+// *NB* put this in the helpers file
+// const toggleLogic = (point, value) => {
+//   let data = store.getStore("heatingSchedule");
+//   data = {
+//     ...data,
+//     [point]: value,
+//   };
+//   store.setStore("heatingSchedule", data);
+// };

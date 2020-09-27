@@ -63,13 +63,17 @@ app.post("/api/ci/schedule/update", (req, res) => {
 
 // ----------  Boost  ----------
 app.get("/api/ci/boost/on", (req, res) => {
+  let boostTime = new Date();
+  // boostTime.setMinutes(boostTime.getMinutes() + -60);
   toggleLogic("boost", true);
+  toggleLogic("boostTime", boostTime.setMinutes(boostTime.getMinutes() + 1));
   sendHeatingSchedule();
   res.end(null);
 });
 
 app.get("/api/ci/boost/off", (req, res) => {
-  toggleLogic("boost", false);
+  toggleLogic("boostTime", new Date());
+  // Boost off gets set by the boost watchdog in the heating controller
   sendHeatingSchedule();
   res.end(null);
 });

@@ -18,6 +18,10 @@ const OnButton = ({ children, size = "m", isActive = true, activeColour, handleC
     display: flex;
     justify-content: center;
     align-items: center;
+
+    :active {
+      background-color: grey;
+    }
   `;
 
   let activeStyles = css`

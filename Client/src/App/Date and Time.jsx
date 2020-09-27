@@ -74,7 +74,7 @@ const getDate = () => {
     return i + "th";
   }
 
-  return `${ordinal} ${months[monthIndex]} ${year}`
+  return `${ordinal} ${months[monthIndex]} ${year}`;
 };
 
 const DateAndTime = () => {
@@ -89,7 +89,6 @@ const DateAndTime = () => {
         time: getTime(new Date()),
         long: getDate()
       });
-      console.log(data);
     }, 100);
     return () => clearTimeout(timer);
   }, [data]);

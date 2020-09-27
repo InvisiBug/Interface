@@ -34,10 +34,6 @@ const navButtons = [
     icon: Heating
   },
   {
-    name: "Advanced",
-    icon: Gear
-  },
-  {
     name: "MQTT",
     icon: Code
   }
@@ -47,13 +43,7 @@ const NavBar = ({ style, screen, changeScreen }) => {
   return (
     <div css={style}>
       {navButtons.map(button => (
-        <NavButton
-          name={button.name}
-          selection={screen}
-          icon={button.icon}
-          key={Math.random()}
-          handleClick={() => changeScreen(button.name)}
-        />
+        <NavButton name={button.name} selection={screen} icon={button.icon} key={Math.random()} handleClick={() => changeScreen(button.name)} />
       ))}
     </div>
   );

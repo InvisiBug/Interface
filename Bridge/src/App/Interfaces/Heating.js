@@ -51,7 +51,7 @@ connection.on("message", (topic, payload) => {
 
     timer = setTimeout(() => {
       deviceData.isConnected = false;
-      if (saveToStorage) store.setStore(`${"Heating"}`, deviceData);
+      store.setStore(`${"Heating"}`, deviceData);
     }, 10 * 1000);
 
     if (payload != `${"Heating Disconnected"}`) {
@@ -62,10 +62,23 @@ connection.on("message", (topic, payload) => {
         isConnected: true,
         isOn: mqttData.state,
       };
-      if (saveToStorage) store.setStore(`${"Heating"}`, deviceData);
+      store.setStore(`${"Heating"}`, deviceData);
     } else {
       console.log(`${"Heating Disconnected"}`);
     }
+  } else if (topic === "Heating Controller Button") {
+    let scheduleData = store.getStore("heatingSchedule");
+    if (scheduleData.boost) {
+      toggleLogic("boostTime", new Date()); // Turn Boost Off
+    } else {
+      let boostTime = new Date();
+    }
+    console.log(scheduleData);
+    // check the sate of boost time,
+    // if not 0 then make 0
+    // if 0 then add on an hour
+
+    // put toggle logic inside a helper file first
   }
 });
 
@@ -75,4 +88,13 @@ setInterval(() => {
 
 const sendSocketData = () => {
   io.emit(`${"Heating"}`, deviceData);
+};
+
+const toggleLogic = (point, value) => {
+  let data = storageDriver.getStore("heatingSchedule");
+  data = {
+    ...data,
+    [point]: value,
+  };
+  storageDriver.setStore("heatingSchedule", data);
 };

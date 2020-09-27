@@ -13,7 +13,6 @@ import Lights from "./Screens/Lights/LightsScreen.jsx";
 import Computer from "./Screens/Computer/ComputerScreen.jsx";
 import Climate from "./Screens/Climate/ClimateScreen.jsx";
 import Heating from "./Screens/Heating/Heating.jsx";
-import Advanced from "./Screens/Advanced/AdvancedScreen";
 import Logger from "./Cache Loaders/MqttLogger";
 
 // Cache Loader
@@ -105,8 +104,6 @@ const App = () => {
             <Lights />
           ) : screen === "Climate" ? (
             <Climate />
-          ) : screen === "Advanced" ? (
-            <Advanced />
           ) : screen === "Heating" ? (
             <Heating />
           ) : screen === "MQTT" ? (
