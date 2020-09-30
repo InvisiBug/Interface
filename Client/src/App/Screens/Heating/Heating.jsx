@@ -20,15 +20,13 @@ const container = css`
 
 const Heating = () => {
   return (
-    <>
-      <div css={container}>
-        <Boost />
-        <ActiveIndicator />
-        <OnOff />
-        <Schedule />
-        <RadiatorFan />
-      </div>
-    </>
+    <div css={container}>
+      <Boost />
+      <ActiveIndicator />
+      <OnOff />
+      <Schedule />
+      <RadiatorFan />
+    </div>
   );
 };
 

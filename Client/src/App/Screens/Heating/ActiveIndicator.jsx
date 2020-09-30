@@ -1,5 +1,4 @@
 /** @jsx jsx */
-// Components
 import React from "react";
 import { useEffect, useState } from "react";
 import Active from "../../Ui Library/Icons/Active.png";
@@ -10,15 +9,13 @@ const container = css`
   transform: translate(-50%, -50%);
   height: 64px;
   width: 64px;
-  top: 20%;
+  top: 4%;
   left: 50%;
   opacity: 0.8;
 `;
 
 const ActiveIndicator = () => {
-  const [deviceData, setActive] = useState(
-    JSON.parse(localStorage.getItem("Heating"))
-  );
+  const [deviceData, setActive] = useState(JSON.parse(localStorage.getItem("Heating")));
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -29,9 +26,7 @@ const ActiveIndicator = () => {
 
   return (
     <>
-      <div>
-        {deviceData.isOn && <img src={Active} alt="" css={container} />}
-      </div>
+      <div>{deviceData.isOn && <img src={Active} alt="" css={container} />}</div>
     </>
   );
 };

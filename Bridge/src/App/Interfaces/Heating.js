@@ -2,7 +2,7 @@
 const express = require("express");
 const app = (module.exports = express());
 
-const store = require("../../helpers/StorageDriver");
+const { getStore, setStore, toggleLogic } = require("../../helpers/StorageDriver");
 // MQTT
 const mqtt = require("mqtt");
 const connection = mqtt.connect("mqtt://kavanet.io");
@@ -46,12 +46,12 @@ var timer = setTimeout(() => {
 //
 ////////////////////////////////////////////////////////////////////////
 connection.on("message", (topic, payload) => {
-  if (topic == `${"Heating"}`) {
+  if (topic == "Heating") {
     clearTimeout(timer);
 
     timer = setTimeout(() => {
       deviceData.isConnected = false;
-      store.setStore(`${"Heating"}`, deviceData);
+      setStore("Heating", deviceData);
     }, 10 * 1000);
 
     if (payload != `${"Heating Disconnected"}`) {
@@ -62,23 +62,21 @@ connection.on("message", (topic, payload) => {
         isConnected: true,
         isOn: mqttData.state,
       };
-      store.setStore(`${"Heating"}`, deviceData);
+      setStore("Heating", deviceData);
     } else {
       console.log(`${"Heating Disconnected"}`);
     }
-  } else if (topic === "Heating Controller Button") {
-    let scheduleData = store.getStore("heatingSchedule");
+  } else if (topic === "Heating Button") {
+    const scheduleData = getStore("heatingSchedule");
     if (scheduleData.boost) {
-      toggleLogic("boostTime", new Date()); // Turn Boost Off
+      toggleLogic("heatingSchedule", "boostTime", new Date().getTime()); // Turn Boost Off
+      console.log("Boost was on, turn off");
     } else {
+      console.log("Boost was off, turn on");
       let boostTime = new Date();
+      toggleLogic("heatingSchedule", "boost", true);
+      toggleLogic("heatingSchedule", "boostTime", boostTime.setMinutes(boostTime.getMinutes() + 60));
     }
-    console.log(scheduleData);
-    // check the sate of boost time,
-    // if not 0 then make 0
-    // if 0 then add on an hour
-
-    // put toggle logic inside a helper file first
   }
 });
 
@@ -87,14 +85,5 @@ setInterval(() => {
 }, 1 * 1000);
 
 const sendSocketData = () => {
-  io.emit(`${"Heating"}`, deviceData);
-};
-
-const toggleLogic = (point, value) => {
-  let data = storageDriver.getStore("heatingSchedule");
-  data = {
-    ...data,
-    [point]: value,
-  };
-  storageDriver.setStore("heatingSchedule", data);
+  io.emit("Heating", deviceData);
 };

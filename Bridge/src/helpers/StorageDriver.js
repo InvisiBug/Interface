@@ -19,7 +19,17 @@ const getStore = (store) => {
   }
 };
 
+const toggleLogic = (store, point, value) => {
+  let data = getStore(store);
+  data = {
+    ...data,
+    [point]: value,
+  };
+  setStore(store, data);
+};
+
 module.exports = {
   getStore: getStore,
   setStore: setStore,
+  toggleLogic: toggleLogic,
 };

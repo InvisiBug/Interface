@@ -1,7 +1,4 @@
-// Components
 import React from "react";
-
-// Modules
 import Floodlight from "./Floodlight";
 import DeskLEDs from "./Desk LEDs";
 import TableLamp from "./TableLamp";

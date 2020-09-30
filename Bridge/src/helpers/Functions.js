@@ -9,20 +9,20 @@
 //
 ////////////////////////////////////////////////////////////////////////
 const currentTime = () => {
-  var d = new Date();
-  let hour = d.getHours();
-  let minute = d.getMinutes();
-  let second = d.getSeconds();
+  const d = new Date();
+  const hour = d.getHours();
+  const minute = d.getMinutes();
+  const second = d.getSeconds();
 
-  let day = d.getDate();
-  let month = d.getMonth() + 1;
-  let year = d.getFullYear();
+  const day = d.getDate();
+  const month = d.getMonth() + 1;
+  const year = d.getFullYear();
 
-  var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  var monthOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const monthOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-  let days = daysOfWeek[d.getDay()];
-  let months = monthOfYear[d.getMonth()];
+  const days = daysOfWeek[d.getDay()];
+  const months = monthOfYear[d.getMonth()];
 
   // return hour + ":" + minute + " " + day + "-" + month + "-" + year;
   return {
@@ -35,21 +35,16 @@ const currentTime = () => {
     Months: months,
   };
 };
-// const printTime = () =>
-// {
-//   console.log(getTime(new Date()));
-
-// }
 
 var printTime = () => {
-  var date = new Date();
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-  var ampm = hours >= 12 ? "pm" : "am";
+  const date = new Date();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? "pm" : "am";
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
   minutes = minutes < 10 ? "0" + minutes : minutes;
-  var strTime = hours + ":" + minutes + " " + ampm;
+  const strTime = hours + ":" + minutes + " " + ampm;
   return strTime;
 };
 
@@ -64,5 +59,4 @@ const toggleLogic = (data, point, value) => {
 module.exports = {
   currentTime: currentTime,
   printTime: printTime,
-  toggleLogic: toggleLogic,
 };

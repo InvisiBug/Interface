@@ -12,12 +12,15 @@
 // Express
 const express = require("express");
 var app = (module.exports = express());
-const store = require("../../helpers/StorageDriver");
-const { toggleLogic } = require("../../helpers/Functions");
+const { getStore, setStore, toggleLogic } = require("../../helpers/StorageDriver");
+// const { toggleLogic } = require("../../helpers/Functions");
 const { defaultConfiguration } = require("../Calor Imperium");
 
-const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+const { days } = require("../../helpers/Constants");
+// const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 // var oneshot = [false, false, false, false];
+
+// app.use(require("./Watchdogs/Watchdogs"));
 
 var latch = false;
 ////////////////////////////////////////////////////////////////////////
@@ -32,7 +35,7 @@ var latch = false;
 //
 ////////////////////////////////////////////////////////////////////////
 setInterval(() => {
-  let scheduleData = store.getStore("heatingSchedule");
+  let scheduleData = getStore("heatingSchedule");
 
   var date = new Date();
   const day = date.getDay();
@@ -40,7 +43,6 @@ setInterval(() => {
 
   // console.log(`${"Time: "} ${time} ${" Schedule: "}${scheduleData[days[day]]}`);
 
-  // *NB* make boost override everything
   if (!scheduleData.boost) {
     if (scheduleData.auto) {
       // Schedule in auto mode
@@ -49,66 +51,64 @@ setInterval(() => {
         (scheduleData[days[day]][2] <= time && time <= scheduleData[days[day]][3])
       ) {
         // On demand from schedule
-        scheduleData = toggleLogic(scheduleData, "isActive", true);
+        toggleLogic("heatingSchedule", "isActive", true);
         sendOnSignal();
       } else if (!scheduleData.boost) {
         // off demand from schedule
-        console.log("jdkshadkjsah");
         sendOffSignal();
       }
     } else if (!scheduleData.auto && scheduleData.isOn) {
       // On button
-      scheduleData = toggleLogic(scheduleData, "isActive", true);
+      toggleLogic("heatingSchedule", "isActive", true);
       sendOnSignal();
     } else {
       // Off button
-      scheduleData = toggleLogic(scheduleData, "isActive", false);
+      toggleLogic("heatingSchedule", "isActive", false);
       sendOffSignal();
     }
-    store.setStore("heatingSchedule", scheduleData);
   }
 }, 1.5 * 1000);
 
 const sendOnSignal = () => {
   if (!latch) {
     latch = !latch;
-    console.log("Send On Signal");
+    // console.log("Send On Signal");
   }
 };
 
 const sendOffSignal = () => {
   if (latch) {
     latch = !latch;
-    console.log("Send Off Signal");
+    // console.log("Send Off Signal");
   }
 };
 
 // *NB* This bit can be condensed down
 // Heating
 setInterval(() => {
-  let heating = store.getStore("Heating");
+  let heating = getStore("Heating");
   if (latch) {
     if (heating.isConnected && !heating.isOn) {
-      console.log("Heating Turn On ");
+      // console.log("Heating Turn On ");
       client.publish("Heating Control", "1");
     }
   } else if (heating.isConnected && heating.isOn) {
-    console.log("Heating Turn Off");
+    // console.log("Heating Turn Off");
     client.publish("Heating Control", "0");
   }
 }, 2 * 1000);
 
 // Radiator Fan
 setInterval(() => {
-  let radiatorFan = store.getStore("Radiator Fan");
+  let radiatorFan = getStore("Radiator Fan");
   if (radiatorFan.isAutomatic) {
     if (latch) {
       if (radiatorFan.isConnected && !radiatorFan.isOn) {
-        console.log("Radiator Fan Turn On");
+        // console.log("Radiator Fan Turn On");
         client.publish("Radiator Fan Control", "1");
       }
     } else if (radiatorFan.isConnected && radiatorFan.isOn) {
-      console.log("Radiator Fan Turn Off");
+      // console.log("Radiator Fan Turn Off");
       client.publish("Radiator Fan Control", "0");
     }
   }
@@ -116,27 +116,23 @@ setInterval(() => {
 
 // Boost
 setInterval(() => {
-  let heating = store.getStore("heatingSchedule");
-  let now = new Date();
+  let heating = getStore("heatingSchedule");
+  let now = new Date().getTime();
 
   if (heating.boost) {
     if (now < heating.boostTime) {
-      console.log("On Boosted");
       sendOnSignal();
     } else {
-      console.log("Off Boosted");
-      toggleLogic("boost", false);
+      toggleLogic("heatingSchedule", "boost", false);
       sendOffSignal();
     }
   }
-}, 2 * 1000);
+}, 100);
 
-// *NB* put this in the helpers file
-// const toggleLogic = (point, value) => {
-//   let data = store.getStore("heatingSchedule");
-//   data = {
-//     ...data,
-//     [point]: value,
-//   };
-//   store.setStore("heatingSchedule", data);
-// };
+/*
+  *NB*
+  The timers here may cause issues if they are too short 
+  the system uses file system sync which references files 
+  which have to be qued for reading and writing
+  if the file is accessed too quickly there may be issues
+*/
