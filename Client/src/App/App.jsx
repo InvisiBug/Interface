@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import React from "react";
 import NavBar from "./NavBar/NavBar.jsx";
-// import { StyleSheet, css } from "aphrodite";
 import { jsx, css } from "@emotion/core";
 
 // Modules
@@ -9,21 +8,18 @@ import DateBox from "./Date and Time.jsx";
 import Dots from "./Dots";
 
 // Screens
-import Home from "./Screens/Home/HomeScreen.jsx";
+
 import Lights from "./Screens/Lights/LightsScreen.jsx";
 import Computer from "./Screens/Computer/ComputerScreen.jsx";
 import Climate from "./Screens/Climate/ClimateScreen.jsx";
 import Heating from "./Screens/Heating/Heating.jsx";
-import Advanced from "./Screens/Advanced/AdvancedScreen";
 import Logger from "./Cache Loaders/MqttLogger";
 
 // Cache Loader
-import CacheLoader from "./Cache Loaders/CacheLoader";
 // import TemperatureGraphsDataCollector from "./Cache Loaders/TemperatureGraphsDataCollector";
 import Socket from "./Interfaces/Socket";
 import backgroundImage from "../App/Backgrounds/Red.jpg";
 import { useState } from "react";
-import MyButton from "./Ui Library/Atoms/Button";
 
 const background = css`
   position: absolute;
@@ -48,7 +44,6 @@ const windowContainer = css`
   left: 50%;
 
   display: flex;
-  color: white; /* Sets golbally */
 `;
 
 const navBar = css`
@@ -74,6 +69,12 @@ const screenContainer = css`
   flex-grow: 1;
 `;
 
+const dots = css`
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background-color: green;
+`;
+
 const App = () => {
   const [screen, setScreen] = useState(JSON.parse(localStorage.getItem("screen")));
 
@@ -84,34 +85,25 @@ const App = () => {
 
   return (
     <>
-      <CacheLoader />
       {/* <TemperatureGraphsDataCollector/> */}
-      {/* <ScheduleCollector /> */}
       <Socket />
 
       <div css={background} />
 
-      {/* {navigator.platform === "Win32" && <Dots />} */}
-      {/* {navigator.platform === "MacIntel" && <Dots />} */}
-
       <div css={windowContainer}>
+        {/* {navigator.platform === "Win32" && <Dots />} */}
+        {/* {navigator.platform === "MacIntel" && <Dots css={dots} />} */}
         <NavBar style={navBar} changeScreen={changeScreen} screen={screen} />
-
-        {/* <MyButton>Button</MyButton> */}
 
         <div css={screenContainer}>
           <DateBox />
 
-          {screen === "Home" ? (
-            <Home />
-          ) : screen === "Computer" ? (
+          {screen === "Computer" ? (
             <Computer />
           ) : screen === "Lights" ? (
             <Lights />
           ) : screen === "Climate" ? (
             <Climate />
-          ) : screen === "Advanced" ? (
-            <Advanced />
           ) : screen === "Heating" ? (
             <Heating />
           ) : screen === "MQTT" ? (

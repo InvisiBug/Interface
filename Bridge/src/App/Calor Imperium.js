@@ -21,7 +21,8 @@
 // Express
 const express = require("express");
 var app = (module.exports = express());
-const storageDriver = require("../helpers/StorageDriver");
+// const storageDriver = require("../helpers/StorageDriver");
+const { getStore, setStore, toggleLogic } = require("../helpers/StorageDriver");
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -56,65 +57,60 @@ const storageDriver = require("../helpers/StorageDriver");
 // });
 // -----  Schedule  -----
 app.post("/api/ci/schedule/update", (req, res) => {
-  storageDriver.setStore("heatingSchedule", frontendToBackend(req.body.data));
+  setStore("heatingSchedule", frontendToBackend(req.body.data));
   sendHeatingSchedule();
   res.end(null);
 });
 
 // ----------  Boost  ----------
 app.get("/api/ci/boost/on", (req, res) => {
-  toggleLogic("boost", true);
+  let boostTime = new Date();
+  // boostTime.setMinutes(boostTime.getMinutes() + -60);
+  toggleLogic("heatingSchedule", "boost", true);
+  toggleLogic("heatingSchedule", "boostTime", boostTime.setMinutes(boostTime.getMinutes() + 60));
   sendHeatingSchedule();
   res.end(null);
 });
 
 app.get("/api/ci/boost/off", (req, res) => {
-  toggleLogic("boost", false);
+  toggleLogic("heatingSchedule", "boostTime", new Date().getTime());
+  // Boost off gets set by the boost watchdog in the heating controller
   sendHeatingSchedule();
   res.end(null);
 });
 
 // -----  Manual  -----
 app.get("/api/ci/manual/on", (req, res) => {
-  toggleLogic("auto", false);
+  toggleLogic("heatingSchedule", "auto", false);
   sendHeatingSchedule();
   res.end(null);
 });
 
 app.get("/api/ci/manual/off", (req, res) => {
-  toggleLogic("auto", true);
+  toggleLogic("heatingSchedule", "auto", true);
   sendHeatingSchedule();
   res.end(null);
 });
 
 // ----- On / Off -----
 app.get("/api/ci/on", (req, res) => {
-  let data = storageDriver.getStore("heatingSchedule");
+  let data = getStore("heatingSchedule");
   if (!data.auto) {
-    toggleLogic("isOn", true);
+    toggleLogic("heatingSchedule", "isOn", true);
     sendHeatingSchedule();
   }
   res.end(null);
 });
 
 app.get("/api/ci/off", (req, res) => {
-  let data = storageDriver.getStore("heatingSchedule");
+  let data = getStore("heatingSchedule");
   if (!data.auto) {
-    toggleLogic("isOn", false);
+    toggleLogic("heatingSchedule", "isOn", false);
     sendHeatingSchedule();
   }
   sendHeatingSchedule();
   res.end(null);
 });
-
-const toggleLogic = (point, value) => {
-  let data = storageDriver.getStore("heatingSchedule");
-  data = {
-    ...data,
-    [point]: value,
-  };
-  storageDriver.setStore("heatingSchedule", data);
-};
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -144,7 +140,7 @@ var heatingScheduleSocket = setInterval(() => {
 
 const sendHeatingSchedule = () => {
   try {
-    const data = storageDriver.getStore("heatingSchedule");
+    const data = getStore("heatingSchedule");
     const adjustedData = backendToFrontend(data);
 
     io.emit("Heating Schedule", adjustedData);

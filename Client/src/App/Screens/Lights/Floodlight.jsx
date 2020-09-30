@@ -1,13 +1,9 @@
-/** @jsx jsx */
+import React from "react";
 import { useEffect, useState } from "react";
-import { jsx, css } from "@emotion/core";
+import SimpleControl from "../../Ui Library/Controllers/SimpleControl";
 
-import SimpleOnOff from "../../Ui Library/SimpleOnOff";
-
-const Floodlight = () => {
-  const [deviceData, setDeviceData] = useState(
-    JSON.parse(localStorage.getItem("Floodlight"))
-  );
+const FloodLight = () => {
+  const [deviceData, setDeviceData] = useState(JSON.parse(localStorage.getItem("Floodlight")));
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -17,9 +13,9 @@ const Floodlight = () => {
   }, [deviceData]);
 
   return (
-    <SimpleOnOff
-      title={"Floodlight"}
-      pos={[20, 50]}
+    <SimpleControl
+      title={"Flood Light"}
+      pos={[25, 20]}
       onAction={() => fetch("/api/Plug/On")}
       offAction={() => fetch("/api/Plug/Off")}
       state={deviceData.isOn}
@@ -28,4 +24,4 @@ const Floodlight = () => {
   );
 };
 
-export default Floodlight;
+export default FloodLight;

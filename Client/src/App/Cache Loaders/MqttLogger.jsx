@@ -46,8 +46,6 @@ const MqttLogger = () => {
   const [log, setLog] = useState(localStorageParser("Mqtt"));
 
   useEffect(() => {
-    // setLog(localStorageParser("Mqtt"));
-
     const interval = setInterval(() => {
       setLog(localStorageParser("Mqtt"));
     }, 250);

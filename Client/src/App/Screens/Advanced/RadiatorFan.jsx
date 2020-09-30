@@ -1,13 +1,9 @@
-/** @jsx jsx */
+import React from "react";
 import { useEffect, useState } from "react";
-import { jsx, css } from "@emotion/core";
-
-import AutoOnOff from "../../Ui Library/AutoOnOff";
+import AutoOnOff from "../../Ui Library/Controllers/AutoControl";
 
 const RadiatorFan = () => {
-  const [deviceData, setDeviceData] = useState(
-    JSON.parse(localStorage.getItem("Radiator Fan"))
-  );
+  const [deviceData, setDeviceData] = useState(JSON.parse(localStorage.getItem("Radiator Fan")));
 
   useEffect(() => {
     const timer = setTimeout(() => {

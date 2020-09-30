@@ -6,6 +6,7 @@ import Boost from "./Boost";
 import ActiveIndicator from "./ActiveIndicator";
 import OnOff from "./OnOff";
 import Schedule from "./Schedule";
+import RadiatorFan from "./RadiatorFan";
 
 const container = css`
   position: absolute;
@@ -19,14 +20,13 @@ const container = css`
 
 const Heating = () => {
   return (
-    <>
-      <div css={container}>
-        <Boost />
-        <ActiveIndicator />
-        <OnOff />
-        <Schedule />
-      </div>
-    </>
+    <div css={container}>
+      <Boost />
+      <ActiveIndicator />
+      <OnOff />
+      <Schedule />
+      <RadiatorFan />
+    </div>
   );
 };
 

@@ -1,24 +1,23 @@
-// Components
 import React from "react";
 import { useEffect, useState } from "react";
-import SimpleOnOff from "../../Ui Library/SimpleOnOff";
+import OnOffControl from "../../Ui Library/Controllers/SimpleControl";
 
 const Boost = () => {
-  const [deviceData, setDeviceData] = useState(
-    JSON.parse(localStorage.getItem("Heating Schedule"))
-  );
+  const [deviceData, setDeviceData] = useState(JSON.parse(localStorage.getItem("Heating Schedule")));
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setDeviceData(JSON.parse(localStorage.getItem("Heating Schedule")));
+      // deviceData.boost != null ? console.log("false") : console.log("true");
+      // console.log(deviceData.boost);/
     }, 100);
     return () => clearTimeout(timer);
   }, [deviceData]);
 
   return (
-    <SimpleOnOff
-      title={"1 Hr Boost"}
-      pos={[20, 25]}
+    <OnOffControl
+      title={"Boost"}
+      pos={[20, 20]}
       onAction={() => fetch("/api/ci/boost/on")}
       offAction={() => fetch("/api/ci/boost/off")}
       state={deviceData.boost}

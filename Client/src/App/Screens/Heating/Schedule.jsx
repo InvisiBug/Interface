@@ -35,20 +35,10 @@ const dateCol = css`
   text-align: center;
 `;
 
-const days = [
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-  "sunday"
-];
+const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
 const Schedule = () => {
-  const [schedule, setSchedule] = useState(
-    JSON.parse(localStorage.getItem("Heating Schedule"))
-  );
+  const [schedule, setSchedule] = useState(JSON.parse(localStorage.getItem("Heating Schedule")));
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -73,27 +63,18 @@ const Schedule = () => {
   };
 
   return (
-    <>
-      <div css={container}>
-        {days.map(day => (
-          <Row css={slider} key={day}>
-            <Col md={{ span: 1, offset: 0 }} css={dateCol}>
-              <p className="dayText">
-                {day.charAt(0).toUpperCase() + day.slice(1).substring(0, 2)}
-              </p>
-            </Col>
-            <Col>
-              <MySlider
-                enabled={schedule.auto}
-                vals={schedule[day]}
-                day={day}
-                update={updateSchedule}
-              />
-            </Col>
-          </Row>
-        ))}
-      </div>
-    </>
+    <div css={container}>
+      {days.map(day => (
+        <Row css={slider} key={day}>
+          <Col md={{ span: 1, offset: 0 }} css={dateCol}>
+            <p className="dayText">{day.charAt(0).toUpperCase() + day.slice(1).substring(0, 2)}</p>
+          </Col>
+          <Col>
+            <MySlider enabled={schedule.auto} vals={schedule[day]} day={day} update={updateSchedule} />
+          </Col>
+        </Row>
+      ))}
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
 
-import ColourWheel from "./ColourWheel/ColourWheel";
+import ColourWheel from "../../Ui Library/ColourWheel/ColourWheel";
 
 class TableLamp extends React.Component {
   constructor() {
