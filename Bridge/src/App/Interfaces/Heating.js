@@ -3,6 +3,7 @@ const express = require("express");
 const app = (module.exports = express());
 
 const { getStore, setStore, toggleLogic } = require("../../helpers/StorageDriver");
+const { boostTime } = require("../../helpers/Constants");
 // MQTT
 const mqtt = require("mqtt");
 const connection = mqtt.connect("mqtt://kavanet.io");
@@ -75,7 +76,7 @@ connection.on("message", (topic, payload) => {
       console.log("Boost was off, turn on");
       let boostTime = new Date();
       toggleLogic("heatingSchedule", "boost", true);
-      toggleLogic("heatingSchedule", "boostTime", boostTime.setMinutes(boostTime.getMinutes() + 60));
+      toggleLogic("heatingSchedule", "boostTime", boostTime.setMinutes(boostTime.getMinutes() + 15));
     }
   }
 });

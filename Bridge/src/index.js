@@ -119,22 +119,45 @@ app.use(require("./App/Calor Imperium.js"));
 app.use(require("./App/Interfaces/Heating.js"));
 
 app.use(require("./App/Services/HouseClimateStats"));
+
 ////////////////////////////////////////////////////////////////////////
 //
-// #     #                  #     #
-// ##    # ###### #    #    ##   ##  ####  #####  #    # #      ######  ####
-// # #   # #      #    #    # # # # #    # #    # #    # #      #      #
-// #  #  # #####  #    #    #  #  # #    # #    # #    # #      #####   ####
-// #   # # #      # ## #    #     # #    # #    # #    # #      #           #
-// #    ## #      ##  ##    #     # #    # #    # #    # #      #      #    #
-// #     # ###### #    #    #     #  ####  #####   ####  ###### ######  ####
+// #     #                                         #####
+// #     # ######   ##   ##### # #    #  ####     #     # ###### #    #  ####   ####  #####
+// #     # #       #  #    #   # ##   # #    #    #       #      ##   # #      #    # #    #
+// ####### #####  #    #   #   # # #  # #          #####  #####  # #  #  ####  #    # #    #
+// #     # #      ######   #   # #  # # #  ###          # #      #  # #      # #    # #####
+// #     # #      #    #   #   # #   ## #    #    #     # #      #   ## #    # #    # #   #
+// #     # ###### #    #   #   # #    #  ####      #####  ###### #    #  ####   ####  #    #
 //
 ////////////////////////////////////////////////////////////////////////
 const heatingSensor = require("./App/Interfaces/HeatingSensor");
 
-const sensors = ["Our Room", "Study", "Living Room", "Kitchen", "Liams Room"];
+const sensors = [
+  {
+    name: "Our Room",
+    offset: -0.3,
+  },
+  {
+    name: "Study",
+    offset: -5,
+  },
+  {
+    name: "Living Room",
+    offset: -0.3,
+  },
+  {
+    name: "Kitchen",
+    offset: -1.2,
+  },
+  {
+    name: "Liams Room",
+    offset: -0.4,
+  },
+];
+
 sensors.map((room, index) => {
-  heatingSensor.newSensor(room, true);
+  heatingSensor.newSensor(room.name, room.offset);
 });
 
 ////////////////////////////////////////////////////////////////////////

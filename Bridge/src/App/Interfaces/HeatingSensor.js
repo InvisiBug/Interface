@@ -22,22 +22,17 @@ const camelRoomName = (roomName) => {
   } else return roomName.toLowerCase();
 };
 
-const newSensor = (room, saveToStorage) => {
-  var timer;
-  var deviceData = {
-    isConnected: false,
-    temperature: -1,
-    humidity: -1,
-    pressure: -1,
-    battery: -1,
-  };
+const errorState = {
+  isConnected: false,
+  temperature: -1,
+  humidity: -1,
+  pressure: -1,
+  // battery: -1,
+};
 
-  // timer = setTimeout(() => {
-  //   deviceData = {
-  //     ...deviceData,
-  //     isConnected: false,
-  //   };
-  // }, 10 * 1000);
+const newSensor = (room, offset) => {
+  var timer;
+  var deviceData = errorState;
 
   connection.on("message", (topic, payload) => {
     if (topic == `${room} ${"Heating Sensor"}`) {
@@ -45,7 +40,7 @@ const newSensor = (room, saveToStorage) => {
       clearTimeout(timer);
 
       timer = setTimeout(() => {
-        deviceData.isConnected = false;
+        deviceData = errorState;
         let environmentalData = getStore("Environmental Data");
         environmentalData = {
           ...environmentalData,
@@ -63,10 +58,11 @@ const newSensor = (room, saveToStorage) => {
         deviceData = {
           ...deviceData,
           isConnected: true,
-          temperature: mqttData.temperature,
+          // temperature: mqttData.temperature + offset,
+          temperature: Math.round((mqttData.temperature + offset) * 100) / 100,
           humidity: mqttData.humidity,
           pressure: mqttData.pressure,
-          battery: mqttData.battery,
+          // battery: mqttData.battery,
         };
 
         let environmentalData = getStore("Environmental Data");
@@ -83,6 +79,27 @@ const newSensor = (room, saveToStorage) => {
       }
     }
   });
+
+  setInterval(() => {
+    let environmentalData;
+    // environmentalData = getStore(`/History/${room}`);
+    environmentalData = [20, 21];
+    // environmentalData = {
+    //   ...environmentalData,
+    //   heatingSensors: {
+    //     ...environmentalData.heatingSensors,
+    //     [roomName]: deviceData,
+    //   },
+    // };
+
+    environmentalData.unshift(deviceData.temperature);
+
+    // environmentalData = environmentalData.unshift(deviceData.temperature);
+    // console.log(environmentalData.unshift(deviceData.temperature));
+
+    // environmentalData = deviceData.temperature;
+    setStore(`/History/${room}`, environmentalData);
+  }, 10 * 1000);
 
   setInterval(() => {
     sendSocketData();

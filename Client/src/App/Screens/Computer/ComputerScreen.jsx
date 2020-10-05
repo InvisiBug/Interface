@@ -10,7 +10,8 @@ const container = css`
   position: absolute;
   transform: translate(-50%, -50%);
   height: 85%;
-  width: 100%;
+  width: 90%;
+  max-width: 1500px;
   /* // width: "1200px", */
   left: 50%;
   top: 50%;

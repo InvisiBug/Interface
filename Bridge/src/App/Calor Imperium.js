@@ -23,6 +23,7 @@ const express = require("express");
 var app = (module.exports = express());
 // const storageDriver = require("../helpers/StorageDriver");
 const { getStore, setStore, toggleLogic } = require("../helpers/StorageDriver");
+const { boostTime } = require("../helpers/Constants");
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -67,7 +68,7 @@ app.get("/api/ci/boost/on", (req, res) => {
   let boostTime = new Date();
   // boostTime.setMinutes(boostTime.getMinutes() + -60);
   toggleLogic("heatingSchedule", "boost", true);
-  toggleLogic("heatingSchedule", "boostTime", boostTime.setMinutes(boostTime.getMinutes() + 60));
+  toggleLogic("heatingSchedule", "boostTime", boostTime.setMinutes(boostTime.getMinutes() + 15)); // *NB* figure out why boostTime cant be used here
   sendHeatingSchedule();
   res.end(null);
 });

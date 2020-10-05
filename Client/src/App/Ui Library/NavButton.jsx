@@ -10,6 +10,8 @@ const active = css`
   background: rgba(255, 255, 255, 0.2);
   text-align: center;
   color: white;
+  cursor: pointer;
+  user-select: none;
 `;
 
 const inActive = css`
@@ -20,6 +22,8 @@ const inActive = css`
   width: 100%;
   text-align: center;
   color: white;
+  cursor: pointer;
+  user-select: none;
 `;
 
 const iconCss = css`

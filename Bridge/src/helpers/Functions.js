@@ -24,7 +24,6 @@ const currentTime = () => {
   const days = daysOfWeek[d.getDay()];
   const months = monthOfYear[d.getMonth()];
 
-  // return hour + ":" + minute + " " + day + "-" + month + "-" + year;
   return {
     Hour: hour,
     Minute: minute,
@@ -38,10 +37,10 @@ const currentTime = () => {
 
 var printTime = () => {
   const date = new Date();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
+  let hours = date.getHours(); // *NB* figure out a way to make these all const
+  let minutes = date.getMinutes();
   const ampm = hours >= 12 ? "pm" : "am";
-  hours = hours % 12; // *NB* caused a crash when called from our room computer power 95
+  hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
   minutes = minutes < 10 ? "0" + minutes : minutes;
   const strTime = hours + ":" + minutes + " " + ampm;
