@@ -37,11 +37,11 @@ const styles = StyleSheet.create({
 });
 
 const HeatingSensor = ({ showGraph, pos, datapoint }) => {
-  const [deviceData, setDeviceData] = useState(localStorageParser(`Environmental Data`).heatingSensors[camelRoomName(datapoint)]);
+  const [deviceData, setDeviceData] = useState(localStorageParser(`Environmental Data`).outside.current);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDeviceData(localStorageParser(`Environmental Data`).heatingSensors[camelRoomName(datapoint)]);
+      setDeviceData(localStorageParser(`Environmental Data`).outside.current);
     }, 100);
     return () => clearTimeout(timer);
   }, [deviceData, datapoint]);
@@ -56,8 +56,8 @@ const HeatingSensor = ({ showGraph, pos, datapoint }) => {
       className={css(styles.container)}
       onClick={() => showGraph(datapoint)}
     >
-      <p className={css(styles.tempText)}>{deviceData.temperature}°C</p>
-      <p className={css(styles.humidityText)}>{deviceData.humidity}%</p>
+      <p className={css(styles.tempText)}>{deviceData.temperature.toFixed(1)}°C</p>
+      <p className={css(styles.humidityText)}>{deviceData.humidity.toFixed(1)}%</p>
     </div>
   );
 };

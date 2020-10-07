@@ -1,3 +1,10 @@
+/*
+  *NB*
+  The timers here may cause issues if they are too short 
+  the system uses file system sync which references files 
+  which have to be qued for reading and writing
+  if the file is accessed too quickly there may be issues
+*/
 ////////////////////////////////////////////////////////////////////////
 //
 //   #####
@@ -17,8 +24,6 @@ const { getStore, setStore, toggleLogic } = require("../../helpers/StorageDriver
 const { defaultConfiguration } = require("../Calor Imperium");
 
 const { days } = require("../../helpers/Constants");
-// const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-// var oneshot = [false, false, false, false];
 
 // app.use(require("./Watchdogs/Watchdogs"));
 
@@ -102,6 +107,12 @@ setInterval(() => {
 setInterval(() => {
   let radiatorFan = getStore("Radiator Fan");
   if (radiatorFan.isAutomatic) {
+    // if (now < heating.boostTime) {
+    //   sendOnSignal();
+    // } else {
+    //   toggleLogic("heatingSchedule", "boost", false);
+    //   sendOffSignal();
+    // }
     if (latch) {
       if (radiatorFan.isConnected && !radiatorFan.isOn) {
         // console.log("Radiator Fan Turn On");
@@ -128,11 +139,3 @@ setInterval(() => {
     }
   }
 }, 100);
-
-/*
-  *NB*
-  The timers here may cause issues if they are too short 
-  the system uses file system sync which references files 
-  which have to be qued for reading and writing
-  if the file is accessed too quickly there may be issues
-*/

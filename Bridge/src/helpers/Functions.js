@@ -55,7 +55,14 @@ const toggleLogic = (data, point, value) => {
   return data;
 };
 
+const camelRoomName = (roomName) => {
+  if (roomName.split(" ").length === 2) {
+    return `${roomName.split(" ")[0].toLowerCase()}${roomName.split(" ")[1]}`;
+  } else return roomName.toLowerCase();
+};
+
 module.exports = {
   currentTime: currentTime,
   printTime: printTime,
+  camelRoomName: camelRoomName,
 };

@@ -117,22 +117,18 @@ client.on("message", (topic, payload) => {
     }
   } else if (topic == "Radiator Fan Button") {
     if (!deviceData.isAutomatic) {
-      switch (deviceData.isOn) {
-        case true:
-          deviceData = {
-            ...deviceData,
-            isOn: false,
-          };
-          client.publish("Radiator Fan Control", "0");
-          break;
-
-        case false:
-          deviceData = {
-            ...deviceData,
-            isOn: true,
-          };
-          client.publish("Radiator Fan Control", "1");
-          break;
+      if (deviceData.isOn) {
+        deviceData = {
+          ...deviceData,
+          isOn: false,
+        };
+        client.publish("Radiator Fan Control", "0");
+      } else {
+        deviceData = {
+          ...deviceData,
+          isOn: true,
+        };
+        client.publish("Radiator Fan Control", "1");
       }
       sendSocketData();
     }
