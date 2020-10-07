@@ -28,6 +28,7 @@ const { days } = require("../../helpers/Constants");
 // app.use(require("./Watchdogs/Watchdogs"));
 
 var latch = false;
+var scheduleDemand = false;
 ////////////////////////////////////////////////////////////////////////
 //
 // #######
@@ -56,33 +57,33 @@ setInterval(() => {
         (scheduleData[days[day]][2] <= time && time <= scheduleData[days[day]][3])
       ) {
         // On demand from schedule
-        toggleLogic("heatingSchedule", "isActive", true);
-        sendOnSignal();
-      } else if (!scheduleData.boost) {
+        heatingOn();
+      } else {
         // off demand from schedule
-        sendOffSignal();
+        heatingOff();
       }
     } else if (!scheduleData.auto && scheduleData.isOn) {
+      // *NB* Maybe rename isOn to something like onRequested
       // On button
-      toggleLogic("heatingSchedule", "isActive", true);
-      sendOnSignal();
+      heatingOn();
     } else {
       // Off button
-      toggleLogic("heatingSchedule", "isActive", false);
-      sendOffSignal();
+      heatingOff();
     }
   }
 }, 1.5 * 1000);
 
-const sendOnSignal = () => {
+const heatingOn = () => {
   if (!latch) {
+    toggleLogic("heatingSchedule", "isActive", true);
     latch = !latch;
     // console.log("Send On Signal");
   }
 };
 
-const sendOffSignal = () => {
+const heatingOff = () => {
   if (latch) {
+    toggleLogic("heatingSchedule", "isActive", false);
     latch = !latch;
     // console.log("Send Off Signal");
   }
@@ -108,10 +109,10 @@ setInterval(() => {
   let radiatorFan = getStore("Radiator Fan");
   if (radiatorFan.isAutomatic) {
     // if (now < heating.boostTime) {
-    //   sendOnSignal();
+    //   heatingOn();
     // } else {
     //   toggleLogic("heatingSchedule", "boost", false);
-    //   sendOffSignal();
+    //   heatingOff();
     // }
     if (latch) {
       if (radiatorFan.isConnected && !radiatorFan.isOn) {
@@ -132,10 +133,10 @@ setInterval(() => {
 
   if (heating.boost) {
     if (now < heating.boostTime) {
-      sendOnSignal();
+      heatingOn();
     } else {
       toggleLogic("heatingSchedule", "boost", false);
-      sendOffSignal();
+      heatingOff();
     }
   }
 }, 100);
