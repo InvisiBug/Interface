@@ -1,3 +1,10 @@
+/* 
+  * NB *
+  The timers here may cause issues if they are too short 
+  the system uses file system sync which references files 
+  which have to be qued for reading and writing
+  if the file is accessed too quickly there may be issues
+*/
 ////////////////////////////////////////////////////////////////////////
 //
 //   #####
@@ -12,17 +19,14 @@
 // Express
 const express = require("express");
 var app = (module.exports = express());
-const { getStore, setStore, toggleLogic } = require("../../helpers/StorageDriver");
-// const { toggleLogic } = require("../../helpers/Functions");
+const { getStore, setStore, updateValue } = require("../../helpers/StorageDriver");
 const { defaultConfiguration } = require("../Calor Imperium");
-
 const { days } = require("../../helpers/Constants");
-// const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-// var oneshot = [false, false, false, false];
 
 // app.use(require("./Watchdogs/Watchdogs"));
 
 var latch = false;
+var scheduleDemand = false;
 ////////////////////////////////////////////////////////////////////////
 //
 // #######
@@ -39,51 +43,43 @@ setInterval(() => {
 
   var date = new Date();
   const day = date.getDay();
+  let now = new Date().getTime();
   const time = date.getHours() + "." + date.getMinutes();
 
-  // console.log(`${"Time: "} ${time} ${" Schedule: "}${scheduleData[days[day]]}`);
-
-  if (!scheduleData.boost) {
+  if (scheduleData.boostTime < now) {
+    // Boost Off
     if (scheduleData.auto) {
       // Schedule in auto mode
       if (
         (scheduleData[days[day]][0] <= time && time <= scheduleData[days[day]][1]) || // Seems to be some overlap ie schedule on at 16:02 when should be on at 16:15
         (scheduleData[days[day]][2] <= time && time <= scheduleData[days[day]][3])
       ) {
-        // On demand from schedule
-        toggleLogic("heatingSchedule", "isActive", true);
-        sendOnSignal();
-      } else if (!scheduleData.boost) {
-        // off demand from schedule
-        sendOffSignal();
+        heatingOn(); // On demand from schedule
+      } else {
+        heatingOff(); // off demand from schedule
       }
     } else if (!scheduleData.auto && scheduleData.isOn) {
-      // On button
-      toggleLogic("heatingSchedule", "isActive", true);
-      sendOnSignal();
+      // TODO Maybe rename isOn to something like onRequested
+      heatingOn(); // On button
     } else {
-      // Off button
-      toggleLogic("heatingSchedule", "isActive", false);
-      sendOffSignal();
+      heatingOff(); // Off button
     }
+  } else {
+    // Boost On
+    heatingOn();
   }
-}, 1.5 * 1000);
+}, 0.5 * 1000);
 
-const sendOnSignal = () => {
-  if (!latch) {
-    latch = !latch;
-    // console.log("Send On Signal");
-  }
+const heatingOn = () => {
+  updateValue("heatingSchedule", "isActive", true);
+  latch = true;
 };
 
-const sendOffSignal = () => {
-  if (latch) {
-    latch = !latch;
-    // console.log("Send Off Signal");
-  }
+const heatingOff = () => {
+  updateValue("heatingSchedule", "isActive", false);
+  latch = false;
 };
 
-// *NB* This bit can be condensed down
 // Heating
 setInterval(() => {
   let heating = getStore("Heating");
@@ -101,38 +97,16 @@ setInterval(() => {
 // Radiator Fan
 setInterval(() => {
   let radiatorFan = getStore("Radiator Fan");
+  let heating = getStore("heatingSchedule");
+  let now = new Date().getTime();
+
   if (radiatorFan.isAutomatic) {
-    if (latch) {
+    if (now < heating.radiatorFanTime) {
       if (radiatorFan.isConnected && !radiatorFan.isOn) {
-        // console.log("Radiator Fan Turn On");
         client.publish("Radiator Fan Control", "1");
       }
     } else if (radiatorFan.isConnected && radiatorFan.isOn) {
-      // console.log("Radiator Fan Turn Off");
       client.publish("Radiator Fan Control", "0");
     }
   }
 }, 1 * 1000);
-
-// Boost
-setInterval(() => {
-  let heating = getStore("heatingSchedule");
-  let now = new Date().getTime();
-
-  if (heating.boost) {
-    if (now < heating.boostTime) {
-      sendOnSignal();
-    } else {
-      toggleLogic("heatingSchedule", "boost", false);
-      sendOffSignal();
-    }
-  }
-}, 100);
-
-/*
-  *NB*
-  The timers here may cause issues if they are too short 
-  the system uses file system sync which references files 
-  which have to be qued for reading and writing
-  if the file is accessed too quickly there may be issues
-*/

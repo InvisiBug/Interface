@@ -3,8 +3,8 @@ import openSocket from "socket.io-client";
 import { localStorageSaver, localStorageParser } from "../../Helpers/localStorageDriver";
 
 const Socket = () => {
-  // const socket = openSocket("http://192.168.1.46:5001"); // Deployment
-  const socket = openSocket("http://localhost:5001"); // Production
+  const socket = openSocket("http://192.168.1.46:5001"); // Deployment
+  // const socket = openSocket("http://localhost:5001"); // Production
 
   const devices = [
     "Living Room Heating Sensor",
@@ -23,7 +23,8 @@ const Socket = () => {
     "Radiator Fan",
     "Heating Schedule",
     "Heating",
-    "Sun"
+    "Sun",
+    "Environmental Data"
   ];
 
   devices.map(device => {

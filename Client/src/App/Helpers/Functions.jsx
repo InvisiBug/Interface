@@ -35,3 +35,9 @@ export function Unix_timestamp(t) {
   var m = "0" + dt.getMinutes();
   return hr + ":" + m.substr(-2);
 }
+
+export const camelRoomName = roomName => {
+  if (roomName.split(" ").length === 2) {
+    return `${roomName.split(" ")[0].toLowerCase()}${roomName.split(" ")[1]}`;
+  } else return roomName.toLowerCase();
+};
