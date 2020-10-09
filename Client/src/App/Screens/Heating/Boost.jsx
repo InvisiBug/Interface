@@ -10,7 +10,7 @@ const Boost = () => {
     const timer = setTimeout(() => {
       setDeviceData(JSON.parse(localStorage.getItem("Heating Schedule")));
       setNow(new Date().getTime());
-      // this should only be on dev branch
+      // this should only be on dev branch v2
       // deviceData.boost != null ? console.log("false") : console.log("true");
       // console.log(deviceData.boost);/
     }, 100);
