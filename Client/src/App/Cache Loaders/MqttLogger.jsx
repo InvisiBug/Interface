@@ -10,35 +10,35 @@ const styles = StyleSheet.create({
     transform: "translate(-50%, -50%)",
     top: "52%",
     left: "50%",
-    height: "90%",
-    width: "90%",
+    height: "70%",
+    width: "60%",
 
     borderRadius: "20px",
 
     border: "1px solid rgba(255, 255, 255, 0.2)",
     background: "rgba(50, 50, 50, 0.1)",
     fontFamily: "Arial",
-    fontSize: "15px"
+    fontSize: "15px",
+    display: "flex"
+    // flexDirection: "column"
+    // justifyContent: "space-around"
   },
   logWindow: {
+    // TODO Make lines fill container, maybe use justifycontent
     position: "absolute",
     transform: "translate(-50%, -50%)",
     top: "50%",
     left: "50%",
     height: "90%",
     width: "90%",
+
     // display: "flex",
-    // alignItems: "center",
-    // justifyContent: "center",
-    // textAlign: "center",
+    aignItems: "flex-end",
+    // flexWrap: "wrap",
+    // alignItems: "flex-end",
+    color: "white"
 
-    display: "flex",
-    flexWrap: "wrap",
-    alignItems: "flex-end",
-
-    // border: "1px solid red",
-
-    color: "White"
+    // border: "1px solid red"
   }
 });
 
