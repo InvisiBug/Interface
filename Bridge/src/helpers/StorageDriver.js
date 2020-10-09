@@ -18,7 +18,7 @@ const getStore = (store) => {
     console.log(e);
   }
 };
-
+//boop
 const updateValue = (store, point, value) => {
   let data = getStore(store);
   data = {
