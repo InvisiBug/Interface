@@ -1,6 +1,6 @@
 const express = require("express");
 var app = (module.exports = express());
-const { getStore, setStore, toggleLogic } = require("../../../helpers/StorageDriver");
+const { getStore, setStore, updateValue } = require("../../../helpers/StorageDriver");
 
 var latch = false;
 

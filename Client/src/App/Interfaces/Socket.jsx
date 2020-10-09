@@ -23,7 +23,8 @@ const Socket = () => {
     "Radiator Fan",
     "Heating Schedule",
     "Heating",
-    "Sun"
+    "Sun",
+    "Environmental Data"
   ];
 
   devices.map(device => {

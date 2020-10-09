@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, css } from "aphrodite";
-import { localStorageParser } from "../../../Helpers/localStorageDriver";
-import { camelRoomName } from "../../Helpers/Functions";
+import { localStorageParser } from "../../Helpers/localStorageDriver";
+import { camelRoomName } from "../Helpers/Functions";
 
 const styles = StyleSheet.create({
   container: {

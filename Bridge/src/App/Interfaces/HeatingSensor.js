@@ -4,23 +4,17 @@ const app = (module.exports = express());
 
 // Persistant Storage
 const { getStore, setStore } = require("../../helpers/StorageDriver");
+const { camelRoomName } = require("../../helpers/Functions");
 
 // MQTT
 const mqtt = require("mqtt");
 const connection = mqtt.connect("mqtt://kavanet.io");
-
 connection.setMaxListeners(15); // Disables event listener warning
 connection.subscribe("#", (err) => {
   err ? console.log(err) : null;
 });
 
 connection.on("connect", () => null);
-
-const camelRoomName = (roomName) => {
-  if (roomName.split(" ").length === 2) {
-    return `${roomName.split(" ")[0].toLowerCase()}${roomName.split(" ")[1]}`;
-  } else return roomName.toLowerCase();
-};
 
 const errorState = {
   isConnected: false,
@@ -80,34 +74,26 @@ const newSensor = (room, offset) => {
     }
   });
 
-  setInterval(() => {
-    let environmentalData;
-    // environmentalData = getStore(`/History/${room}`);
-    environmentalData = [20, 21];
-    // environmentalData = {
-    //   ...environmentalData,
-    //   heatingSensors: {
-    //     ...environmentalData.heatingSensors,
-    //     [roomName]: deviceData,
-    //   },
-    // };
+  // setInterval(() => {
+  //   let environmentalData;
+  //   // environmentalData = getStore(`/History/${room}`);
+  //   environmentalData = [20, 21];
+  //   // environmentalData = {
+  //   //   ...environmentalData,
+  //   //   heatingSensors: {
+  //   //     ...environmentalData.heatingSensors,
+  //   //     [roomName]: deviceData,
+  //   //   },
+  //   // };
 
-    environmentalData.unshift(deviceData.temperature);
+  //   environmentalData.unshift(deviceData.temperature);
 
-    // environmentalData = environmentalData.unshift(deviceData.temperature);
-    // console.log(environmentalData.unshift(deviceData.temperature));
+  //   // environmentalData = environmentalData.unshift(deviceData.temperature);
+  //   // console.log(environmentalData.unshift(deviceData.temperature));
 
-    // environmentalData = deviceData.temperature;
-    setStore(`/History/${room}`, environmentalData);
-  }, 10 * 1000);
-
-  setInterval(() => {
-    sendSocketData();
-  }, 1 * 1000);
-
-  const sendSocketData = () => {
-    io.emit(`${room} ${"Heating Sensor"}`, deviceData);
-  };
+  //   // environmentalData = deviceData.temperature;
+  //   setStore(`/History/${room}`, environmentalData);
+  // }, 10 * 1000);
 };
 
 module.exports = {

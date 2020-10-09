@@ -47,7 +47,7 @@ var printTime = () => {
   return strTime;
 };
 
-const toggleLogic = (data, point, value) => {
+const updateValue = (data, point, value) => {
   data = {
     ...data,
     [point]: value,
@@ -55,7 +55,71 @@ const toggleLogic = (data, point, value) => {
   return data;
 };
 
+const camelRoomName = (roomName) => {
+  if (roomName.split(" ").length === 2) {
+    return `${roomName.split(" ")[0].toLowerCase()}${roomName.split(" ")[1]}`;
+  } else return roomName.toLowerCase();
+};
+
+const frontendToBackend = (data) => {
+  var newData = {};
+
+  for (var key in data) {
+    if (data[key].length > 1) {
+      var newVals = [];
+      for (var index in data[key]) {
+        newVals[index] = parseFloat(Math.floor(data[key][index])) + toNodeDecimalConverter(data[key][index]); // used to convert to a string here
+      }
+      newData[key] = newVals;
+    } else newData[key] = data[key];
+  }
+  return newData;
+};
+
+const backendToFrontend = (data) => {
+  var newData = {};
+  for (var key in data) {
+    if (data[key].length > 1) {
+      var newVals = [];
+      for (var index in data[key]) {
+        newVals[index] = parseFloat(Math.floor(data[key][index])) + toReactDecimalConverter(data[key][index]); // used to convert to a string here
+      }
+      newData[key] = newVals;
+    } else newData[key] = data[key];
+  }
+  return newData;
+};
+
+const toNodeDecimalConverter = (val) => {
+  switch (val % 1) {
+    case 0.25:
+      return 0.15;
+    case 0.5:
+      return 0.3;
+    case 0.75:
+      return 0.45;
+    default:
+      return 0.0;
+  }
+};
+
+const toReactDecimalConverter = (val) => {
+  switch (parseFloat((val % 1).toFixed(2))) {
+    case 0.15:
+      return 0.25;
+    case 0.3:
+      return 0.5;
+    case 0.45:
+      return 0.75;
+    default:
+      return 0.0;
+  }
+};
+
 module.exports = {
   currentTime: currentTime,
   printTime: printTime,
+  camelRoomName: camelRoomName,
+  backendToFrontend: backendToFrontend,
+  frontendToBackend: frontendToBackend,
 };
