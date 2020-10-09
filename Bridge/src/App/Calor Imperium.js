@@ -21,8 +21,9 @@
 // Express
 const express = require("express");
 var app = (module.exports = express());
-const { getStore, setStore, toggleLogic } = require("../helpers/StorageDriver");
+const { getStore, setStore, updateValue, readValue } = require("../helpers/StorageDriver");
 const { backendToFrontend, frontendToBackend } = require("../helpers/Functions");
+const { boostOn, boostOff, radiatorFanOverrun } = require("../helpers/HeatingFunctions");
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -64,31 +65,26 @@ app.post("/api/ci/schedule/update", (req, res) => {
 
 // ----------  Boost  ----------
 app.get("/api/ci/boost/on", (req, res) => {
-  let boostTime = new Date();
-  // boostTime.setMinutes(boostTime.getMinutes() + -60);
-  // toggleLogic("heatingSchedule", "boost", true);
-  toggleLogic("heatingSchedule", "boostTime", boostTime.setMinutes(boostTime.getMinutes() + 15)); // *NB* figure out why boostTime cant be used here
-  toggleLogic("heatingSchedule", "radiatorFanTime", boostTime.setMinutes(boostTime.getMinutes() + 30)); // Extra time to allow heat extraction from radiator
+  boostOn();
   sendHeatingSchedule();
   res.end(null);
 });
 
 app.get("/api/ci/boost/off", (req, res) => {
-  toggleLogic("heatingSchedule", "boostTime", new Date().getTime());
-  toggleLogic("heatingSchedule", "radiatorFanTime", new Date().getTime());
+  boostOff();
   sendHeatingSchedule();
   res.end(null);
 });
 
 // -----  Manual  -----
 app.get("/api/ci/manual/on", (req, res) => {
-  toggleLogic("heatingSchedule", "auto", false);
+  updateValue("heatingSchedule", "auto", false);
   sendHeatingSchedule();
   res.end(null);
 });
 
 app.get("/api/ci/manual/off", (req, res) => {
-  toggleLogic("heatingSchedule", "auto", true);
+  updateValue("heatingSchedule", "auto", true);
   sendHeatingSchedule();
   res.end(null);
 });
@@ -98,8 +94,8 @@ app.get("/api/ci/on", (req, res) => {
   let data = getStore("heatingSchedule");
   let boostTime = new Date();
   if (!data.auto) {
-    toggleLogic("heatingSchedule", "isOn", true);
-    toggleLogic("heatingSchedule", "radiatorFanTime", boostTime.setMinutes(boostTime.getMinutes() + 3000));
+    updateValue("heatingSchedule", "isOn", true);
+    updateValue("heatingSchedule", "radiatorFanTime", boostTime.setMinutes(boostTime.getMinutes() + 3000));
     sendHeatingSchedule();
   }
   res.end(null);
@@ -108,8 +104,11 @@ app.get("/api/ci/on", (req, res) => {
 app.get("/api/ci/off", (req, res) => {
   let data = getStore("heatingSchedule");
   if (!data.auto) {
-    toggleLogic("heatingSchedule", "isOn", false);
-    toggleLogic("heatingSchedule", "radiatorFanTime", new Date().getTime());
+    if (readValue("heatingSchedule", "isOn")) {
+      // If turning off from being on, start the over run
+      radiatorFanOverrun();
+    }
+    updateValue("heatingSchedule", "isOn", false);
     sendHeatingSchedule();
   }
   sendHeatingSchedule();

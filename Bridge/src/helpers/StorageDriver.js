@@ -19,7 +19,7 @@ const getStore = (store) => {
   }
 };
 
-const toggleLogic = (store, point, value) => {
+const updateValue = (store, point, value) => {
   let data = getStore(store);
   data = {
     ...data,
@@ -28,8 +28,16 @@ const toggleLogic = (store, point, value) => {
   setStore(store, data);
 };
 
+const readValue = (store, point) => {
+  // TODO Maybe switch this around
+  let data = getStore(store);
+
+  return data[point];
+};
+
 module.exports = {
   getStore: getStore,
   setStore: setStore,
-  toggleLogic: toggleLogic,
+  updateValue: updateValue,
+  readValue: readValue,
 };

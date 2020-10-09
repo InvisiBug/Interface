@@ -47,7 +47,7 @@ var printTime = () => {
   return strTime;
 };
 
-const toggleLogic = (data, point, value) => {
+const updateValue = (data, point, value) => {
   data = {
     ...data,
     [point]: value,

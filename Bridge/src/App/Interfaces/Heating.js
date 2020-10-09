@@ -1,8 +1,9 @@
 // Express
 const express = require("express");
 const app = (module.exports = express());
+const { getStore, setStore, updateValue } = require("../../helpers/StorageDriver");
+const { boostOn, boostOff } = require("../../helpers/HeatingFunctions");
 
-const { getStore, setStore, toggleLogic } = require("../../helpers/StorageDriver");
 // MQTT
 const mqtt = require("mqtt");
 const connection = mqtt.connect("mqtt://kavanet.io");
@@ -30,6 +31,7 @@ var deviceData = {
   isConnected: false,
   isOn: false,
 };
+
 var timer = setTimeout(() => {
   deviceData.isConnected = false;
 }, 10 * 1000);
@@ -67,15 +69,10 @@ connection.on("message", (topic, payload) => {
       console.log(`${"Heating Disconnected"}`);
     }
   } else if (topic === "Heating Button") {
-    const scheduleData = getStore("heatingSchedule");
-    if (scheduleData.boost) {
-      toggleLogic("heatingSchedule", "boostTime", new Date().getTime()); // Turn Boost Off
-      console.log("Boost was on, turn off");
+    if (readValue("Heating", "boostTime") < now) {
+      boostOn();
     } else {
-      console.log("Boost was off, turn on");
-      let boostTime = new Date();
-      toggleLogic("heatingSchedule", "boost", true);
-      toggleLogic("heatingSchedule", "boostTime", boostTime.setMinutes(boostTime.getMinutes() + 15));
+      boostOff();
     }
   }
 });
