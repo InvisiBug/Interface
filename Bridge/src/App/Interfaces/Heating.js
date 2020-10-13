@@ -1,7 +1,7 @@
 // Express
 const express = require("express");
 const app = (module.exports = express());
-const { getStore, setStore, updateValue } = require("../../helpers/StorageDriver");
+const { getStore, setStore, updateValue, readValue } = require("../../helpers/StorageDriver");
 const { boostOn, boostOff } = require("../../helpers/HeatingFunctions");
 
 // MQTT
@@ -69,7 +69,8 @@ connection.on("message", (topic, payload) => {
       console.log(`${"Heating Disconnected"}`);
     }
   } else if (topic === "Heating Button") {
-    if (readValue("Heating", "boostTime") < now) {
+    const now = new Date().getTime();
+    if (readValue("heatingSchedule", "boostTime") < now) {
       boostOn();
     } else {
       boostOff();
