@@ -24,10 +24,6 @@ const { defaultConfiguration } = require("../Calor Imperium");
 const { days } = require("../../helpers/Constants");
 const { radiatorFanOn, radiatorFanOverrun, heatingOn, heatingOff } = require("../../helpers/HeatingFunctions");
 
-// app.use(require("./Watchdogs/Watchdogs"));
-
-var latch = false;
-var scheduleDemand = false;
 ////////////////////////////////////////////////////////////////////////
 //
 // #######
@@ -68,40 +64,3 @@ setInterval(() => {
     heatingOn();
   }
 }, 0.5 * 1000);
-
-// TODO, Move each watchdog to seperate files
-// ----- Watchdogs -----
-
-// Heating
-setInterval(() => {
-  let heatingSchedule = getStore("heatingSchedule");
-  let heatingController = getStore("Heating");
-  let now = new Date().getTime();
-
-  if (now < heatingSchedule.heatingTime) {
-    if (heatingController.isConnected && !heatingController.isOn) {
-      console.log("Heating On");
-      client.publish("Heating Control", "1");
-    }
-  } else if (heatingController.isConnected && heatingController.isOn) {
-    console.log("Heating Off");
-    client.publish("Heating Control", "0");
-  }
-}, 1 * 1000);
-
-// Radiator Fan
-setInterval(() => {
-  let radiatorFan = getStore("Radiator Fan");
-  let heating = getStore("heatingSchedule");
-  let now = new Date().getTime();
-
-  if (radiatorFan.isAutomatic) {
-    if (now < heating.radiatorFanTime) {
-      if (radiatorFan.isConnected && !radiatorFan.isOn) {
-        client.publish("Radiator Fan Control", "1");
-      }
-    } else if (radiatorFan.isConnected && radiatorFan.isOn) {
-      client.publish("Radiator Fan Control", "0");
-    }
-  }
-}, 1 * 1000);

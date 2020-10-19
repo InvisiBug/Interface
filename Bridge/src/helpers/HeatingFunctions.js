@@ -1,4 +1,4 @@
-const { updateValue } = require("./StorageDriver");
+const { updateValue, readValue } = require("./StorageDriver");
 const overRunTime = 15;
 const boostTime = 20;
 
@@ -45,12 +45,16 @@ const heatingOn = (time = 99999) => {
 
 const heatingOff = () => {
   let now = new Date();
-  console.log("here");
+
+  if (readValue("heatingSchedule", "heatingTime") > now) {
+    radiatorFanOverrun();
+  }
+
   updateValue("heatingSchedule", "heatingTime", now.setMinutes(now.getMinutes()));
-  radiatorFanOverrun();
 };
 
 clearRadiatorFanTime();
+
 module.exports = {
   boostOn: boostOn,
   boostOff: boostOff,

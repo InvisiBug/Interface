@@ -117,8 +117,8 @@ app.use(require("./App/Historical.js"));
 app.use(require("./App/Controllers/HeatingController.js"));
 app.use(require("./App/Calor Imperium.js"));
 app.use(require("./App/Interfaces/Heating.js"));
-
 app.use(require("./App/Services/HouseClimateStats"));
+app.use(require("./App/Controllers/Watchdogs/Watchdogs"));
 
 ////////////////////////////////////////////////////////////////////////
 //
