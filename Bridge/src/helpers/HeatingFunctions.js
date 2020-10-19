@@ -17,13 +17,14 @@ const boostTime = 20;
 const boostOn = () => {
   let now = new Date();
   updateValue("heatingSchedule", "boostTime", now.setMinutes(now.getMinutes() + boostTime));
+  heatingOn(boostTime);
   radiatorFanOn(boostTime + overRunTime);
 };
 
 const boostOff = () => {
   let now = new Date();
   updateValue("heatingSchedule", "boostTime", new Date().getTime());
-  radiatorFanOverrun();
+  heatingOff();
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -68,9 +69,9 @@ const clearRadiatorFanTime = () => {
 //
 ////////////////////////////////////////////////////////////////////////
 // Heating
-const heatingOn = (time = 99999) => {
+const heatingOn = (time = 99999, radiatorFanTime = 99999) => {
   let now = new Date();
-  radiatorFanOn();
+  radiatorFanOn(radiatorFanTime);
   updateValue("heatingSchedule", "heatingTime", now.setMinutes(now.getMinutes() + time));
 };
 
