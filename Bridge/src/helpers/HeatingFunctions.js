@@ -1,22 +1,51 @@
-const { updateValue } = require("./StorageDriver");
+const { updateValue, readValue } = require("./StorageDriver");
 
 const overRunTime = 15;
 const boostTime = 20;
 
+////////////////////////////////////////////////////////////////////////
+//
+//  ######
+//  #     #  ####   ####   ####  #####
+//  #     # #    # #    # #        #
+//  ######  #    # #    #  ####    #
+//  #     # #    # #    #      #   #
+//  #     # #    # #    # #    #   #
+//  ######   ####   ####   ####    #
+//
+////////////////////////////////////////////////////////////////////////
 const boostOn = () => {
-  console.log("Boost On");
   let now = new Date();
-
-  updateValue("heatingSchedule", "boostTime", now.setMinutes(now.getMinutes() + boostTime));
-  updateValue("heatingSchedule", "radiatorFanTime", now.setMinutes(now.getMinutes() + boostTime + overRunTime));
+  updateValue("heatingSchedule", "boostTime", now.setMinutes(now.getMinutes() + boostTime)); // Abstract this out in to a function
+  heatingOn(boostTime);
 };
 
 const boostOff = () => {
-  console.log("Boost Off");
   let now = new Date();
-
   updateValue("heatingSchedule", "boostTime", new Date().getTime());
-  radiatorFanOverrun();
+  heatingOff();
+};
+
+////////////////////////////////////////////////////////////////////////
+//
+//  ######                                                #######
+//  #     #   ##   #####  #   ##   #####  ####  #####     #         ##   #    #
+//  #     #  #  #  #    # #  #  #    #   #    # #    #    #        #  #  ##   #
+//  ######  #    # #    # # #    #   #   #    # #    #    #####   #    # # #  #
+//  #   #   ###### #    # # ######   #   #    # #####     #       ###### #  # #
+//  #    #  #    # #    # # #    #   #   #    # #   #     #       #    # #   ##
+//  #     # #    # #####  # #    #   #    ####  #    #    #       #    # #    #
+//
+////////////////////////////////////////////////////////////////////////
+// Radiator Fan
+const radiatorFanOn = (time = 99999) => {
+  let now = new Date();
+  updateValue("heatingSchedule", "radiatorFanTime", now.setMinutes(now.getMinutes() + time));
+};
+
+const radiatorFanOff = () => {
+  let now = new Date();
+  updateValue("heatingSchedule", "radiatorFanTime", now.setMinutes(now.getMinutes()));
 };
 
 const radiatorFanOverrun = () => {
@@ -24,14 +53,42 @@ const radiatorFanOverrun = () => {
   updateValue("heatingSchedule", "radiatorFanTime", now.setMinutes(now.getMinutes() + overRunTime));
 };
 
-const radiatorFanOn = (time = 99999) => {
-  let now = new Date();
-  updateValue("heatingSchedule", "radiatorFanTime", now.setMinutes(now.getMinutes() + time));
-};
-
 const clearRadiatorFanTime = () => {
   updateValue("heatingSchedule", "radiatorFanTime", new Date().getTime());
 };
+
+////////////////////////////////////////////////////////////////////////
+//
+//  #    # ######   ##   ##### # #    #  ####
+//  #    # #       #  #    #   # ##   # #    #
+//  ###### #####  #    #   #   # # #  # #
+//  #    # #      ######   #   # #  # # #  ###
+//  #    # #      #    #   #   # #   ## #    #
+//  #    # ###### #    #   #   # #    #  ####
+//
+////////////////////////////////////////////////////////////////////////
+// Heating
+const heatingOn = (time = 99999) => {
+  let now = new Date();
+  radiatorFanOn(time + overRunTime);
+  updateValue("heatingSchedule", "heatingTime", now.setMinutes(now.getMinutes() + time));
+};
+
+const heatingOff = () => {
+  let now = new Date();
+
+  if (isHeatingOn()) {
+    radiatorFanOverrun();
+    // updateValue("heatingSchedule", "heatingTime", now.setMinutes(now.getMinutes()));
+    updateValue("heatingSchedule", "heatingTime", new Date().getTime());
+  }
+};
+
+const isHeatingOn = () => {
+  return readValue("heatingSchedule", "heatingTime") > new Date();
+};
+
+clearRadiatorFanTime();
 
 module.exports = {
   boostOn: boostOn,
@@ -39,4 +96,7 @@ module.exports = {
   radiatorFanOverrun: radiatorFanOverrun,
   clearRatiatorFanTime: clearRadiatorFanTime,
   radiatorFanOn: radiatorFanOn,
+  radiatorFanOff: radiatorFanOff,
+  heatingOn: heatingOn,
+  heatingOff: heatingOff,
 };
