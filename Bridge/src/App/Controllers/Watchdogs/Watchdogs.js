@@ -13,11 +13,9 @@ setInterval(() => {
 
   if (now < heatingSchedule.heatingTime) {
     if (heatingController.isConnected && !heatingController.isOn) {
-      console.log("Heating On");
       client.publish("Heating Control", "1");
     }
   } else if (heatingController.isConnected && heatingController.isOn) {
-    console.log("Heating Off");
     client.publish("Heating Control", "0");
   }
 }, 1 * 1000);

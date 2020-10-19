@@ -1,12 +1,22 @@
 const { updateValue, readValue } = require("./StorageDriver");
+
 const overRunTime = 15;
 const boostTime = 20;
 
-// Boost
+////////////////////////////////////////////////////////////////////////
+//
+//  ######
+//  #     #  ####   ####   ####  #####
+//  #     # #    # #    # #        #
+//  ######  #    # #    #  ####    #
+//  #     # #    # #    #      #   #
+//  #     # #    # #    # #    #   #
+//  ######   ####   ####   ####    #
+//
+////////////////////////////////////////////////////////////////////////
 const boostOn = () => {
   let now = new Date();
   updateValue("heatingSchedule", "boostTime", now.setMinutes(now.getMinutes() + boostTime));
-  // updateValue("heatingSchedule", "radiatorFanTime", now.setMinutes(now.getMinutes() + boostTime + overRunTime));
   radiatorFanOn(boostTime + overRunTime);
 };
 
@@ -16,6 +26,17 @@ const boostOff = () => {
   radiatorFanOverrun();
 };
 
+////////////////////////////////////////////////////////////////////////
+//
+//  ######                                                #######
+//  #     #   ##   #####  #   ##   #####  ####  #####     #         ##   #    #
+//  #     #  #  #  #    # #  #  #    #   #    # #    #    #        #  #  ##   #
+//  ######  #    # #    # # #    #   #   #    # #    #    #####   #    # # #  #
+//  #   #   ###### #    # # ######   #   #    # #####     #       ###### #  # #
+//  #    #  #    # #    # # #    #   #   #    # #   #     #       #    # #   ##
+//  #     # #    # #####  # #    #   #    ####  #    #    #       #    # #    #
+//
+////////////////////////////////////////////////////////////////////////
 // Radiator Fan
 const radiatorFanOn = (time = 99999) => {
   let now = new Date();
@@ -36,6 +57,16 @@ const clearRadiatorFanTime = () => {
   updateValue("heatingSchedule", "radiatorFanTime", new Date().getTime());
 };
 
+////////////////////////////////////////////////////////////////////////
+//
+//  #    # ######   ##   ##### # #    #  ####
+//  #    # #       #  #    #   # ##   # #    #
+//  ###### #####  #    #   #   # # #  # #
+//  #    # #      ######   #   # #  # # #  ###
+//  #    # #      #    #   #   # #   ## #    #
+//  #    # ###### #    #   #   # #    #  ####
+//
+////////////////////////////////////////////////////////////////////////
 // Heating
 const heatingOn = (time = 99999) => {
   let now = new Date();
@@ -48,9 +79,8 @@ const heatingOff = () => {
 
   if (readValue("heatingSchedule", "heatingTime") > now) {
     radiatorFanOverrun();
+    updateValue("heatingSchedule", "heatingTime", now.setMinutes(now.getMinutes()));
   }
-
-  updateValue("heatingSchedule", "heatingTime", now.setMinutes(now.getMinutes()));
 };
 
 clearRadiatorFanTime();
