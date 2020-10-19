@@ -16,9 +16,8 @@ const boostTime = 20;
 ////////////////////////////////////////////////////////////////////////
 const boostOn = () => {
   let now = new Date();
-  updateValue("heatingSchedule", "boostTime", now.setMinutes(now.getMinutes() + boostTime));
+  updateValue("heatingSchedule", "boostTime", now.setMinutes(now.getMinutes() + boostTime)); // Abstract this out in to a function
   heatingOn(boostTime);
-  radiatorFanOn(boostTime + overRunTime);
 };
 
 const boostOff = () => {
@@ -69,19 +68,24 @@ const clearRadiatorFanTime = () => {
 //
 ////////////////////////////////////////////////////////////////////////
 // Heating
-const heatingOn = (time = 99999, radiatorFanTime = 99999) => {
+const heatingOn = (time = 99999) => {
   let now = new Date();
-  radiatorFanOn(radiatorFanTime);
+  radiatorFanOn(time + overRunTime);
   updateValue("heatingSchedule", "heatingTime", now.setMinutes(now.getMinutes() + time));
 };
 
 const heatingOff = () => {
   let now = new Date();
 
-  if (readValue("heatingSchedule", "heatingTime") > now) {
+  if (isHeatingOn()) {
     radiatorFanOverrun();
-    updateValue("heatingSchedule", "heatingTime", now.setMinutes(now.getMinutes()));
+    // updateValue("heatingSchedule", "heatingTime", now.setMinutes(now.getMinutes()));
+    updateValue("heatingSchedule", "heatingTime", new Date().getTime());
   }
+};
+
+const isHeatingOn = () => {
+  return readValue("heatingSchedule", "heatingTime") > new Date();
 };
 
 clearRadiatorFanTime();

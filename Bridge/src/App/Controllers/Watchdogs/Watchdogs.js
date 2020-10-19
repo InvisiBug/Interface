@@ -2,8 +2,6 @@ const express = require("express");
 var app = (module.exports = express());
 const { getStore, setStore, updateValue } = require("../../../helpers/StorageDriver");
 
-// console.log("Hello from watchdogs");
-
 // TODO, Move each watchdog to seperate files
 // Heating
 setInterval(() => {

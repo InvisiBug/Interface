@@ -29,7 +29,6 @@ const updateValue = (store, point, value) => {
 };
 
 const readValue = (store, point) => {
-  // TODO Maybe switch this around
   let data = getStore(store);
 
   return data[point];
@@ -41,3 +40,15 @@ module.exports = {
   updateValue: updateValue,
   readValue: readValue,
 };
+
+// function setSchedule(schedule, item, time = 0) {
+//   setParameter(schedule, item, (new Date() + time).getTime());
+// }
+
+// function setHeatingSchedule(item, time = 0) {
+//   setSchedule("heating", item, time);
+// }
+
+// setHeatingFanSchedule(time = 0) {
+//   setHeatingSchedule("Fan", time);
+// }
