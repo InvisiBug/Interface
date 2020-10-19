@@ -4,10 +4,12 @@ import AutoOnOff from "../../Ui Library/Controllers/AutoControl";
 
 const RadiatorFan = () => {
   const [deviceData, setActive] = useState(JSON.parse(localStorage.getItem("Heating Schedule")));
+  const [now, setNow] = useState(new Date().getTime());
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setActive(JSON.parse(localStorage.getItem("Heating Schedule")));
+      setNow(new Date().getTime());
     }, 100);
 
     return () => clearTimeout(timer);
@@ -22,7 +24,7 @@ const RadiatorFan = () => {
       autoAction={() => fetch("/api/ci/manual/off")}
       manualAction={() => fetch("/api/ci/manual/on")}
       auto={deviceData.auto}
-      state={deviceData.isOn}
+      state={deviceData.heatingTime > now ? true : false}
       connection={true}
     />
   );

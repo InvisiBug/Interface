@@ -23,7 +23,7 @@ const express = require("express");
 var app = (module.exports = express());
 const { getStore, setStore, updateValue, readValue } = require("../helpers/StorageDriver");
 const { backendToFrontend, frontendToBackend } = require("../helpers/Functions");
-const { boostOn, boostOff, radiatorFanOverrun } = require("../helpers/HeatingFunctions");
+const { boostOn, boostOff, radiatorFanOverrun, heatingOn, heatingOff } = require("../helpers/HeatingFunctions");
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -94,8 +94,7 @@ app.get("/api/ci/on", (req, res) => {
   let data = getStore("heatingSchedule");
   let boostTime = new Date();
   if (!data.auto) {
-    updateValue("heatingSchedule", "isOn", true);
-    updateValue("heatingSchedule", "radiatorFanTime", boostTime.setMinutes(boostTime.getMinutes() + 3000));
+    heatingOn();
     sendHeatingSchedule();
   }
   res.end(null);
@@ -104,11 +103,8 @@ app.get("/api/ci/on", (req, res) => {
 app.get("/api/ci/off", (req, res) => {
   let data = getStore("heatingSchedule");
   if (!data.auto) {
-    if (readValue("heatingSchedule", "isOn")) {
-      // If turning off from being on, start the over run
-      radiatorFanOverrun();
-    }
-    updateValue("heatingSchedule", "isOn", false);
+    console.log("heating Off");
+    heatingOff();
     sendHeatingSchedule();
   }
   sendHeatingSchedule();

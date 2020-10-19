@@ -22,7 +22,7 @@ var app = (module.exports = express());
 const { getStore, setStore, updateValue } = require("../../helpers/StorageDriver");
 const { defaultConfiguration } = require("../Calor Imperium");
 const { days } = require("../../helpers/Constants");
-const { radiatorFanOn, radiatorFanOverrun } = require("../../helpers/HeatingFunctions");
+const { radiatorFanOn, radiatorFanOverrun, heatingOn, heatingOff } = require("../../helpers/HeatingFunctions");
 
 // app.use(require("./Watchdogs/Watchdogs"));
 
@@ -44,7 +44,7 @@ setInterval(() => {
 
   var date = new Date();
   const day = date.getDay();
-  const now = date.getTime(); // changed this
+  const now = date.getTime();
   const time = date.getHours() + "." + date.getMinutes();
 
   if (scheduleData.boostTime < now) {
@@ -55,45 +55,39 @@ setInterval(() => {
         (scheduleData[days[day]][0] <= time && time <= scheduleData[days[day]][1]) || // Seems to be some overlap ie schedule on at 16:02 when should be on at 16:15
         (scheduleData[days[day]][2] <= time && time <= scheduleData[days[day]][3])
       ) {
+        console.log("Heating On (A)");
         heatingOn(); // On demand from schedule
       } else {
+        console.log("Heating Off (B)");
         heatingOff(); // off demand from schedule
       }
-    } else if (!scheduleData.auto && scheduleData.isOn) {
-      // TODO Maybe rename isOn to something like onRequested
-      heatingOn(); // On button
-    } else {
-      heatingOff(); // Off button
     }
   } else {
     // Boost On
+    console.log("Heating On (E)");
     heatingOn();
   }
 }, 0.5 * 1000);
 
-const heatingOn = () => {
-  updateValue("heatingSchedule", "isActive", true);
-  latch = true;
-};
-
-const heatingOff = () => {
-  updateValue("heatingSchedule", "isActive", false);
-  latch = false;
-};
+// TODO, Move each watchdog to seperate files
+// ----- Watchdogs -----
 
 // Heating
 setInterval(() => {
-  let heating = getStore("Heating");
-  if (latch) {
-    if (heating.isConnected && !heating.isOn) {
+  let heatingSchedule = getStore("heatingSchedule");
+  let heatingController = getStore("Heating");
+  let now = new Date().getTime();
+
+  if (now < heatingSchedule.heatingTime) {
+    if (heatingController.isConnected && !heatingController.isOn) {
+      console.log("Heating On");
       client.publish("Heating Control", "1");
-      radiatorFanOn();
     }
-  } else if (heating.isConnected && heating.isOn) {
+  } else if (heatingController.isConnected && heatingController.isOn) {
+    console.log("Heating Off");
     client.publish("Heating Control", "0");
-    radiatorFanOverrun();
   }
-}, 2 * 1000);
+}, 1 * 1000);
 
 // Radiator Fan
 setInterval(() => {
