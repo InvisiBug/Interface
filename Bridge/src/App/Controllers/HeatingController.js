@@ -22,6 +22,7 @@ var app = (module.exports = express());
 const { getStore, setStore, updateValue } = require("../../helpers/StorageDriver");
 const { defaultConfiguration } = require("../Calor Imperium");
 const { days } = require("../../helpers/Constants");
+const { radiatorFanOn, radiatorFanOverrun } = require("../../helpers/HeatingFunctions");
 
 // app.use(require("./Watchdogs/Watchdogs"));
 
@@ -43,7 +44,7 @@ setInterval(() => {
 
   var date = new Date();
   const day = date.getDay();
-  let now = new Date().getTime();
+  const now = date.getTime(); // changed this
   const time = date.getHours() + "." + date.getMinutes();
 
   if (scheduleData.boostTime < now) {
@@ -85,12 +86,12 @@ setInterval(() => {
   let heating = getStore("Heating");
   if (latch) {
     if (heating.isConnected && !heating.isOn) {
-      // console.log("Heating Turn On ");
       client.publish("Heating Control", "1");
+      radiatorFanOn();
     }
   } else if (heating.isConnected && heating.isOn) {
-    // console.log("Heating Turn Off");
     client.publish("Heating Control", "0");
+    radiatorFanOverrun();
   }
 }, 2 * 1000);
 

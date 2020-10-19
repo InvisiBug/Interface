@@ -136,7 +136,7 @@ const heatingSensor = require("./App/Interfaces/HeatingSensor");
 const sensors = [
   {
     name: "Our Room",
-    offset: -0.3,
+    offset: -0.1,
   },
   {
     name: "Study",
