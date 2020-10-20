@@ -1,1 +1,47 @@
-{"heatingSensors":{"study":{"isConnected":true,"temperature":16.3,"humidity":74,"pressure":70990.53},"liamsRoom":{"isConnected":true,"temperature":16.9,"humidity":73.6,"pressure":100750.5},"livingRoom":{"isConnected":true,"temperature":20.1,"humidity":64.8,"pressure":100853.3},"ourRoom":{"isConnected":true,"temperature":19.8,"humidity":78.3},"kitchen":{"isConnected":true,"temperature":18.4,"humidity":96.1,"pressure":100813.9}},"outside":{"current":{"temperature":4.74,"humidity":0.84,"pressure":1018.7,"windSpeed":4.95,"windBearing":250,"cloudCover":0.44,"isConnected":true},"next24Hrs":[4.8,4.19,3.71,3.46,3.47,3.5,3.68,3.81,3.87,3.83,3.85,4.12,4.53,5.27,10.3,11.53,12.44,13.05,13.23,13.1,12.7,11.86,10.8,10.12]},"houseStats":{"average":18.3,"minimumTemp":16.3,"maximumTemp":20.1}}
+{
+  "heatingSensors": {
+    "study": { "isConnected": true, "temperature": 21.2, "humidity": 46.5, "pressure": 98764.17 },
+    "liamsRoom": { "isConnected": true, "temperature": 17.4, "humidity": 76.7, "pressure": 98726.66 },
+    "livingRoom": { "isConnected": true, "temperature": 19.4, "humidity": 66.3, "pressure": 98830.76 },
+    "ourRoom": { "isConnected": true, "temperature": -0.1, "humidity": null },
+    "kitchen": { "isConnected": true, "temperature": 20.4, "humidity": 75, "pressure": 62331.41 }
+  },
+  "outside": {
+    "current": {
+      "temperature": 17.27,
+      "humidity": 0.73,
+      "pressure": 998.8,
+      "windSpeed": 8.04,
+      "windBearing": 202,
+      "cloudCover": 0.94,
+      "isConnected": true
+    },
+    "next24Hrs": [
+      17.36,
+      17.13,
+      16.56,
+      15.77,
+      14.98,
+      14.33,
+      13.99,
+      13.76,
+      13.57,
+      13.42,
+      13.39,
+      13.36,
+      13.39,
+      13.43,
+      13.38,
+      13.22,
+      12.94,
+      12.81,
+      12.69,
+      12.55,
+      12.35,
+      12.44,
+      12.7,
+      12.97
+    ]
+  },
+  "houseStats": { "average": 19.6, "minimumTemp": 17.4, "maximumTemp": 21.2 }
+}

@@ -117,8 +117,8 @@ app.use(require("./App/Historical.js"));
 app.use(require("./App/Controllers/HeatingController.js"));
 app.use(require("./App/Calor Imperium.js"));
 app.use(require("./App/Interfaces/Heating.js"));
-
 app.use(require("./App/Services/HouseClimateStats"));
+app.use(require("./App/Controllers/Watchdogs/Watchdogs"));
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -136,7 +136,7 @@ const heatingSensor = require("./App/Interfaces/HeatingSensor");
 const sensors = [
   {
     name: "Our Room",
-    offset: -0.3,
+    offset: -0.1,
   },
   {
     name: "Study",
