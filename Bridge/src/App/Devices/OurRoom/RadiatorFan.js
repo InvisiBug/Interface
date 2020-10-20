@@ -23,7 +23,8 @@ const express = require("express");
 const app = (module.exports = express());
 const device = "radiatorFan";
 
-const store = require("../../../helpers/StorageDriver");
+const { getStore, setStore } = require("../../../helpers/StorageDriver");
+const { radiatorFanOff, radiatorFanOn } = require("../../../helpers/HeatingFunctions");
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -71,6 +72,7 @@ app.get("/api/RadiatorFan/On", (req, res) => {
   if (!deviceData.isAutomatic) {
     deviceData.isOn = true;
     client.publish("Radiator Fan Control", "1"); // Toggle power button
+    // radiatorFanOn();
   }
   sendSocketData();
   res.json(null);
@@ -79,7 +81,9 @@ app.get("/api/RadiatorFan/On", (req, res) => {
 app.get("/api/RadiatorFan/Off", (req, res) => {
   if (!deviceData.isAutomatic) {
     deviceData.isOn = false;
+    // console.log("boopp");
     client.publish("Radiator Fan Control", "0"); // Toggle power button
+    // radiatorFanOff();
   }
   sendSocketData();
   res.json(null);
@@ -102,7 +106,7 @@ client.on("message", (topic, payload) => {
 
     timer = setTimeout(() => {
       deviceData.isConnected = false;
-      if (saveToStorage) store.setStore(`${"Radiator Fan"}`, deviceData);
+      if (saveToStorage) setStore(`${"Radiator Fan"}`, deviceData);
     }, 10 * 1000);
 
     if (payload != "Radiator Fan Disconnected") {
@@ -111,7 +115,7 @@ client.on("message", (topic, payload) => {
         isConnected: true,
         isOn: JSON.parse(payload).state,
       };
-      if (saveToStorage) store.setStore(`${"Radiator Fan"}`, deviceData);
+      if (saveToStorage) setStore(`${"Radiator Fan"}`, deviceData);
     } else {
       console.log("Radiator Fan Disconnected");
     }

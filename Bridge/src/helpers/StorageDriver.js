@@ -18,7 +18,7 @@ const getStore = (store) => {
     console.log(e);
   }
 };
-//boop
+
 const updateValue = (store, point, value) => {
   let data = getStore(store);
   data = {
@@ -34,11 +34,29 @@ const readValue = (store, point) => {
   return data[point];
 };
 
+const updateBoostTime = (time = 0) => {
+  let now = new Date();
+  updateValue("heatingSchedule", "boostTime", now.setMinutes(now.getMinutes() + time));
+};
+
+const updateRadiatorFanTime = (time = 0) => {
+  let now = new Date();
+  updateValue("heatingSchedule", "radiatorFanTime", now.setMinutes(now.getMinutes() + time));
+};
+
+const updateHeatingTime = (time = 0) => {
+  let now = new Date();
+  updateValue("heatingSchedule", "heatingTime", now.setMinutes(now.getMinutes() + time));
+};
+
 module.exports = {
   getStore: getStore,
   setStore: setStore,
   updateValue: updateValue,
   readValue: readValue,
+  updateBoostTime: updateBoostTime,
+  updateRadiatorFanTime: updateRadiatorFanTime,
+  updateHeatingTime: updateHeatingTime,
 };
 
 // function setSchedule(schedule, item, time = 0) {

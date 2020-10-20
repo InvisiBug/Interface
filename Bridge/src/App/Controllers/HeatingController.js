@@ -45,7 +45,6 @@ setInterval(() => {
   const time = date.getHours() + "." + date.getMinutes();
 
   if (scheduleData.boostTime < now) {
-    //* test this
     if (scheduleData.auto) {
       if (
         (scheduleData[days[day]][0] <= time && time <= scheduleData[days[day]][1]) || // Seems to be some overlap ie schedule on at 16:02 when should be on at 16:15
