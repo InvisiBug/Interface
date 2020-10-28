@@ -1,13 +1,32 @@
-// Components
-import React from "react";
-
-import HeatingSensor from "./HeatingSensor.jsx";
-import Outside from "./Outside";
-// import OutsideSetpoint from "./OutsideSetpoint.jsx";
-
-// import OurRoomHeatingController  from '../../../Devices/Our Room/Our Room Heating Controller.jsx';
-
+/** @jsx jsx */
+import React, { useEffect, useState } from "react";
+import { jsx, css } from "@emotion/core";
+import HeatingSensor from "../../Ui Library/HeatingSensor";
 import FloorPlanPicture from "./Floor Plan.png";
+
+const floorPlanPictureContainer = css`
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 700px;
+  width: 1100px;
+  top: 50%;
+  left: 50%;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  background: rgba(50, 50, 50, 0.1);
+  color: white;
+  font-family: "Arial";
+  font-size: 25px;
+`;
+
+const floorPlanPicture = css`
+  position: absolute;
+  transform: translate(-50%, -50%);
+  filter: invert(100%);
+  top: 50%;
+  left: 50%;
+`;
 
 const rooms = [
   {
@@ -29,25 +48,21 @@ const rooms = [
   {
     name: "Our Room",
     pos: [55, 86]
+  },
+  {
+    name: "Outside",
+    pos: [10, 86]
   }
-  // {
-  //   name: "Outside", *NB* Bring this back
-  //   pos: [10, 86]
-  // }
 ];
 
 const FirstFloor = (blurFactor, showGraph) => {
   return (
-    <div style={{ filter: blurFactor }} className="floorPlanPictureContainer">
-      <img src={FloorPlanPicture} alt="floorplanPic" className="floorPlanPicture" />
+    <div style={{ filter: blurFactor }} css={floorPlanPictureContainer}>
+      <img src={FloorPlanPicture} alt="floorplanPic" css={floorPlanPicture} />
 
       {rooms.map(room => (
         <HeatingSensor datapoint={room.name} key={room.name} pos={room.pos} showGraph={showGraph} />
       ))}
-
-      <Outside datapoint={"outside.current"} pos={[10, 50]} showGraph={showGraph} />
-
-      {/* <OutsideSetpoint /> */}
     </div>
   );
 };

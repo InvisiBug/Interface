@@ -1,6 +1,6 @@
 const { updateValue, readValue, updateBoostTime, updateRadiatorFanTime, updateHeatingTime } = require("./StorageDriver");
 
-const overRunTime = 15;
+const overRunTime = 20;
 const boostTime = 20;
 
 ////////////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ const isHeatingOn = () => {
   return readValue("heatingSchedule", "heatingTime") > new Date();
 };
 
-radiatorFanOff();
+// radiatorFanOff();
 
 module.exports = {
   boostOn: boostOn,

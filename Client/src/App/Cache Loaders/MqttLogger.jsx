@@ -4,6 +4,7 @@ import openSocket from "socket.io-client";
 import { localStorageSaver, localStorageParser } from "../../Helpers/localStorageDriver";
 import { StyleSheet, css } from "aphrodite";
 
+// TODO convert this to emotion
 const styles = StyleSheet.create({
   container: {
     position: "absolute",

@@ -15,6 +15,7 @@ const container = css`
   min-width: 600px;
 
   border-radius: 20px;
+  user-select: none;
 
   border: 1px solid rgba(255, 255, 255, 0.2);
 

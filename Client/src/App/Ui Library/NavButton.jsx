@@ -4,6 +4,7 @@ import { jsx, css } from "@emotion/core";
 
 const active = css`
   border-bottom: 1px solid grey;
+  box-sizing: border-box;
   top: 0%;
   left: 0%;
   width: 100%;
@@ -16,6 +17,7 @@ const active = css`
 
 const inActive = css`
   border-bottom: 1px solid grey;
+  box-sizing: border-box;
   background: rgba(255, 255, 255, 0);
   top: 0%;
   left: 0%;

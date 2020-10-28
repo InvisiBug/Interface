@@ -5,6 +5,7 @@ import { connectedColour, disconnectedColour } from "./Constants";
 
 const ModuleHeader = ({ children, colour = "#000", connection = true }) => {
   const baseStyle = css`
+    box-sizing: border-box;
     font-size: 25px;
     white-space: nowrap;
   `;

@@ -1,47 +1,66 @@
+/** @jsx jsx */
 import React, { useEffect, useState } from "react";
-import { StyleSheet, css } from "aphrodite";
+import { jsx, css } from "@emotion/core";
 import { localStorageParser } from "../../Helpers/localStorageDriver";
 import { camelRoomName } from "../Helpers/Functions";
 
-const styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    transform: "translate(-50%, -50%)",
-    height: "45px",
-    width: "110px",
+const container = css`
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 45px;
+  width: 110px;
 
-    borderRadius: "20px",
+  border-radius: 20px;
 
-    border: "1px solid rgba(255, 255, 255, 0.2)",
-    background: "rgba(50, 50, 50, 0.2)",
-    fontFamily: "Arial",
-    fontSize: "15px",
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(50, 50, 50, 0.2);
+  font-family: Arial;
+  font-size: 15px;
+  /* cursor: pointer; */
+  user-select: none;
 
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    textAlign: "center"
-  },
-  tempText: {
-    position: "absolute",
-    transform: "translate(-50%, -50%)",
-    top: "50%",
-    left: "25%"
-  },
-  humidityText: {
-    position: "absolute",
-    transform: "translate(-50%, -50%)",
-    top: "50%",
-    left: "78%"
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+`;
+
+const tempText = css`
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 25;
+`;
+
+const humidityText = css`
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 78%;
+`;
+
+const dataGrabber = datapoint => {
+  if (datapoint === "Outside") {
+    try {
+      return localStorageParser(`Environmental Data`).outside.current;
+    } catch {
+      return "noData";
+    }
+  } else {
+    try {
+      return localStorageParser(`Environmental Data`).heatingSensors[camelRoomName(datapoint)];
+    } catch {
+      return "noData";
+    }
   }
-});
+};
 
 const HeatingSensor = ({ showGraph, pos, datapoint }) => {
-  const [deviceData, setDeviceData] = useState(localStorageParser(`Environmental Data`).heatingSensors[camelRoomName(datapoint)]);
+  const [deviceData, setDeviceData] = useState(dataGrabber(datapoint));
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDeviceData(localStorageParser(`Environmental Data`).heatingSensors[camelRoomName(datapoint)]);
+      setDeviceData(dataGrabber(datapoint));
     }, 100);
     return () => clearTimeout(timer);
   }, [deviceData, datapoint]);
@@ -53,11 +72,11 @@ const HeatingSensor = ({ showGraph, pos, datapoint }) => {
         top: `${pos[0]}%`,
         left: `${pos[1]}%`
       }}
-      className={css(styles.container)}
-      onClick={() => showGraph(datapoint)}
+      css={container}
+      onClick={() => console.log("Clicked")}
     >
-      <p className={css(styles.tempText)}>{deviceData.temperature}°C</p>
-      <p className={css(styles.humidityText)}>{deviceData.humidity}%</p>
+      <p css={tempText}>{deviceData.temperature || "Nan"}°C</p>
+      <p css={humidityText}>{deviceData.humidity || "Nan"}%</p>
     </div>
   );
 };

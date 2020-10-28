@@ -7,6 +7,7 @@ const OnButton = ({ children, size = "m", isActive = true, activeColour, handleC
   const baseStyle = css`
     border: 1px solid ${borderColour};
     height: 50px;
+    box-sizing: border-box;
 
     font-size: 21px;
     border-radius: 0.25rem;

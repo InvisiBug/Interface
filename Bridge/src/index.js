@@ -132,6 +132,7 @@ app.use(require("./App/Controllers/Watchdogs/Watchdogs"));
 //
 ////////////////////////////////////////////////////////////////////////
 const heatingSensor = require("./App/Interfaces/HeatingSensor");
+const { Console } = require("console");
 
 const sensors = [
   {
@@ -210,3 +211,30 @@ sensors.map((room, index) => {
 // Start the app
 app.listen(fetchPort, console.log("App is listening on port " + fetchPort));
 io.listen(socketPort, console.log("Socket is open on port " + socketPort));
+
+// const sleep = (waitTimeInMs) => new Promise((resolve) => setTimeout(resolve, waitTimeInMs));
+
+// sleep(10000).then(() => {
+//   console.log("DSAKJ");
+//   // This will execute 10 seconds from now
+// });
+
+// function sleep(milliseconds) {
+//   const date = Date.now();
+//   let currentDate = null;
+//   do {
+//     currentDate = Date.now();
+//   } while (currentDate - date < milliseconds);
+// }
+
+// // console.log("Hello");
+
+// // console.log("World!");
+// console.log("Here");
+// console.log("Here");
+
+// const sensorUpdate = setInterval(() => {
+//   console.log("Here");
+// }, 0.1 * 1000);
+
+// sleep(2000);

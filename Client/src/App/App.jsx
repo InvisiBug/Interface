@@ -8,11 +8,10 @@ import DateBox from "./Date and Time.jsx";
 import Dots from "./Dots";
 
 // Screens
-
 import Lights from "./Screens/Lights/LightsScreen.jsx";
 import Computer from "./Screens/Computer/ComputerScreen.jsx";
 import Climate from "./Screens/Climate/ClimateScreen.jsx";
-import Heating from "./Screens/Heating/Heating.jsx";
+import Heating from "./Screens/Heating/HeatingScreen.jsx";
 import Logger from "./Cache Loaders/MqttLogger";
 
 // Cache Loader
@@ -90,9 +89,9 @@ const App = () => {
 
       <div css={background} />
 
+      {/* {navigator.platform === "MacIntel" && <Dots css={dots} />} */}
       <div css={windowContainer}>
         {/* {navigator.platform === "Win32" && <Dots />} */}
-        {/* {navigator.platform === "MacIntel" && <Dots css={dots} />} */}
         <NavBar style={navBar} changeScreen={changeScreen} screen={screen} />
 
         <div css={screenContainer}>

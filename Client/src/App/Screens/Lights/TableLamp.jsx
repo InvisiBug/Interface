@@ -62,7 +62,7 @@ class TableLamp extends React.Component {
     return (
       <Container className="tableLampModule">
         <div className="tableLampTitle">
-          <h2 style={{ color: this.state.titleColour }}>Table Lamp</h2>
+          <h2 style={{ color: this.state.titleColour }}>Lamp</h2>
         </div>
 
         <div className="tableLampColourWheel">

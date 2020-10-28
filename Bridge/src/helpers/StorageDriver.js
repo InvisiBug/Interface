@@ -30,7 +30,6 @@ const updateValue = (store, point, value) => {
 
 const readValue = (store, point) => {
   let data = getStore(store);
-
   return data[point];
 };
 
