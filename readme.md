@@ -72,13 +72,13 @@
 
 # Install Node
 ```
-	sudo apt-get install nodejs
-	sudo apt-get install npm
+sudo apt-get install nodejs
+sudo apt-get install npm
 ```
 	
 # Update npm
 ```
-	Sudo npm install npm@latest -g
+Sudo npm install npm@latest -g
 ```
 
 
@@ -105,7 +105,7 @@ sudo mosquitto -c /etc/mosquitto/mosquitto.conf
 
 ## Super user file manager
 ```
-Gksudo pcmanfm
+gksudo pcmanfm
 ```
 
 # General Linux Commands
@@ -116,5 +116,5 @@ sudo chmod +x /path/to/filename.sh
 
 ## Update Node.js (may be wrong)
 ```
-	curl https://www.npmjs.com/install.sh | sudo sh
+curl https://www.npmjs.com/install.sh | sudo sh
 ```

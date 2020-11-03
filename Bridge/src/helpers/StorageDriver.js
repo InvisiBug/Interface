@@ -48,6 +48,14 @@ const updateHeatingTime = (time = 0) => {
   updateValue("heatingSchedule", "heatingTime", now.setMinutes(now.getMinutes() + time));
 };
 
+const setValve = (room, value) => {
+  updateValue("Radiator Valves", room, value);
+};
+
+const getValve = (room) => {
+  return readValue("Radiator Valves", room);
+};
+
 // const updateHeatingZone = (room, point, value) => {
 //   let data = getStore("Heating Zones");
 //   data = {
@@ -74,6 +82,8 @@ module.exports = {
   updateBoostTime: updateBoostTime,
   updateRadiatorFanTime: updateRadiatorFanTime,
   updateHeatingTime: updateHeatingTime,
+  setValve: setValve,
+  getValve: getValve,
 };
 
 // function setSchedule(schedule, item, time = 0) {

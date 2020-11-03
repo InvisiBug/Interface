@@ -1,7 +1,7 @@
 const express = require("express");
 const app = (module.exports = express());
 const { getStore, setStore } = require("../../helpers/StorageDriver");
-const { camelRoomName } = require("../../helpers/Functions");
+const { camelRoomName, printTime } = require("../../helpers/Functions");
 
 const disconnectedState = {
   isConnected: false,
@@ -53,7 +53,7 @@ const newSensor = (room, offset) => {
         };
         setStore("Environmental Data", environmentalData);
       } else {
-        console.log(`${room} ${"Heating Sensor Disconnected"}`);
+        console.log(`${room} ${"Heating Sensor Disconnected at "} ${printTime()}`);
       }
     }
   });
