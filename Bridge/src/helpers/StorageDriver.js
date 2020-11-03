@@ -48,6 +48,24 @@ const updateHeatingTime = (time = 0) => {
   updateValue("heatingSchedule", "heatingTime", now.setMinutes(now.getMinutes() + time));
 };
 
+// const updateHeatingZone = (room, point, value) => {
+//   let data = getStore("Heating Zones");
+//   data = {
+//     ...data,
+//     [room]: {
+//       ...data[room],
+//       [point]: value,
+//     },
+//   };
+//   setStore("Heating Zones", data);
+// };
+
+// updateHeatingZone("ourRoom", "needsHeat", false);
+
+// console.log(getStore("Heating Zones"));
+
+// setTimeout(() => updateValue("Heating Zones"), 5000);
+
 module.exports = {
   getStore: getStore,
   setStore: setStore,

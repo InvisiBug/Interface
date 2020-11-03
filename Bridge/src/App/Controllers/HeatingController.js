@@ -44,6 +44,8 @@ setInterval(() => {
   const now = date.getTime();
   const time = date.getHours() + "." + date.getMinutes();
 
+  // console.log(now);
+
   if (scheduleData.boostTime < now) {
     if (scheduleData.auto) {
       if (
