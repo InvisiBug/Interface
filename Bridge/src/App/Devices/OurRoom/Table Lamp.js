@@ -20,6 +20,7 @@
 ////////////////////////////////////////////////////////////////////////
 const express = require("express");
 const app = (module.exports = express());
+const { tableLampControl } = require("../../Interfaces/mqttOut");
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -65,7 +66,7 @@ app.post("/api/tableLamp/Update", (req, res) => {
     blue: req.body.blue,
   };
 
-  client.publish("Table Lamp Control", JSON.stringify(deviceData));
+  tableLampControl(JSON.stringify(deviceData));
   res.json(deviceData);
 });
 

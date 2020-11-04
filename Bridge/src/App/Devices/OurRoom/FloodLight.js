@@ -21,6 +21,7 @@
 // Express
 const express = require("express");
 const app = (module.exports = express());
+const { plugControl } = require("../../Interfaces/mqttOut");
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -50,14 +51,14 @@ var timer = setTimeout(() => {
 //
 ////////////////////////////////////////////////////////////////////////
 app.get("/api/Plug/On", (req, res) => {
-  client.publish("Plug Control", "1");
+  plugControl("1");
   deviceData.isOn = true;
   sendSocketData();
   res.json(null);
 });
 
 app.get("/api/Plug/Off", (req, res) => {
-  client.publish("Plug Control", "0");
+  plugControl("0");
   deviceData.isOn = false;
   sendSocketData();
   res.json(null);

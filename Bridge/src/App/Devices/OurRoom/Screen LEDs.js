@@ -20,6 +20,7 @@
 ////////////////////////////////////////////////////////////////////////
 const express = require("express");
 const app = (module.exports = express());
+const { screenLEDsControl } = require("../../Interfaces/mqttOut");
 
 // Functions
 const functions = require("../../../helpers/Functions.js");
@@ -54,35 +55,35 @@ var timer = setTimeout(() => {
 app.post("/api/screenLEDs/update", (req, res) => {
   deviceData = req.body;
 
-  client.publish("Screen LEDs Control", JSON.stringify(deviceData));
+  screenLEDsControl(JSON.stringify(deviceData));
   res.end(null);
 });
 
 app.get("/api/screenLEDs/colour", (req, res) => {
   deviceData.mode = null;
 
-  client.publish("Screen LEDs Control", "0");
+  screenLEDsControl("0");
   res.end(null);
 });
 
 app.get("/api/screenLEDs/ambient/on", (req, res) => {
   deviceData.mode = "ambient";
 
-  client.publish("Screen LEDs Control", "1");
+  screenLEDsControl("1");
   res.end(null);
 });
 
 app.get("/api/screenLEDs/rainbow/on", (req, res) => {
   deviceData.mode = "rainbow";
 
-  client.publish("Screen LEDs Control", "2");
+  screenLEDsControl("2");
   res.end(null);
 });
 
 app.get("/api/screenLEDs/fade/on", (req, res) => {
   deviceData.mode = "fade";
 
-  client.publish("Screen LEDs Control", "3");
+  screenLEDsControl("3");
   res.end(null);
 });
 

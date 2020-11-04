@@ -21,6 +21,7 @@
 // Express
 const express = require("express");
 const app = (module.exports = express());
+const { computerControl, computerPowerControl } = require("../../Interfaces/mqttOut");
 
 // Functions
 const functions = require("../../../helpers/Functions.js");
@@ -53,14 +54,14 @@ var timer = setTimeout(() => {
 //
 ////////////////////////////////////////////////////////////////////////
 app.get("/api/ComputerPower/On", (req, res) => {
-  client.publish("Computer Power Control", "1");
+  computerPowerControl("1");
   deviceData.isOn = true;
   sendSocketData();
   res.json(null); // Toggle power button
 });
 
 app.get("/api/ComputerPower/Off", (req, res) => {
-  client.publish("Computer Power Control", "0");
+  computerPowerControl("0");
   deviceData.isOn = false;
   sendSocketData();
   res.json(null);

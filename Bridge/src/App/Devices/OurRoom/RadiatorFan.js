@@ -21,10 +21,9 @@
 // Express
 const express = require("express");
 const app = (module.exports = express());
-const device = "radiatorFan";
+const { radiatorFanControl } = require("../../Interfaces/mqttOut");
 
 const { getStore, setStore } = require("../../../helpers/StorageDriver");
-const { radiatorFanOff, radiatorFanOn } = require("../../../helpers/HeatingFunctions");
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -71,8 +70,7 @@ app.get("/api/RadiatorFanAutomatic/off", (req, res) => {
 app.get("/api/RadiatorFan/On", (req, res) => {
   if (!deviceData.isAutomatic) {
     deviceData.isOn = true;
-    client.publish("Radiator Fan Control", "1"); // Toggle power button
-    // radiatorFanOn();
+    radiatorFanControl("1");
   }
   sendSocketData();
   res.json(null);
@@ -81,9 +79,7 @@ app.get("/api/RadiatorFan/On", (req, res) => {
 app.get("/api/RadiatorFan/Off", (req, res) => {
   if (!deviceData.isAutomatic) {
     deviceData.isOn = false;
-    // console.log("boopp");
-    client.publish("Radiator Fan Control", "0"); // Toggle power button
-    // radiatorFanOff();
+    radiatorFanControl("0");
   }
   sendSocketData();
   res.json(null);
@@ -126,13 +122,13 @@ client.on("message", (topic, payload) => {
           ...deviceData,
           isOn: false,
         };
-        client.publish("Radiator Fan Control", "0");
+        radiatorFanControl("0");
       } else {
         deviceData = {
           ...deviceData,
           isOn: true,
         };
-        client.publish("Radiator Fan Control", "1");
+        radiatorFanControl("1");
       }
       sendSocketData();
     }

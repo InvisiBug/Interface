@@ -1,6 +1,7 @@
 const express = require("express");
 var app = (module.exports = express());
 const { getStore, setStore, updateValue } = require("../../../helpers/StorageDriver");
+const { radiatorFanControl, heatingControl } = require("../../Interfaces/mqttOut");
 
 // TODO, Move each watchdog to seperate files
 // Heating
@@ -11,10 +12,10 @@ setInterval(() => {
 
   if (now < heatingSchedule.heatingTime) {
     if (heatingController.isConnected && !heatingController.isOn) {
-      client.publish("Heating Control", "1");
+      heatingControl("1");
     }
   } else if (heatingController.isConnected && heatingController.isOn) {
-    client.publish("Heating Control", "0");
+    heatingControl("0");
   }
 }, 1 * 1000);
 
@@ -27,10 +28,10 @@ setInterval(() => {
   if (radiatorFan.isAutomatic) {
     if (now < heating.radiatorFanTime) {
       if (radiatorFan.isConnected && !radiatorFan.isOn) {
-        client.publish("Radiator Fan Control", "1");
+        radiatorFanControl("1");
       }
     } else if (radiatorFan.isConnected && radiatorFan.isOn) {
-      client.publish("Radiator Fan Control", "0");
+      radiatorFanControl("0");
     }
   }
 }, 1 * 1000);
