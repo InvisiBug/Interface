@@ -32,17 +32,17 @@ const newValve = (room) => {
       }, 10 * 1000);
 
       if (payload != `${room} ${"Radiator Valve Disconnected"}`) {
+        let environmentalData = getStore("Environmental Data");
+        let oldValveData = environmentalData.radiatorValves[camelRoomName(room)];
         var mqttData = JSON.parse(payload);
 
         deviceData = {
           ...deviceData,
           isConnected: true,
           isOpen: !mqttData.state,
-          // isOpen: deviceData.isOpen,
-          // demand: deviceData.demand,
+          demand: oldValveData.demand,
         };
 
-        let environmentalData = getStore("Environmental Data");
         environmentalData = {
           ...environmentalData,
           radiatorValves: {
@@ -50,6 +50,7 @@ const newValve = (room) => {
             [camelRoomName(room)]: deviceData,
           },
         };
+        // console.log(environmentalData);
         setStore("Environmental Data", environmentalData);
       } else {
         console.log(`${room} ${"Radiator Valve Disconnected at "} ${printTime()}`);

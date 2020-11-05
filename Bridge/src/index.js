@@ -114,13 +114,11 @@ app.use(require("./App/Devices/OurRoom/RadiatorFan.js"));
 app.use(require("./App/Historical.js"));
 
 // Calor Imperium
-app.use(require("./App/Controllers/HeatingController.js"));
+
 app.use(require("./App/Calor Imperium.js"));
 app.use(require("./App/Interfaces/Heating.js"));
 app.use(require("./App/Services/HouseClimateStats"));
 app.use(require("./App/Controllers/Watchdogs/Watchdogs"));
-
-app.use(require("./App/Controllers/OurRoomHeatingController"));
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -163,8 +161,10 @@ sensors.map((room, index) => {
 });
 
 const radiatorValve = require("./App/Interfaces/RadiatorValve");
+radiatorValve.newValve("Our Room");
 
-// radiatorValve.newValve("Our Room");
+const zoneHeatingController = require("./App/Controllers/ZoneHeatingController");
+zoneHeatingController.newZoneController("Our Room");
 
 [
   ////////////////////////////////////////////////////////////////////////

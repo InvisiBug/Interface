@@ -52,43 +52,6 @@ const updateHeatingTime = (time = 0) => {
 };
 
 // Valves
-const setValve = (room, value) => {
-  updateValue("Radiator Valves", room, value);
-};
-
-const setValveDemand = (room, value) => {
-  let data = getStore("Environmental Data");
-
-  data = {
-    ...data,
-    radiatorValves: {
-      ...data.radiatorValves,
-      [room]: {
-        ...data.radiatorValves[room],
-        demand: "value",
-      },
-    },
-  };
-
-  setStore("Environmental Data", data);
-
-  console.log(data);
-};
-
-setValveDemand("ourRoom", "boop");
-
-const getValveDemand = (room) => {
-  return getStore("Environmental Data").radiatorValves[room].demand;
-};
-
-const getValveState = (room) => {
-  return getStore("Environmental Data").radiatorValves[room].isOpen;
-};
-
-// Setpoints
-const getRoomSetpoints = (room) => {
-  return getStore("Environmental Data").setpoints[room];
-};
 
 // Conditions
 const getRoomConditions = (room) => {
@@ -99,6 +62,10 @@ const getRoomTemperature = (room) => {
   return getStore("Environmental Data").heatingSensors[room].temperature;
 };
 
+const getRoomSetpoints = (room) => {
+  return getStore("Environmental Data").setpoints[room];
+};
+
 module.exports = {
   getStore: getStore,
   setStore: setStore,
@@ -107,12 +74,9 @@ module.exports = {
   updateBoostTime: updateBoostTime,
   updateRadiatorFanTime: updateRadiatorFanTime,
   updateHeatingTime: updateHeatingTime,
-  setValve: setValve,
-  getValveState: getValveState,
   getRoomSetpoints: getRoomSetpoints,
   getRoomConditions: getRoomConditions,
   getRoomTemperature: getRoomTemperature,
-  getValveDemand: getValveDemand,
 };
 
 // function setSchedule(schedule, item, time = 0) {

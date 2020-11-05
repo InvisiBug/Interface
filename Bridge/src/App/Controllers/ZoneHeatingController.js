@@ -19,13 +19,10 @@
 // Express
 const express = require("express");
 var app = (module.exports = express());
-// const { getStore, setStore, updateValue, getRoomSetpoints, getRoomTemperature } = require("../../helpers/StorageDriver");
-// const { defaultConfiguration } = require("../Calor Imperium");
-// const { days } = require("../../helpers/Constants");
-// const { radiatorFanOn, radiatorFanOverrun, heatingOn, heatingOff } = require("../../helpers/HeatingFunctions");
-
 const { getRoomSetpoints, getRoomTemperature } = require("../../helpers/StorageDriver");
+const { setValveDemand, getValveDemand } = require("../../helpers/ValveStorageDriver");
 const { openOurRoomValve, closeOurRoomValve } = require("../../helpers/ValveDriver");
+const { camelRoomName } = require("../../helpers/Functions");
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -38,27 +35,33 @@ const { openOurRoomValve, closeOurRoomValve } = require("../../helpers/ValveDriv
 //    #    # #    # ###### #    #  ####
 //
 ////////////////////////////////////////////////////////////////////////
-setInterval(() => {
-  /*
-  get setpoints
-  get current temperature
-  get current time
+const newZoneController = (room) => {
+  // TODO make this the same as heating sensor and radiator valve
+  setInterval(() => {
+    var date = new Date();
+    let currentHour = date.getHours();
 
-  if current temperature is less than desired (add hysteris)
-  open radiator valve
+    let setpoint = getRoomSetpoints(camelRoomName(room));
+    let currentTemp = getRoomTemperature(camelRoomName(room));
 
-  once valve is open, turn on radiator fan and heating
-  */
+    if (currentTemp < setpoint[currentHour] && currentTemp > -1) {
+      setValveDemand(camelRoomName(room), true);
+      console.log("here");
+    } else {
+      setValveDemand(camelRoomName(room), false);
+    }
+    // console.log(`${room} Current Temp: ${currentTemp} \t Target Temp: ${setpoint[currentHour]}`);
+  }, 1 * 1000);
 
-  let setpoint = getRoomSetpoints("ourRoom");
-  let currentTemp = getRoomTemperature("ourRoom");
+  setInterval(() => {
+    // grab the valve demand
+    // grab the valve state and connection
+    // if valve is connected, had demand and is closed, open
+    // else close
+    // const
+  }, 1 * 1000);
+};
 
-  // var date = new Date();
-  // let currentHour = date.getHours();
-  // if (currentTemp < setpoint[currentHour]) {
-  //   // openOurRoomValve();
-  // } else {
-  //   // console.log("Dont add heat");
-  // }
-  // console.log(`Current Temp: ${currentTemp} \t Target Temp: ${setpoint[currentHour]}`);
-}, 0.5 * 1000);
+module.exports = {
+  newZoneController: newZoneController,
+};
