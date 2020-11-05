@@ -51,7 +51,7 @@ const socketPort = process.env.PORT || 5001;
 //   #####   ####   ####  #    # ######   #
 //
 ////////////////////////////////////////////////////////////////////////
-var server = require("http").createServer(app);
+let server = require("http").createServer(app);
 global.io = require("socket.io")(server);
 
 ////////////////////////////////////////////////////////////////////////
@@ -119,6 +119,8 @@ app.use(require("./App/Calor Imperium.js"));
 app.use(require("./App/Interfaces/Heating.js"));
 app.use(require("./App/Services/HouseClimateStats"));
 app.use(require("./App/Controllers/Watchdogs/Watchdogs"));
+
+app.use(require("./App/Controllers/OurRoomHeatingController"));
 
 ////////////////////////////////////////////////////////////////////////
 //

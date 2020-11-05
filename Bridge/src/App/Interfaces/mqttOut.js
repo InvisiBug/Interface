@@ -1,5 +1,6 @@
 const heatingControl = (message) => {
-  client.publish("Heating Control", message);
+  // client.publish("Heating Control", message);
+  console.log("Heating On Signal");
 };
 
 const radiatorFanControl = (message) => {
