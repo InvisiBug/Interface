@@ -30,8 +30,10 @@ const updateValue = (store, point, value) => {
 };
 
 const readValue = (store, point) => {
-  let data = getStore(store);
-  return data[point];
+  // let data = getStore(store);
+  // return data[point];
+
+  return getStore(store)[point];
 };
 
 const updateBoostTime = (time = 0) => {
@@ -54,24 +56,47 @@ const setValve = (room, value) => {
   updateValue("Radiator Valves", room, value);
 };
 
-const getValve = (room) => {
-  return readValue("Radiator Valves", room);
+const setValveDemand = (room, value) => {
+  let data = getStore("Environmental Data");
+
+  data = {
+    ...data,
+    radiatorValves: {
+      ...data.radiatorValves,
+      [room]: {
+        ...data.radiatorValves[room],
+        demand: "value",
+      },
+    },
+  };
+
+  setStore("Environmental Data", data);
+
+  console.log(data);
+};
+
+setValveDemand("ourRoom", "boop");
+
+const getValveDemand = (room) => {
+  return getStore("Environmental Data").radiatorValves[room].demand;
+};
+
+const getValveState = (room) => {
+  return getStore("Environmental Data").radiatorValves[room].isOpen;
 };
 
 // Setpoints
 const getRoomSetpoints = (room) => {
-  return readValue("Room Setpoints", room);
+  return getStore("Environmental Data").setpoints[room];
 };
 
 // Conditions
 const getRoomConditions = (room) => {
-  let data = getStore("Environmental Data");
-  return data.heatingSensors[room];
+  return getStore("Environmental Data").heatingSensors[room];
 };
 
 const getRoomTemperature = (room) => {
-  let data = getStore("Environmental Data");
-  return data.heatingSensors[room].temperature;
+  return getStore("Environmental Data").heatingSensors[room].temperature;
 };
 
 module.exports = {
@@ -83,10 +108,11 @@ module.exports = {
   updateRadiatorFanTime: updateRadiatorFanTime,
   updateHeatingTime: updateHeatingTime,
   setValve: setValve,
-  getValve: getValve,
+  getValveState: getValveState,
   getRoomSetpoints: getRoomSetpoints,
   getRoomConditions: getRoomConditions,
   getRoomTemperature: getRoomTemperature,
+  getValveDemand: getValveDemand,
 };
 
 // function setSchedule(schedule, item, time = 0) {

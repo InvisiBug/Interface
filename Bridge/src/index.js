@@ -68,7 +68,7 @@ global.io = require("socket.io")(server);
 const mqtt = require("mqtt");
 // global.client = mqtt.connect("mqtt://192.168.1.46");
 global.client = mqtt.connect("mqtt://kavanet.io");
-client.setMaxListeners(15); // Disables event listener warning
+client.setMaxListeners(16); // Disables event listener warning
 
 client.subscribe("#", (err) => {
   err ? console.log(err) : console.log("Subscribed to all");
@@ -162,19 +162,25 @@ sensors.map((room, index) => {
   heatingSensor.newSensor(room.name, room.offset);
 });
 
-////////////////////////////////////////////////////////////////////////
-//
-//   #####
-//  #     #  ####  #    #  ####   ####  #      ######
-//  #       #    # ##   # #      #    # #      #
-//  #       #    # # #  #  ####  #    # #      #####
-//  #       #    # #  # #      # #    # #      #
-//  #     # #    # #   ## #    # #    # #      #
-//   #####   ####  #    #  ####   ####  ###### ######
-//
-////////////////////////////////////////////////////////////////////////
-//This adds the the line printed information to all console.logs
-["log", "warn", "error"].forEach((methodName) => {
+const radiatorValve = require("./App/Interfaces/RadiatorValve");
+
+// radiatorValve.newValve("Our Room");
+
+[
+  ////////////////////////////////////////////////////////////////////////
+  //
+  //   #####
+  //  #     #  ####  #    #  ####   ####  #      ######
+  //  #       #    # ##   # #      #    # #      #
+  //  #       #    # # #  #  ####  #    # #      #####
+  //  #       #    # #  # #      # #    # #      #
+  //  #     # #    # #   ## #    # #    # #      #
+  //   #####   ####  #    #  ####   ####  ###### ######
+  //
+  ////////////////////////////////////////////////////////////////////////
+  //This adds the the line printed information to all console.logs
+  ("log", "warn", "error"),
+].forEach((methodName) => {
   const originalMethod = console[methodName];
   console[methodName] = (...args) => {
     try {

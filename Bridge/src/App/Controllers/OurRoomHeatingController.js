@@ -53,14 +53,12 @@ setInterval(() => {
   let setpoint = getRoomSetpoints("ourRoom");
   let currentTemp = getRoomTemperature("ourRoom");
 
-  var date = new Date();
-  let currentHour = date.getHours();
-
-  if (currentTemp < setpoint[currentHour]) {
-    // openOurRoomValve();
-  } else {
-    // console.log("Dont add heat");
-  }
-
+  // var date = new Date();
+  // let currentHour = date.getHours();
+  // if (currentTemp < setpoint[currentHour]) {
+  //   // openOurRoomValve();
+  // } else {
+  //   // console.log("Dont add heat");
+  // }
   // console.log(`Current Temp: ${currentTemp} \t Target Temp: ${setpoint[currentHour]}`);
 }, 0.5 * 1000);
